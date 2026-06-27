@@ -1,0 +1,20 @@
+{
+  "hello": "مرحبا",
+  "language": "اللغة",
+  "Dashboard": "لوحة التحكم",
+  "Products": "المنتجات",
+  "Collections": "المجموعات",
+  "Orders": "الطلبات",
+  "Inventory": "المخزون",
+  "Analytics": "التحليلات",
+  "Settings": "الإعدادات",
+  "Team & Permission": "الفريق والصلاحيات",
+  "Suggestions": "الاقتراحات",
+  "Analytics-Performance": "التحليلات والأداء",
+  "ComboSearchPlaceholder": "اكتب أمرًا أو ابحث...",
+  "ComboTitle": "ابحث في التطبيق...",
+  "No-Results": "لم يتم العثور على نتائج.",
+  "Enterprise": "الشركة",
+  "Platform": "المنصة",
+  "Press": "اضغط"
+}

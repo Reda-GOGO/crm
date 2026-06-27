@@ -1,0 +1,20 @@
+{
+  "hello": "Hello",
+  "language": "Language",
+  "Dashboard": "Dashboard",
+  "Products": "Products",
+  "Collections": "Collections",
+  "Orders": "Orders",
+  "Inventory": "Inventory",
+  "Analytics": "Analytics",
+  "Settings": "Settings",
+  "Team & Permission": "Team & Permission",
+  "Suggestions": "Suggestions",
+  "Analytics-Performance": "Analytics & Performance",
+  "ComboSearchPlaceholder": "Type a command or search...",
+  "ComboTitle": "Search in App ...",
+  "No-Results": "No results found.",
+  "Enterprise": "Enterprise",
+  "Platform": "Platform",
+  "Press": "Press"
+}

@@ -1,0 +1,21 @@
+{
+  "hello": "Bonjour",
+  "language": "Langue",
+  "Dashboard": "Tableau de bord",
+  "Products": "Produits",
+  "Collections": "Collections",
+  "Orders": "Commandes",
+  "Inventory": "Inventaire",
+  "Analytics": "Analyses",
+  "Settings": "Paramètres",
+  "Team & Permission": "Équipe et autorisations",
+  "Suggestions": "Suggestions",
+  "Analytics-Performance": "Analyses et performances",
+  "ComboSearchPlaceholder": "Tapez une commande ou recherchez...",
+  "ComboTitle": "Rechercher dans l'application...",
+  "No-Results": "Aucun résultat trouvé.",
+  "Enterprise": "Entreprise",
+  "Platform": "Plateforme",
+  "Press": "Appuyez"
+}
+
