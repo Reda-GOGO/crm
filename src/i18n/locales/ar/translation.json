@@ -1,6 +1,7 @@
 {
   "hello": "مرحبا",
   "language": "اللغة",
+  "selectLanguage": "اختر لغتك المفضلة.",
   "Dashboard": "لوحة التحكم",
   "Products": "المنتجات",
   "Collections": "المجموعات",
@@ -16,5 +17,64 @@
   "No-Results": "لم يتم العثور على نتائج.",
   "Enterprise": "الشركة",
   "Platform": "المنصة",
-  "Press": "اضغط"
+  "Press": "اضغط",
+  "Actions": "الإجراءات",
+  "Product.page.title": "المنتجات",
+  "Product.page.subtitle": "المتجر البياني",
+  "Product.page.desc": "قم بإنشاء وتعديل وإدارة قوائم المنتجات وإظهارها.",
+  "Product.page.create": "إنشاء منتج",
+  "Dashboard.page.title": "لوحة التحكم",
+  "Dashboard.page.subtitle": "نظرة عامة على لوحة التحكم",
+  "Dashboard.page.desc": "نسخة حالية في وقت واحد من الأداء الخاص بك والمبيعات والمستخدمين النشطين الحاليين",
+  "Dashboard.page.create": "إنشاء لوحة التحكم",
+  "Collection.page.title": "المجموعات",
+  "Collection.page.subtitle": "المتجر البياني للمجموعات",
+  "Collection.page.desc" : "قم بإنشاء وتعديل وإدارة مجموعات المنتجات في متجرك المتجر الخاص بك.",
+  "Collection.page.create": "إنشاء مجموعة",
+  "Order.page.title": "الطلبات",
+  "Order.page.subtitle": "إدارة الطلبات",
+  "Order.page.desc" : "تتبع أطلاب العملاء العملاء، حالة التسليم وسجل المعاملات.",
+  "Order.page.create": "إنشاء طلب",
+  "Inventory.page.title": "المخزون",
+  "Inventory.page.subtitle": "المخزون ",    
+  "Inventory.page.desc" : "قم بإدارة المخزون  في متجرك المتجر الخاص بك.",
+  "Inventory.page.create": "إنشاء مخزون",
+  "Analytic.page.title": "التحليلات",
+  "Analytic.page.subtitle": "التحليلات والأداء",
+  "Analytic.page.desc" : "قم بإدارة التحليلات والأداء في متجرك المتجر الخاص بك.",
+  "Analytic.page.create": "إنشاء تحليل",
+  "Setting.page.title": "الإعدادات",
+  "Setting.page.subtitle": "الإعدادات والإعدادات",
+  "Setting.page.desc" : "قم بإدارة إعدادات الحساب والمزيد من المعلومات حول الملف الشخصي.",
+  "Setting.page.create": "إنشاء إعداد",
+  "Team.page.title": "الفريق والصلاحيات",
+  "Team.page.subtitle": "أعضاء الفريق والصلاحيات",
+  "Team.page.desc": "قم بإدارة الأشخاص الذين لديهم حق الوصول إلى مساحة العمل الخاصة بك وتحديد الصلاحيات الممنوحة لهم.",
+  "Team.page.create": "إضافة عضو",
+  "products": {
+    "statistics": {
+      "salesOverview": "نظرة عامة على المبيعات",
+      "productsSold": "المنتجات المباعة",
+      "topSellingProduct": "المنتج الأكثر مبيعًا",
+      "averageSellRate": "متوسط معدل البيع"
+    }
+  },
+  "orders": {
+    "statistics": {
+      "salesOverview": "نظرة عامة على المبيعات",
+      "totalOrders": "إجمالي الطلبات",
+      "topSellingProduct": "المنتج الأكثر مبيعًا",
+      "revenue": "الإيرادات",
+      "productsSold": "المنتجات المباعة",
+      "averageSellRate": "متوسط معدل البيع",
+      "profit": "الأرباح"
+    }
+  },
+  "periods": {
+    "today": "اليوم",
+    "sevenDays": "7 أيام",
+    "thirtyDays": "30 يومًا",
+    "todaySubtitle": "اليوم، {{date}}",
+    "lastDaysSubtitle": "آخر {{count}} أيام"
+  }
 }

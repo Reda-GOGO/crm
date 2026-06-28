@@ -37,7 +37,7 @@ export const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Ste Placo Top sarl",
       logo: (
         <GalleryVerticalEndIcon
         />

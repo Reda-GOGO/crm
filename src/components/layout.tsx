@@ -10,7 +10,6 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import { data } from "@/components/app-sidebar"
 import { useTranslation } from "react-i18next";
@@ -64,6 +63,16 @@ export function Search() {
   const { t, i18n } = useTranslation()
   const dir = i18n.resolvedLanguage === "ar" ? "rtl" : "ltr"
   const navigate = useNavigate()
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
 
@@ -170,7 +179,6 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       className="transition-all duration-300 rounded-full relative"
     >
-      {/* Light Icon */}
       <Sun
         className={`h-5 w-5 transition-all duration-300 ${theme === "light"
           ? "scale-100 rotate-0 opacity-100"
@@ -178,7 +186,6 @@ export function ThemeToggle() {
           }`}
       />
 
-      {/* Dark Icon */}
       <Moon
         className={`h-5 w-5 transition-all duration-300 absolute ${theme === "dark"
           ? "scale-100 rotate-0 opacity-100"
@@ -197,7 +204,6 @@ export function ThemeToggle() {
 export function FullscreenToggle() {
   const [isFullscreen, setIsFullscreen] = React.useState(false);
 
-  // Detect fullscreen changes (F11, ESC, programmatic)
   React.useEffect(() => {
     function handleChange() {
       setIsFullscreen(Boolean(document.fullscreenElement));
@@ -209,10 +215,8 @@ export function FullscreenToggle() {
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      // Enter fullscreen
       document.documentElement.requestFullscreen();
     } else {
-      // Exit fullscreen
       document.exitFullscreen();
     }
   };
@@ -224,7 +228,6 @@ export function FullscreenToggle() {
       onClick={toggleFullscreen}
       className="relative transition-all rounded-full"
     >
-      {/* Expand icon */}
       <Expand
         className={`h-5 w-5 transition-all duration-300 ${!isFullscreen
           ? "opacity-100 scale-100 rotate-0"
@@ -232,7 +235,6 @@ export function FullscreenToggle() {
           }`}
       />
 
-      {/* Minimize icon */}
       <Minimize
         className={`absolute h-5 w-5 transition-all duration-300 ${isFullscreen
           ? "opacity-100 scale-100 rotate-0"

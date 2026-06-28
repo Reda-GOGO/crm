@@ -1,6 +1,7 @@
 {
   "hello": "Hello",
   "language": "Language",
+  "selectLanguage": "Select your preferred language.",
   "Dashboard": "Dashboard",
   "Products": "Products",
   "Collections": "Collections",
@@ -16,5 +17,64 @@
   "No-Results": "No results found.",
   "Enterprise": "Enterprise",
   "Platform": "Platform",
-  "Press": "Press"
+  "Press": "Press",
+  "Actions": "Actions",
+  "Product.page.title": "Products",
+  "Product.page.subtitle" : "Products Catalog",
+  "Product.page.desc": "Create, edit, and manage your product listings and their visibility.",
+  "Product.page.create": "Create product",
+  "Dashboard.page.title": "Dashboard",
+  "Dashboard.page.subtitle": "Dashboard Overview",
+  "Dashboard.page.desc": "A real-time snapshot of your business performance, sales, and active visitors",
+  "Collection.page.title": "Collections",
+  "Collection.page.subtitle": "Collections Catalog",
+  "Collection.page.desc" : "Create, edit, and manage your collections for products in your store .",
+  "Collection.page.create": "Create collection",
+  "Order.page.title": "Orders",
+  "Order.page.subtitle": "Orders Management",
+  "Order.page.desc" : "Track customer purchases, fulfillment status, and transaction history." ,
+  "Order.page.create": "Create order",
+  "Inventory.page.title": "Inventory",
+  "Inventory.page.subtitle": "Inventory & Stock",
+  "Inventory.page.desc" : "Monitor stock levels across warehouses and set up low-stock alerts.",
+  "Inventory.page.create": "Create inventory",
+  "Analytic.page.title": "Analytics",
+  "Analytic.page.subtitle" : "Business Analytics",
+  "Analytic.page.desc" : "Deep dive into your revenue growth, conversion rates, and customer behavior.",
+  "Analytic.page.create": "Start analysis",
+  "Team.page.title": "Team & Permission",
+  "Team.page.subtitle": "Team Members & Permission",
+  "Team.page.desc" : "Manage who has access to your workspace and what they can do.",
+  "Team.page.create": "Create member",
+  "Setting.page.title": "Settings",
+  "Setting.page.subtitle": "Settings",
+  "Setting.page.desc" : "Manage your account settings, including profile information, notifications, and more.",
+  "Setting.page.create": "Create setting",
+  "products":{
+    "statistics": {
+      "salesOverview": "Sales Overview",
+      "productsSold": "Products Sold",
+      "topSellingProduct": "Top Selling Product",
+      "averageSellRate": "Average Sell Rate"
+    }
+  },
+  "orders": {
+    "statistics": {
+      "salesOverview": "Sales Overview",
+      "totalOrders": "Total Orders",
+      "revenue": "Revenue",
+      "productsSold": "Products Sold",
+      "topSellingProduct": "Top Selling Product",
+      "averageSellRate": "Average Sell Rate",
+      "profit": "Profit"
+    }
+  },
+  "periods": {
+    "today": "Today",
+    "sevenDays": "7 Days",
+    "thirtyDays": "30 Days",
+    "todaySubtitle": "Today, {{date}}",
+    "lastDaysSubtitle": "Last {{count}} days"
+  }
+
 }

@@ -1,6 +1,7 @@
 {
   "hello": "Bonjour",
   "language": "Langue",
+  "selectLanguage": "Sélectionnez votre langue préférée.",
   "Dashboard": "Tableau de bord",
   "Products": "Produits",
   "Collections": "Collections",
@@ -16,6 +17,64 @@
   "No-Results": "Aucun résultat trouvé.",
   "Enterprise": "Entreprise",
   "Platform": "Plateforme",
-  "Press": "Appuyez"
+  "Press": "Appuyez",
+  "Actions": "Actions",
+  "Product.page.title": "Produits",
+  "Product.page.subtitle": "Catalogue de produits",
+  "Product.page.desc": "Créez, modifiez et gérez vos listes de produits et leur visibilité.",
+  "Product.page.create": "Créer un produit",
+  "Dashboard.page.title": "Tableau de bord",
+  "Dashboard.page.subtitle": "Vue d'ensemble du tableau de bord",
+  "Dashboard.page.desc": "Une instantané en temps réel de votre performance de l'entreprise, des ventes et des visiteurs actifs",
+  "Collection.page.title": "Collections",
+  "Collection.page.subtitle": "Catalogue des collections",
+  "Collection.page.desc" : "Créez, modifiez et gérez vos collections pour les produits dans votre magasin.",
+  "Collection.page.create": "Créer une collection",
+  "Order.page.title": "Commandes",
+  "Order.page.subtitle": "Gestion des commandes",
+  "Order.page.desc" : "Suivez vos achats clients, le statut de livraison et l'historique des transactions.",
+  "Order.page.create": "Créer une commande",
+  "Inventory.page.title": "Inventaire",
+  "Inventory.page.subtitle": "Inventaire & Stock",
+  "Inventory.page.desc" : "Surveillez les niveaux d'inventaire à travers les entrepôts et définissez des alertes de stock bas.",
+  "Inventory.page.create": "Créer un inventaire",
+  "Analytic.page.title": "Analyses",
+  "Analytic.page.subtitle" : "Analyses de l'entreprise",
+  "Analytic.page.desc" : "Profondément découvrez votre croissance de revenu, les taux de conversion et le comportement des clients.",
+  "Analytic.page.create": "Commencer une analyse",
+  "Team.page.title": "Équipe et autorisations",
+  "Team.page.subtitle": "Membres de l'équipe & autorisations",
+  "Team.page.desc" : "Gérez qui a accès à votre espace de travail et ce qu'ils peuvent faire.",
+  "Team.page.create": "Créer un membre",
+  "Setting.page.title": "Paramètres",
+  "Setting.page.subtitle": "Paramètres",
+  "Setting.page.desc" : "Gérez vos paramètres de compte, y compris les informations du profil, les notifications et plus encore.",
+  "Setting.page.create": "Créer un paramètre",
+  "products": {
+    "statistics": {
+      "salesOverview": "Aperçu des ventes",
+      "productsSold": "Produits vendus",
+      "topSellingProduct": "Produit le plus vendu",
+      "averageSellRate": "Taux de vente moyen"
+    }
+  },
+   "orders": {
+    "statistics": {
+      "salesOverview": "Aperçu des ventes",
+      "totalOrders": "Nombre total de commandes",
+      "revenue": "Chiffre d'affaires",
+      "productsSold": "Produits vendus",
+      "topSellingProduct": "Produit le plus vendu",
+      "averageSellRate": "Taux de vente moyen",
+      "profit": "Bénéfice"
+    }
+  },
+  "periods": {
+    "today": "Aujourd'hui",
+    "sevenDays": "7 jours",
+    "thirtyDays": "30 jours",
+    "todaySubtitle": "Aujourd'hui, {{date}}",
+    "lastDaysSubtitle": "Les {{count}} derniers jours"
+  }
 }
 
