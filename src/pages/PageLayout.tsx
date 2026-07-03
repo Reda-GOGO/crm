@@ -37,7 +37,7 @@ export function PageLayout({
     <div className="w-full flex flex-col ">
       <div className="flex w-full justify-between gap-2 py-2">
         <TitleLayout title={t(name + ".page.title")} Icon={Icon} />
-        {showActions && <PageActions name={name} />}
+        <PageActions name={name} show={showActions} />
       </div>
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">
@@ -55,8 +55,10 @@ export function PageLayout({
 
 function PageActions({
   name,
+  show
 }: {
   name: string;
+  show: boolean
 }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
@@ -65,7 +67,8 @@ function PageActions({
   return (
 
     <div className={cn("flex gap-2",
-      i18n.resolvedLanguage === "ar" ? "flex-row-reverse" : "flex-row"
+      i18n.resolvedLanguage === "ar" ? "flex-row-reverse" : "flex-row",
+      show ? "visible" : "invisible"
     )}>
       < DropdownMenu >
         <DropdownMenuTrigger asChild>

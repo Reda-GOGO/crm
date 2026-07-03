@@ -9,12 +9,15 @@ import Inventory from "./pages/inventory/Inventory"
 import Analytics from "./pages/analytics/Analytics"
 import Settings from "./pages/settings/Settings"
 import Teams from "./pages/teams/Teams"
+import NotFound from "./pages/NotFound"
 
 function App() {
 
   return (
     <Routes>
+      {/* <Route path="*" element={<NotFound />} /> */}
       <Route path="/" element={<Layout />}>
+        <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="collections" element={<Collections />} />

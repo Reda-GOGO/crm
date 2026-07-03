@@ -8,9 +8,15 @@ import { cn } from "@/lib/utils";
 export function Note({
   children,
   className = "",
-}: { children: React.ReactNode; className?: string }) {
+  dir = "ltr",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  dir?: "ltr" | "rtl";
+}) {
   return (
     <div
+      dir={dir}
       className={cn(
         " w-full flex flex-col min-w-70 bg-input/30  h-20 border px-3 py-4 gap-2 hover:bg-muted/70 rounded-lg",
         className,

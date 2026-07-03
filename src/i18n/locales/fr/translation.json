@@ -1,6 +1,9 @@
 {
   "hello": "Bonjour",
   "language": "Langue",
+  "MAD" : "MAD",
+  "Price" : "Prix",
+  "Product" : "Produit",
   "selectLanguage": "Sélectionnez votre langue préférée.",
   "Dashboard": "Tableau de bord",
   "Products": "Produits",
@@ -50,7 +53,16 @@
   "Setting.page.subtitle": "Paramètres",
   "Setting.page.desc" : "Gérez vos paramètres de compte, y compris les informations du profil, les notifications et plus encore.",
   "Setting.page.create": "Créer un paramètre",
+  "notFound": {
+    "goBack": "Retour",
+    "pageTitle": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée. Vérifiez l'URL ou retournez à l'accueil.",
+    "goHome": "Accueil",
+    "tryAgain": "Réessayer",
+    "footer": "HTTP 404 — Ressource introuvable"
+  },
   "products": {
+    "placeholder": "Rechercher des produits...",
     "statistics": {
       "salesOverview": "Aperçu des ventes",
       "productsSold": "Produits vendus",

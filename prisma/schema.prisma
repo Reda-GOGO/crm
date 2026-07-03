@@ -4,15 +4,262 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-        provider = "prisma-client-js"
+        provider = "prisma-client"
+        output   = "../generated/prisma"
 }
 
 datasource db {
         provider = "sqlite"
 }
 
+//
+// USER, ROLES & PERMISSIONS
+//
+
 model User {
-        id    Int     @id @default(autoincrement())
-        email String  @unique
-        name  String?
+        id        Int        @id @default(autoincrement())
+        name      String
+        email     String     @unique
+        password  String
+        language  String     @default("en")
+        createdAt DateTime   @default(now())
+        role      Role       @relation(fields: [roleId], references: [id])
+        roleId    Int
+        orders    Order[]
+        archived  Boolean    @default(false)
+        Timeline  Timeline[]
+}
+
+model Role {
+        id          Int          @id @default(autoincrement())
+        jobTitle    String
+        description String?
+        users       User[]
+        permissions Permission[]
+}
+
+model Permission {
+        id        Int       @id @default(autoincrement())
+        resource  String
+        action    String
+        roleId    Int
+        role      Role      @relation(fields: [roleId], references: [id])
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+}
+
+//
+// PRODUCTS, UNITS & INVENTORY & COLLECTIONS
+//
+
+model Product {
+        id             Int              @id @default(autoincrement())
+        name           String
+        handle         String           @unique
+        image          String?
+        description    String?
+        cost           Float
+        price          Float
+        unit           String // base unit (e.g., "kg", "piece")
+        vendorName     String?
+        vendorContact  String?
+        units          ProductUnit[]
+        orderItems     OrderItem[]
+        stats          ProductStats[]
+        createdAt      DateTime         @default(now())
+        updatedAt      DateTime?
+        availableQty   Float            @default(0) // current stock in this unit
+        storageHistory StorageHistory[]
+        archived       Boolean          @default(false)
+        Collection     Collection?      @relation(fields: [collectionId], references: [id])
+        collectionId   Int?
+}
+
+model StorageHistory {
+        id        Int       @id @default(autoincrement())
+        quantity  Float
+        unit      String
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+        archived  Boolean   @default(false)
+        product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+        productId Int?
+}
+
+model ProductUnit {
+        id             Int         @id @default(autoincrement())
+        product        Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+        productId      Int
+        name           String // e.g., "packet", "box", "kg"
+        quantityInBase Float // e.g., 25 (means 1 packet = 25kg)
+        isBase         Boolean
+        defaultValue   Float
+        variantValue   Float
+        price          Float // selling price per unit
+        cost           Float
+        createdAt      DateTime    @default(now())
+        updatedAt      DateTime?
+        orderItems     OrderItem[]
+        archived       Boolean     @default(false)
+
+        @@unique([productId, name])
+}
+
+model Collection {
+        id          Int      @id @default(autoincrement())
+        name        String
+        handle      String   @unique
+        description String?
+        tags        String?
+        image       String?
+        createdAt   DateTime @default(now())
+        updatedAt   DateTime @updatedAt
+        archived    Boolean  @default(false)
+
+        // Many-to-many relationship
+        products        Product[]
+        CollectionStats CollectionStats[]
+}
+
+//
+// ORDERS, ITEMS, CUSTOMERS & INVOICES
+//
+
+model Order {
+        id                 Int         @id @default(autoincrement())
+        items              OrderItem[] @relation("OrderItems")
+        totalAmount        Float
+        tax                Float
+        totalAmountWithTax Float
+        discount           Float?
+        profit             Float
+        partiallyPaidIn    Float?
+        totalAmountString  String
+        status             String      @default("Pending") // Pending , PartiallyPaid , Paid , Cancelled 
+        type               String
+        paymentMode        String? // espèce , cheque , virement , effet , without
+        paymentRef         String?
+        orderRef           String?
+        createdAt          DateTime    @default(now())
+        updatedAt          DateTime?
+        invoice            Invoice?
+        customer           Customer    @relation(fields: [customerId], references: [id])
+        customerId         Int
+        user               User        @relation(fields: [createdBy], references: [id])
+        createdBy          Int
+        archived           Boolean     @default(false)
+        deleted            Boolean     @default(false)
+        Timeline           Timeline?
+}
+
+model OrderItem {
+        id            Int          @id @default(autoincrement())
+        name          String
+        quantity      Float
+        unitPrice     Float
+        totalAmount   Float
+        unitProfit    Float // profit per unit
+        totalProfit   Float // total profit for this item
+        unit          String // e.g., "kg", "packet"
+        productUnitId Int?
+        productUnit   ProductUnit? @relation(fields: [productUnitId], references: [id])
+        productId     Int
+        product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+        orderId       Int
+        order         Order        @relation(name: "OrderItems", fields: [orderId], references: [id], onDelete: Cascade)
+        createdAt     DateTime     @default(now())
+        archived      Boolean      @default(false)
+        deleted       Boolean      @default(false)
+        updatedAt     DateTime?
+}
+
+model Timeline {
+        id        Int       @id @default(autoincrement())
+        order     Order     @relation(fields: [orderId], references: [id])
+        orderId   Int       @unique
+        user      User      @relation(fields: [createdBy], references: [id])
+        action    String
+        content   String
+        createdBy Int
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+        archived  Boolean   @default(false)
+}
+
+model Customer {
+        id        Int       @id @default(autoincrement())
+        name      String
+        ice       String?
+        email     String?
+        phone     String?
+        address   String?
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+        orders    Order[]
+        archived  Boolean   @default(false)
+}
+
+model Invoice {
+        id        Int       @id @default(autoincrement())
+        order     Order     @relation(fields: [orderId], references: [id])
+        orderId   Int       @unique
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+        archived  Boolean   @default(false)
+}
+
+//
+// ANALYTICS MODELS
+//
+
+model ProductStats {
+        id           Int         @id @default(autoincrement())
+        key          String
+        period       StatsPeriod
+        soldQuantity Float
+        saleNumber   Float
+        soldRevenue  Float
+        soldProfit   Float
+        product      Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+        productId    Int
+        createdAt    DateTime    @default(now())
+
+        @@index([period, key, createdAt])
+}
+
+model SaleStats {
+        id                 Int         @id @default(autoincrement())
+        key                String
+        period             StatsPeriod
+        totalAmount        Float
+        totalAmountWithTax Float
+        totalOrders        Float
+        profit             Float
+        createdAt          DateTime    @default(now())
+
+        @@index([period, key, createdAt])
+}
+
+model CollectionStats {
+        id           Int         @id @default(autoincrement())
+        key          String
+        period       StatsPeriod
+        saleNumber   Float
+        soldRevenue  Float
+        soldProfit   Float
+        collection   Collection  @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+        collectionId Int
+        createdAt    DateTime    @default(now())
+
+        @@index([period, key, createdAt])
+}
+
+//
+// ENUMS
+//
+
+enum StatsPeriod {
+        DAILY
+        WEEKLY
+        MONTHLY
 }

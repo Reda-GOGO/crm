@@ -2,6 +2,9 @@
   "hello": "Hello",
   "language": "Language",
   "selectLanguage": "Select your preferred language.",
+  "MAD" : "MAD",
+  "Price" : "Price",
+  "Product" : "Product",
   "Dashboard": "Dashboard",
   "Products": "Products",
   "Collections": "Collections",
@@ -50,7 +53,16 @@
   "Setting.page.subtitle": "Settings",
   "Setting.page.desc" : "Manage your account settings, including profile information, notifications, and more.",
   "Setting.page.create": "Create setting",
+  "notFound": {
+    "goBack": "Go back",
+    "pageTitle": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved. Check the URL or head back home.",
+    "goHome": "Go home",
+    "tryAgain": "Try again",
+    "footer": "HTTP 404 — Resource not found"
+  },
   "products":{
+    "placeholder": "Search products...",
     "statistics": {
       "salesOverview": "Sales Overview",
       "productsSold": "Products Sold",

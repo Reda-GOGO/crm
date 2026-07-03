@@ -16,10 +16,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
     };
 
-    // Apply the current language on first load
     applyLanguage(i18n.resolvedLanguage || i18n.language);
 
-    // Listen for future changes
     i18n.on("languageChanged", applyLanguage);
 
     return () => {
