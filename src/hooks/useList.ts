@@ -1,57 +1,98 @@
-import { useEffect, useState } from "react"
-import { useSearch } from "./useSearch";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-export type useListReturnType<T> = ReturnType<typeof useList<T>>
+import { http } from "@/infrastructure/http";
+import { useFilters } from "./useFilters";
+import { usePagination } from "./usePagination";
+import { useQuery } from "./useQuery";
+import { useSearch } from "./useSearch";
+import { useSelection } from "./useSelection";
+
+type queryResponse<T> = {
+  items: T[];
+  totalItems: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasMore: boolean;
+};
+type Mode = "page" | "infinite";
+export type useListReturnType<T> = ReturnType<typeof useList<T>>;
 
 export function useList<T>({
-  type = "page",
   resource,
+  mode = "page",
 }: {
-  type: "infinite" | "page";
   resource: string;
+  mode?: Mode;
 }) {
-  const [data, setData] = useState<T[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const { search, setSearch, debouncedSearch } = useSearch<string>({ value: "" })
-  const [pagination, setPagination] = useState({
-    limit: 7,
-    currentPage: 1,
-    totalPages: 1,
-    totalItems: 0,
-  })
+  const search = useSearch("");
+  const pagination = usePagination({ initialLimit: 7 });
+  const filters = useFilters<Record<string, any>>({});
+  const selection = useSelection<number>();
+
+  const queryFn = useCallback(() => {
+    return http.list<T>(`/${resource}`, {
+      search: search.debouncedSearch,
+      pagination: {
+        page: pagination.page,
+        limit: pagination.limit,
+      },
+      filtering: filters.filters,
+    });
+  }, [
+    resource,
+    search.debouncedSearch,
+    pagination.page,
+    pagination.limit,
+    filters.filters,
+  ]);
+
+  const { data, loading, error, refetch } = useQuery<queryResponse<T>>(queryFn);
+
+  const [items, setItems] = useState<T[]>([]);
 
   useEffect(() => {
-    try {
-      setLoading(true)
-      fetch(`${import.meta.env.VITE_API_URL}/${resource}?search=${debouncedSearch}&limit=${pagination.limit}&page=${pagination.currentPage}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setData((prev) => {
-            if (type === "page") return data.products
-            if (type === "infinite") {
-              return pagination.currentPage === 1 ?
-                data.products :
-                [...prev, ...data.products]
-            }
-          })
-          setPagination({
-            ...pagination,
-            totalItems: data.totalItems,
-            totalPages: data.totalPages,
-          })
-          setLoading(false)
-        })
-    } catch (e) {
+    if (!data) return;
 
+    if (mode === "page") {
+      setItems(data.items);
+      return;
     }
-  }, [resource, debouncedSearch, pagination.limit, pagination.currentPage])
 
+    // infinite mode
+    if (pagination.page === 1) {
+      setItems(data.items);
+      return;
+    }
+
+    setItems(prev => [...prev, ...data.items]);
+  }, [data, mode, pagination.page]);
+
+  const meta = useMemo(() => {
+    return {
+      totalItems: data?.totalItems ?? 0,
+      totalPages: data?.totalPages ?? 0,
+      hasNext:
+        pagination.page < (data?.totalPages ?? 0),
+      hasMore:
+        pagination.page < (data?.totalPages ?? 0),
+    };
+  }, [data, pagination.page]);
 
   return {
-    data,
+    data: items,
+
     loading,
-    setSearch,
-    search,
-    pagination, setPagination,
-  }
+    error,
+    refetch,
+
+    search: search.search,
+    setSearch: search.setSearch,
+    resetSearch: search.reset,
+
+    filters,
+    selection,
+    pagination,
+
+    meta,
+  };
 }

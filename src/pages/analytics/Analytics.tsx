@@ -1,15 +1,15 @@
 import { ChartNoAxesCombined } from "lucide-react";
-import { PageLayout } from "../PageLayout";
+import { Layout } from "../Layout";
 import { useTranslation } from "react-i18next";
 
 export default function Analytics() {
   const { t } = useTranslation()
   return (
-    <PageLayout
+    <Layout
       name="Analytic"
       Icon={ChartNoAxesCombined}
       showActions={false}>
       <div>{t("Analytic.page.title")}</div>
-    </PageLayout>
+    </Layout>
   )
 }

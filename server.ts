@@ -1,12 +1,16 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import cors from "cors";
-import database from "./services/database";
+import database from "./services/database/index.js";
 import { Request, Response } from "express";
 import morgan from "morgan";
 
 import { fileURLToPath } from "url";
 import path from "path";
 import cookieParser from "cookie-parser";
+
+import productsRouter from "./routers/products";
+import collectionsRouter from "./routers/collections";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,11 +34,9 @@ app.use(cors({
 }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/products", productsRouter);
+app.use("/collections", collectionsRouter);
 
-app.get("/", async (req: Request, res: Response) => {
-  const users = await database.user.findMany();
-  res.json({ message: "Hello World!" });
-});
 
 const port = 1337;
 app.listen(port, HOST, () => {

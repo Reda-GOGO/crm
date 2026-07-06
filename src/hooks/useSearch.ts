@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from "./useDebounce";
 
-export function useSearch<T>({
-  value,
-}: {
-  value: T
-}) {
-  const [search, setSearch] = useState<T>(value);
+export function useSearch(initialValue = "") {
+  const [search, setSearch] = useState(initialValue);
   const debouncedSearch = useDebounce(search, 500);
+
+  const reset = () => setSearch(initialValue);
+
   return {
     search,
     setSearch,
     debouncedSearch,
-  }
+    reset,
+  };
 }
-

@@ -69,6 +69,11 @@
       "productsSold": "المنتجات المباعة",
       "topSellingProduct": "المنتج الأكثر مبيعًا",
       "averageSellRate": "متوسط معدل البيع"
+    },
+    "pagination": {
+      "selected": "تم تحديد {{count}} من {{total}} صف",
+      "rowsPerPage": "عدد الصفوف",
+      "pageInfo": "الصفحة {{page}} من {{total}}"
     }
   },
   "orders": {

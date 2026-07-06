@@ -21,7 +21,7 @@ import { useNavigate } from "react-router";
 
 
 
-export function PageLayout({
+export function Layout({
   children,
   name,
   Icon,
@@ -36,8 +36,8 @@ export function PageLayout({
   return (
     <div className="w-full flex flex-col ">
       <div className="flex w-full justify-between gap-2 py-2">
-        <TitleLayout title={t(name + ".page.title")} Icon={Icon} />
-        <PageActions name={name} show={showActions} />
+        <Title title={t(name + ".page.title")} Icon={Icon} />
+        <Actions name={name} show={showActions} />
       </div>
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">
@@ -53,7 +53,7 @@ export function PageLayout({
 }
 
 
-function PageActions({
+function Actions({
   name,
   show
 }: {
@@ -106,7 +106,7 @@ function PageActions({
 
 
 
-export function TitleLayout({
+export function Title({
   title,
   Icon,
 }: { title: string; Icon: LucideIcon }) {

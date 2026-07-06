@@ -68,6 +68,11 @@
       "productsSold": "Products Sold",
       "topSellingProduct": "Top Selling Product",
       "averageSellRate": "Average Sell Rate"
+    },
+    "pagination": {
+      "selected": "{{count}} of {{total}} row(s) selected",
+      "rowsPerPage": "Rows per page",
+      "pageInfo": "Page {{page}} of {{total}}"
     }
   },
   "orders": {

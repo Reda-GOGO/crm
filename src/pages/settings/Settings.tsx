@@ -1,5 +1,5 @@
 import { Settings2 } from "lucide-react";
-import { PageLayout } from "../PageLayout";
+import { Layout } from "../Layout";
 import { useTranslation } from "react-i18next";
 import {
   Field,
@@ -19,13 +19,13 @@ import {
 export default function Settings() {
   const { t } = useTranslation()
   return (
-    <PageLayout
+    <Layout
       name="Setting"
       Icon={Settings2}
       showActions={false}>
       <div>{t("Setting.page.title")}</div>
       <LanguageSwitcher />
-    </PageLayout>
+    </Layout>
   )
 }
 

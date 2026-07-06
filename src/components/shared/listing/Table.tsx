@@ -18,11 +18,13 @@ type TableRenderProps<T> = {
 type TableProps<T> = {
   columns: Column<T>[];
   children?: (props: TableRenderProps<T>) => React.ReactNode;
+  getRowId: (item: T) => React.Key;
 };
 
 export function Table<T>({
   children,
   columns,
+  getRowId
 }: TableProps<T>) {
   const { data } = useListContext<T>()
   const { i18n } = useTranslation();
@@ -52,7 +54,7 @@ export function Table<T>({
 
         <TableBody>
           {data && data.map((item) => (
-            <TableRow key={item.id}>
+            <TableRow key={getRowId(item)}>
               {columns.map((column) => (
                 <TableCell
                   key={column.key}

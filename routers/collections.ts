@@ -1,7 +1,6 @@
 import express from "express";
 import database from "../services/database";
 import { clause, parse, rank } from "../utilities";
-import { Product } from "../generated/prisma/client";
 
 const router = express.Router({
   mergeParams: true,
@@ -21,22 +20,25 @@ router.get("/", async (req, res, next) => {
       };
     }
 
-    const allItems = await database.product.count();
-    const totalItems = await database.product.count({ where });
+    const allItems = await database.collection.count();
 
-    let products: Product[];
+    const collections = await database.collection.findMany({
+      where,
+      orderBy,
+      take,
+      skip,
+    });
+
     if (query.search) {
-      const matches = await database.product.findMany({ where, orderBy });
-      matches.sort((a, b) => rank(a.name, query.search!) - rank(b.name, query.search!));
-      products = matches.slice(skip, skip + take);
-    } else {
-      products = await database.product.findMany({ where, orderBy, take, skip });
+      collections.sort((a, b) =>
+        rank(a.name, query.search!) - rank(b.name, query.search!)
+      );
     }
 
     res.json({
-      items: products,
+      items: collections,
       allItems,
-      totalItems,
+      totalItems: collections.length,
       totalPages: Math.ceil(allItems / take),
       currentPage: query.pagination?.page ?? 1,
     });
@@ -46,4 +48,3 @@ router.get("/", async (req, res, next) => {
 });
 
 export default router;
-

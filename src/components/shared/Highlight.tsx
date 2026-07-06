@@ -32,13 +32,15 @@ export function Highlight({
   return (
     <Col className="px-2 gap-0">
       <Header titleKey={titleKey} />
-      <HighlightContent stats={stats} />
+      <Content stats={stats} />
     </Col>
   );
 }
 
+Highlight.Header = Header;
+Highlight.Content = Content;
 
-export function HighlightContent({
+export function Content({
   stats,
 }: {
   stats: Array<{

@@ -1,0 +1,87 @@
+const BASE_URL = import.meta.env.VITE_API_URL || "";
+
+class HttpClient {
+  async request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    const headers =
+      options.body instanceof FormData
+        ? options.headers // let browser set multipart boundary
+        : {
+          "Content-Type": "application/json",
+          ...options.headers,
+        };
+
+    const response = await fetch(BASE_URL + url, {
+      ...options,
+      headers,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || "API Error");
+    }
+
+    return response.json();
+  }
+
+  get<T>(url: string, params?: Record<string, any>) {
+    const qs = params ? "?" + new URLSearchParams(params).toString() : "";
+    return this.request<T>(url + qs);
+  }
+
+  list<T>(url: string, params?: Record<string, any>) {
+    const query = new URLSearchParams();
+
+    if (params?.search) {
+      query.set("search", params.search);
+    }
+
+    if (params?.pagination?.page !== undefined) {
+      query.set("pagination[page]", String(params.pagination.page));
+    }
+
+    if (params?.pagination?.limit !== undefined) {
+      query.set("pagination[limit]", String(params.pagination.limit));
+    }
+
+    if (params?.filtering?.key) {
+      query.set("filtering[key]", params.filtering.key);
+    }
+
+    if (params?.filtering?.value !== undefined) {
+      query.set("filtering[value]", String(params.filtering.value));
+    }
+
+    if (params?.sorting?.key) {
+      query.set("sorting[key]", params.sorting.key);
+    }
+
+    if (params?.sorting?.value) {
+      query.set("sorting[value]", params.sorting.value);
+    }
+
+    const queryString = query.toString();
+
+    return this.request<T>(
+      queryString ? `${url}?${queryString}` : url
+    );
+  }
+  post<T>(url: string, body?: any) {
+    return this.request<T>(url, {
+      method: "POST",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    });
+  }
+
+  put<T>(url: string, body?: any) {
+    return this.request<T>(url, {
+      method: "PUT",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+    });
+  }
+
+  delete<T>(url: string) {
+    return this.request<T>(url, { method: "DELETE" });
+  }
+}
+
+export const http = new HttpClient();

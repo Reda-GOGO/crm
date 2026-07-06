@@ -6,7 +6,8 @@ import {
   TrendingUp,
   Wallet
 } from "lucide-react";
-import { PageLayout } from "../PageLayout";
+
+import { Layout } from "../Layout";
 import { Highlight } from "@/components/shared/Highlight";
 import { formatNumber } from "@/lib/utils";
 import { Price } from "@/components/shared/Price";
@@ -21,7 +22,7 @@ const stats = [
 ];
 export default function Orders() {
   return (
-    <PageLayout
+    <Layout
       name="Order"
       Icon={ShoppingCart}
       showActions={true}>
@@ -29,6 +30,6 @@ export default function Orders() {
         titleKey="orders.statistics.salesOverview"
         stats={stats}
       />
-    </PageLayout>
+    </Layout>
   )
 }

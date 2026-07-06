@@ -68,9 +68,14 @@
       "productsSold": "Produits vendus",
       "topSellingProduct": "Produit le plus vendu",
       "averageSellRate": "Taux de vente moyen"
+    },
+    "pagination": {
+      "selected": "{{count}} sur {{total}} lignes sélectionnées",
+      "rowsPerPage": "Lignes par page",
+      "pageInfo": "Page {{page}} sur {{total}}"
     }
   },
-   "orders": {
+  "orders": {
     "statistics": {
       "salesOverview": "Aperçu des ventes",
       "totalOrders": "Nombre total de commandes",

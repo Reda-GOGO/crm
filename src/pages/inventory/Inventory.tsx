@@ -1,15 +1,15 @@
 import { Layers2 } from "lucide-react";
-import { PageLayout } from "../PageLayout";
 import { useTranslation } from "react-i18next";
+import { Layout } from "../Layout";
 
 export default function Inventory() {
   const { t } = useTranslation()
   return (
-    <PageLayout
+    <Layout
       name="Inventory"
       Icon={Layers2}
       showActions={true}>
       <div>{t("Inventory.page.title")}</div>
-    </PageLayout>
+    </Layout>
   )
 }

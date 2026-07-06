@@ -16,16 +16,20 @@ type SearchProps = {
 export function Search<T>({
   children,
 }: SearchProps) {
-  const { search, setSearch } = useListContext<T>()
+  const { search, setSearch, pagination } = useListContext<T>()
   const { t } = useTranslation();
 
   if (children) {
     return children({ search, setSearch })
   }
+  const change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+    pagination.reset()
+  }
   return (
 
     <div className="flex w-full gap-4 items-center pb-3">
-      <Input placeholder={t("products.placeholder")} value={search} onChange={(e) => setSearch(e.target.value)} />
+      <Input placeholder={t("products.placeholder")} value={search} onChange={change} />
 
       <div className="flex gap-1">
         <Button
