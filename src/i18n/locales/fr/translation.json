@@ -2,8 +2,11 @@
   "hello": "Bonjour",
   "language": "Langue",
   "MAD" : "MAD",
+  "Items" : "Articles",
   "Price" : "Prix",
   "Product" : "Produit",
+  "Collection" : "Collection",
+  "Order" : "Commande",
   "selectLanguage": "Sélectionnez votre langue préférée.",
   "Dashboard": "Tableau de bord",
   "Products": "Produits",
@@ -75,6 +78,9 @@
       "pageInfo": "Page {{page}} sur {{total}}"
     }
   },
+  "collections": {
+    "placeholder": "Rechercher des collections..."
+  },
   "orders": {
     "statistics": {
       "salesOverview": "Aperçu des ventes",
@@ -92,6 +98,27 @@
     "thirtyDays": "30 jours",
     "todaySubtitle": "Aujourd'hui, {{date}}",
     "lastDaysSubtitle": "Les {{count}} derniers jours"
+  },
+  "tabs": {
+    "all": "Tous",
+    "active": "Actif",
+    "archived": "Archivé"
+  },
+  "list": {
+    "empty": {
+      "title": "Aucun enregistrement",
+      "description": "Vous n'avez encore créé aucun enregistrement. Commencez par créer le premier."
+    },
+    "notFound": {
+      "title": "Aucun résultat",
+      "description": "Aucun enregistrement ne correspond à votre recherche. Essayez un autre terme de recherche.",
+      "clear": "Effacer la recherche"
+    },
+    "error": {
+      "title": "Erreur système",
+      "description": "Une erreur est survenue lors du chargement des données.",
+      "retry": "Réessayer"
+    }
   }
 }
 

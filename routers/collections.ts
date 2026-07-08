@@ -27,6 +27,7 @@ router.get("/", async (req, res, next) => {
       orderBy,
       take,
       skip,
+      include: { _count: { select: { products: true } } },
     });
 
     if (query.search) {
@@ -42,6 +43,21 @@ router.get("/", async (req, res, next) => {
       totalPages: Math.ceil(allItems / take),
       currentPage: query.pagination?.page ?? 1,
     });
+  } catch (e) {
+    next(e);
+  }
+});
+
+
+router.get("/:handle", async (req, res, next) => {
+  try {
+    const collection = await database.collection.findUnique({
+      where: {
+        handle: req.params.handle,
+      },
+    });
+    if (!collection) return res.status(404).json({ error: "Not found" });
+    res.json(collection);
   } catch (e) {
     next(e);
   }

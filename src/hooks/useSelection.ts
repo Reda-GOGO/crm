@@ -17,13 +17,10 @@ export function useSelection<T extends string | number>() {
   const toggleAll = useCallback((items: T[]) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      items.forEach(item => {
-        if (next.has(item.id)) next.delete(item.id);
-        else next.add(item.id);
-      });
-      return next;
+      if (next.size !== items.length) return new Set(items);
+      else return new Set();
     });
-  }, []);
+  }, [selected]);
 
   const clear = useCallback(() => {
     setSelected(new Set());

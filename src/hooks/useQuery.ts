@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 export type queryResponse<T> = {
-  products: T[];
+  items: T[];
   totalItems: number;
   totalPages: number;
   hasNext: boolean;

@@ -2,14 +2,14 @@ import { Route, Routes } from "react-router"
 import { Layout } from "./components/layout"
 
 import Home from "./pages/dashboard/Home"
-import Products from "./pages/products/Products"
-import Collections from "./pages/collections/Collections"
-import Orders from "./pages/orders/Orders"
 import Inventory from "./pages/inventory/Inventory"
 import Analytics from "./pages/analytics/Analytics"
 import Settings from "./pages/settings/Settings"
 import Teams from "./pages/teams/Teams"
 import NotFound from "./pages/NotFound"
+import Product from "./pages/products/"
+import Collection from "./pages/collections"
+import Orders from "./pages/orders"
 
 function App() {
 
@@ -19,9 +19,12 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
-        <Route path="products" element={<Products />} />
-        <Route path="collections" element={<Collections />} />
-        <Route path="orders" element={<Orders />} />
+        <Route path="products" element={<Product.Listing />} />
+        <Route path="products/create" element={<Product.Create />} />
+        <Route path="products/:handle" element={<Product.Single />} />
+        <Route path="products/:handle/edit" element={<Product.Update />} />
+        <Route path="collections" element={<Collection.Listing />} />
+        <Route path="orders" element={<Orders.Listing />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="setting" element={<Settings />} />

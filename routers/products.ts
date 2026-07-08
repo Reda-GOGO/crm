@@ -45,5 +45,29 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
+router.get("/:handle", async (req, res, next) => {
+  try {
+    const product = await database.product.findUnique({
+      where: {
+        handle: req.params.handle,
+      },
+      include: {
+        Collection: {
+          select: {
+            name: true,
+            handle: true,
+          }
+        },
+        units: true,
+      }
+    });
+    if (!product) return res.status(404).send({ error: "Not found" });
+    res.json(product);
+  } catch (e) {
+    next(e);
+  }
+});
+
 export default router;
 

@@ -36,7 +36,7 @@ export function Pagination<T>({
       </p>
 
       <div className="flex items-center justify-between lg:gap-16 @max-[1024px]/main:w-full ">
-        <div className="flex gap-8 items-center @max-[1024px]/main:hidden ">
+        <div className="hidden  gap-8 items-center @max-[1024px]/main:hidden ">
           <p>{t("products.pagination.rowsPerPage")}</p>
 
           <Select

@@ -3,9 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useMediaQuery } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -26,18 +23,20 @@ export function Layout({
   name,
   Icon,
   showActions = true,
+  renderActions,
 }: {
   children: React.ReactNode;
   name: string;
   Icon: LucideIcon;
   showActions?: boolean;
+  renderActions?: () => React.ReactNode;
 }) {
   const { t } = useTranslation()
   return (
     <div className="w-full flex flex-col ">
       <div className="flex w-full justify-between gap-2 py-2">
         <Title title={t(name + ".page.title")} Icon={Icon} />
-        <Actions name={name} show={showActions} />
+        <Actions name={name} show={showActions} renderer={renderActions} />
       </div>
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">
@@ -55,10 +54,12 @@ export function Layout({
 
 function Actions({
   name,
-  show
+  show,
+  renderer
 }: {
   name: string;
   show: boolean
+  renderer?: () => React.ReactNode;
 }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
@@ -85,16 +86,13 @@ function Actions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Billing</DropdownMenuItem>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuItem>Subscription</DropdownMenuItem>
+          {
+            renderer && renderer()
+          }
         </DropdownMenuContent>
       </DropdownMenu >
       <Button
-        onClick={() => navigate("/products/create")}
+        onClick={() => navigate(`/${name.toLowerCase()}s/create`)}
         size={"sm"}
         className="capitalize"
       >

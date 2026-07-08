@@ -12,8 +12,6 @@ import { ProductImage } from "@/components/shared/ProductImage";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { List, type Column } from "@/components/shared/listing/List";
-import { Price } from "@/components/shared/Price";
-import { formatNumber } from "@/lib/utils";
 import { Highlight } from "@/components/shared/Highlight";
 import Col from "@/components/shared/Col";
 
@@ -27,6 +25,9 @@ type Collection = {
   updatedAt: Date;
   archived: boolean;
   tags: string | null;
+  _count: {
+    products: number;
+  }
 }
 
 
@@ -36,7 +37,7 @@ const stats = [
   { labelKey: "products.statistics.averageSellRate", value: "19%", Icon: ChartNoAxesCombined },
 ];
 
-export default function Collections() {
+export default function Listing() {
 
   const { t, i18n } = useTranslation();
   const dir = i18n.resolvedLanguage === "ar" ? "rtl" : "ltr";
@@ -73,11 +74,18 @@ export default function Collections() {
       ),
     },
     {
-      key: "price",
-      header: t("Price"),
+      key: "products",
+      header: t("Products"),
       className: dir === "rtl" ? "text-right" : "text-left",
-      cell: () => (
-        <Price value={formatNumber(200)} />
+      cell: (collection) => (
+        <div className="flex gap-2">
+          <span>
+            {collection._count.products}
+          </span>
+          <span>
+            {t("Items")}
+          </span>
+        </div>
       ),
     },
     {
@@ -105,7 +113,7 @@ export default function Collections() {
 
       <List list={list}>
         <List.Toolbar>
-          <List.Search />
+          <List.Search resource="collections" />
         </List.Toolbar>
 
         <List.Table
@@ -113,7 +121,6 @@ export default function Collections() {
           columns={columns}
         />
 
-        <List.Pagination />
       </List>
 
     </Layout>

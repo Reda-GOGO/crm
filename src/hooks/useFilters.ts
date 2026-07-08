@@ -1,21 +1,22 @@
 import { useState } from "react";
 
-export function useFilters<T extends Record<string, any>>(initial: T) {
-  const [filters, setFilters] = useState<T>(initial);
+export type Filter = {
+  key?: string;
+  value?: string;
+};
 
-  const setFilter = <K extends keyof T>(key: K, value: T[K]) => {
-    setFilters(prev => ({
-      ...prev,
-      [key]: value,
-    }));
+export function useFilters(initial: Filter) {
+  const [filters, setFilters] = useState(initial);
+
+  const set = (filter: Filter) => {
+    setFilters(filter);
   };
 
   const reset = () => setFilters(initial);
 
   return {
-    filters,
-    setFilter,
-    setFilters,
+    value: filters,
+    set,
     reset,
   };
 }

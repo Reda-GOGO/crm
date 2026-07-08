@@ -4,7 +4,9 @@ import {
   Award,
   ChartNoAxesCombined,
   EllipsisVertical,
-  Package
+  Eye,
+  Package,
+  Pencil,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button"
@@ -32,17 +34,23 @@ type Product = {
   cost: number;
   price: number;
   collectionId: number | null;
+  Collection: {
+    handle: string;
+    name: string;
+  };
 }
 
 
 
-export default function Products() {
+export default function Listing() {
   const { t, i18n } = useTranslation();
   const dir = i18n.resolvedLanguage === "ar" ? "rtl" : "ltr";
   const list = useList<Product>({
     resource: "products",
     mode: "page",
   })
+  const navigate = useNavigate();
+  const view = (product: Product) => navigate(`/products/${product.handle}`)
   const columns = [
     {
       key: "select",
@@ -64,7 +72,9 @@ export default function Products() {
       header: t("Product"),
       className: dir === "rtl" ? "text-right" : "text-left",
       cell: (product) => (
-        <div className="flex items-center gap-2 min-w-80">
+        <div
+          onClick={() => view(product)}
+          className="flex items-center gap-2 min-w-80">
           <ProductImage src={product.image!} />
           <span>{product.name}</span>
         </div>
@@ -75,30 +85,35 @@ export default function Products() {
       header: t("Price"),
       className: dir === "rtl" ? "text-right" : "text-left",
       cell: (product) => (
-        <Price value={formatNumber(product.price)} />
+        <div onClick={() => view(product)}>
+          <Price value={formatNumber(product.price)} />
+        </div>
       ),
     },
     {
       key: "action",
       header: t("Actions"),
       className: "w-20 px-4",
-      cell: () => (
-        <Button variant="ghost" size="sm">
-          <EllipsisVertical />
-        </Button>
+      cell: (product) => (
+        <Action product={product} />
       ),
     },
   ] satisfies Column<Product>[];
 
 
   return (
-    <Layout Icon={Package} name="Product" showActions={true}>
+    <Layout
+      Icon={Package}
+      name="Product"
+      showActions={true}
+      renderActions={() => <Actions />}
+    >
 
       <Highlight stats={stats} titleKey="products.statistics.salesOverview" />
 
       <List list={list}>
         <List.Toolbar>
-          <List.Search />
+          <List.Search resource="products" />
         </List.Toolbar>
 
         <List.Table
@@ -106,9 +121,51 @@ export default function Products() {
           columns={columns}
         />
 
-        <List.Pagination />
       </List>
     </Layout>
   )
 }
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useNavigate } from "react-router";
+
+
+function Action({ product }: { product: Product }) {
+  const navigate = useNavigate();
+
+  const edit = () => navigate(`/products/${product.handle}/edit`)
+  const view = () => navigate(`/products/${product.handle}`)
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm">
+          <EllipsisVertical />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={edit}><Pencil /> Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={view}><Eye /> View</DropdownMenuItem>
+        <DropdownMenuItem className="text-red-400"><Award /> Archive</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+
+function Actions() {
+
+
+  return (
+    <>
+      <DropdownMenuItem ><Pencil /> Edit</DropdownMenuItem>
+      <DropdownMenuItem ><Eye /> View</DropdownMenuItem>
+      <DropdownMenuItem className="text-red-400"><Award /> Archive</DropdownMenuItem>
+    </>
+  )
+}

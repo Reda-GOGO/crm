@@ -1,15 +1,13 @@
-import express, { NextFunction } from "express";
+import express from "express";
 import cors from "cors";
-import database from "./services/database/index.js";
-import { Request, Response } from "express";
 import morgan from "morgan";
 
 import { fileURLToPath } from "url";
 import path from "path";
 import cookieParser from "cookie-parser";
 
-import productsRouter from "./routers/products";
-import collectionsRouter from "./routers/collections";
+import product from "./routers/products";
+import collection from "./routers/collections";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,9 +19,10 @@ const app = express();
 
 app.set("query parser", "extended");
 app.set("json spaces", 2);
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(morgan("common"));
+app.use(morgan("dev"));
 
 app.use(cors({
   origin: [
@@ -34,13 +33,12 @@ app.use(cors({
 }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/products", productsRouter);
-app.use("/collections", collectionsRouter);
+
+app.use("/products", product);
+app.use("/collections", collection);
 
 
 const port = 1337;
 app.listen(port, HOST, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-

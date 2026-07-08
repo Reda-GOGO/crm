@@ -20,7 +20,8 @@ const stats = [
   { labelKey: "orders.statistics.averageSellRate", value: "19%", Icon: ChartNoAxesCombined },
   { labelKey: "orders.statistics.topSellingProduct", value: "Ecrous 6m", Icon: Award },
 ];
-export default function Orders() {
+
+export default function Listing() {
   return (
     <Layout
       name="Order"

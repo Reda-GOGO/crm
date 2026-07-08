@@ -3,17 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { http } from "@/infrastructure/http";
 import { useFilters } from "./useFilters";
 import { usePagination } from "./usePagination";
-import { useQuery } from "./useQuery";
+import { useQuery, type queryResponse } from "./useQuery";
 import { useSearch } from "./useSearch";
 import { useSelection } from "./useSelection";
 
-type queryResponse<T> = {
-  items: T[];
-  totalItems: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasMore: boolean;
-};
 type Mode = "page" | "infinite";
 export type useListReturnType<T> = ReturnType<typeof useList<T>>;
 
@@ -26,24 +19,26 @@ export function useList<T>({
 }) {
   const search = useSearch("");
   const pagination = usePagination({ initialLimit: 7 });
-  const filters = useFilters<Record<string, any>>({});
+  const filters = useFilters({});
   const selection = useSelection<number>();
 
   const queryFn = useCallback(() => {
-    return http.list<T>(`/${resource}`, {
+    return http.list<queryResponse<T>>(`/${resource}`, {
       search: search.debouncedSearch,
       pagination: {
         page: pagination.page,
         limit: pagination.limit,
       },
-      filtering: filters.filters,
+      filtering: {
+        ...filters.value,
+      },
     });
   }, [
     resource,
     search.debouncedSearch,
     pagination.page,
     pagination.limit,
-    filters.filters,
+    filters.value,
   ]);
 
   const { data, loading, error, refetch } = useQuery<queryResponse<T>>(queryFn);

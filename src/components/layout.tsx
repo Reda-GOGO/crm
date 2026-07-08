@@ -41,8 +41,8 @@ export function Layout() {
         </header>
 
 
-        <main>
-          <div className="@container/main flex flex-1 flex-col gap-4 p-4 pt-0">
+        <main className="h-full">
+          <div className="@container/main flex flex-1 flex-col gap-4 p-4 pt-0 h-full">
             <Outlet />
           </div>
         </main>

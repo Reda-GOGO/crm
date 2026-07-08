@@ -3,8 +3,11 @@
   "language": "Language",
   "selectLanguage": "Select your preferred language.",
   "MAD" : "MAD",
+  "Items" : "Items",
   "Price" : "Price",
   "Product" : "Product",
+  "Collection" : "Collection",
+  "Order" : "Order",
   "Dashboard": "Dashboard",
   "Products": "Products",
   "Collections": "Collections",
@@ -75,6 +78,9 @@
       "pageInfo": "Page {{page}} of {{total}}"
     }
   },
+  "collections": {
+    "placeholder": "Search collections..."
+  },
   "orders": {
     "statistics": {
       "salesOverview": "Sales Overview",
@@ -92,6 +98,26 @@
     "thirtyDays": "30 Days",
     "todaySubtitle": "Today, {{date}}",
     "lastDaysSubtitle": "Last {{count}} days"
+  },
+  "tabs": {
+    "all": "All",
+    "active": "Active",
+    "archived": "Archived"
+  },
+  "list": {
+    "empty": {
+      "title": "No records yet",
+      "description": "You haven't created any records yet. Create your first one to get started."
+    },
+    "notFound": {
+      "title": "No results found",
+      "description": "No records match your search. Try another search term.",
+      "clear": "Clear search"
+    },
+    "error": {
+      "title": "System error",
+      "description": "An error occurred while loading the data.",
+      "retry": "Try again"
+    }
   }
-
 }

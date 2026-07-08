@@ -2,8 +2,11 @@
   "hello": "مرحبا",
   "language": "اللغة",
   "selectLanguage": "اختر لغتك المفضلة.",
+  "Items": "العناصر",
   "MAD": "د.م.",
   "Price": "السعر",
+  "Collection": "المجموعة",
+  "Order": "الطلب",
   "Product": "المنتج",
   "Dashboard": "لوحة التحكم",
   "Products": "المنتجات",
@@ -76,6 +79,9 @@
       "pageInfo": "الصفحة {{page}} من {{total}}"
     }
   },
+  "collections": {
+    "placeholder": "ابحث عن المجموعات..."
+  },
   "orders": {
     "statistics": {
       "salesOverview": "نظرة عامة على المبيعات",
@@ -93,5 +99,26 @@
     "thirtyDays": "30 يومًا",
     "todaySubtitle": "اليوم، {{date}}",
     "lastDaysSubtitle": "آخر {{count}} أيام"
+  },
+  "tabs": {
+    "all": "الكل",
+    "active": "نشط",
+    "archived": "مؤرشف"
+  },
+  "list": {
+    "empty": {
+      "title": "لا توجد سجلات بعد",
+      "description": "لم تقم بإنشاء أي سجلات حتى الآن. ابدأ بإنشاء أول سجل."
+    },
+    "notFound": {
+      "title": "لم يتم العثور على نتائج",
+      "description": "لم يتم العثور على أي سجلات تطابق عملية البحث. جرّب كلمة بحث أخرى.",
+      "clear": "مسح البحث"
+    },
+    "error": {
+      "title": "خطأ في النظام",
+      "description": "حدث خطأ أثناء تحميل البيانات.",
+      "retry": "إعادة المحاولة"
+    }
   }
 }
