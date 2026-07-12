@@ -54,8 +54,8 @@ export function Charting({ product }: { product: { name: string } }) {
         </div>
         <CardDescription>{product.name} — last 6 months</CardDescription>
       </CardHeader>
-      <CardContent className="pt-4">
-        <ChartContainer config={chartConfig} className="min-h-[220px] w-full">
+      <CardContent className="pt-4 ">
+        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
           <AreaChart accessibilityLayer data={chartData} margin={{ left: 12, right: 12 }}>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis

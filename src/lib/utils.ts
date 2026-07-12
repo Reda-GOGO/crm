@@ -20,3 +20,21 @@ export function formatNumber(value: number | string): string {
     .format(number)
     .replace(/\u202F/g, " ");
 }
+
+export function slugify(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+export const genRanHex = (size: number) =>
+  [...Array(size)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join("");
+
+
+export function tempId() {
+  return -Math.floor(Date.now() + Math.random() * 1000);
+}

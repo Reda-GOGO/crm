@@ -5,6 +5,7 @@
   "Items" : "Articles",
   "Price" : "Prix",
   "Product" : "Produit",
+  "Edit" : "Modifier",
   "Collection" : "Collection",
   "Order" : "Commande",
   "selectLanguage": "Sélectionnez votre langue préférée.",
@@ -65,6 +66,89 @@
     "footer": "HTTP 404 — Ressource introuvable"
   },
   "products": {
+    "pricing": {
+      "title": "Tarification",
+      "description": "Une unité par défaut, définie par son coût et son prix. Toutes les tailles de conditionnement sont basées sur celle-ci.",
+
+      "buttons": {
+        "addUnit": "Ajouter une unité",
+        "addPackSize": "Ajouter un conditionnement"
+      },
+
+      "default": {
+        "badge": "Par défaut",
+        "name": "Nom",
+        "cost": "Coût",
+        "price": "Prix",
+        "profit": "Bénéfice",
+        "pricedRelative": "Toutes les tailles de conditionnement sont calculées par rapport à cette unité",
+        "profitDescription": "Différence entre le prix de vente et le coût"
+      },
+
+      "variant": {
+        "title": "Tailles de conditionnement",
+        "description": "Proposez des options en gros comme une boîte ou un carton, calculées à partir de {{base}}",
+        "contains": "Contient",
+        "profitPer": "Bénéfice par {{base}}",
+        "vsDefault": "par rapport à l'unité par défaut"
+      },
+
+      "fields": {
+        "placeholderName": "ex. kg, pièce, boîte",
+        "placeholderNumber": "12",
+        "placeholderPrice": "0,00"
+      },
+
+      "empty": {
+        "title": "Aucune unité",
+        "description": "Aucune unité n'a encore été ajoutée"
+      }
+    },
+    "productBasic": {
+      "auto" : "Auto",
+      "information": "Informations",
+      "description": "Les éléments essentiels : nom, identifiant et description",
+      "name": "Nom",
+      "handle": "Identifiant",
+      "productDescription": "Description",
+      "placeholders": {
+        "name": "Saisissez le nom du produit",
+        "autoHandle": "généré-automatiquement",
+        "customHandle": "identifiant-personnalisé",
+        "autoDescription": "Nous générerons une courte description à partir des informations du produit",
+        "manualDescription": "Rédigez une description pour ce produit"
+      },
+      "handleDescription": {
+        "auto": "Généré automatiquement à partir du nom du produit.",
+        "manual": "Utilisé dans l'URL du produit — en minuscules et sans espaces."
+      },
+      "descriptionHelp": {
+        "auto": "Générée automatiquement une fois le prix et les variantes définis.",
+        "manual": "Affichée sur la boutique et dans les résultats de recherche."
+      },
+      "active": "Actif par défaut",
+      "activeDescription": "Le produit est visible dans le catalogue dès sa création.",
+      "imageHint": "Image carrée, au moins 800 × 800 px",
+      "noImage": "Aucune image téléchargée"
+    },
+    "heading": {
+      "common": {
+        "cancel": "Annuler",
+        "saving": "Enregistrement…"
+      },
+      "productForm": {
+        "create": {
+          "title": "Nouveau produit",
+          "description": "Créez un nouveau produit et publiez-le lorsque vous êtes prêt.",
+          "submit": "Enregistrer le produit"
+        },
+        "update": {
+          "title": "Modifier le produit",
+          "description": "Mettez à jour les informations du produit afin de garder votre catalogue à jour.",
+          "submit": "Enregistrer les modifications"
+        }
+      }
+    },
     "placeholder": "Rechercher des produits...",
     "statistics": {
       "salesOverview": "Aperçu des ventes",
@@ -76,6 +160,51 @@
       "selected": "{{count}} sur {{total}} lignes sélectionnées",
       "rowsPerPage": "Lignes par page",
       "pageInfo": "Page {{page}} sur {{total}}"
+    },
+    "single" : {
+      "common": {
+        "notAvailable": "—"
+      },
+      "product": {
+        "archived": "Archivé",
+        "noDescription": "Aucune description fournie",
+        "about": "À propos de ce produit",
+        "collection": "Collection",
+        "available": "Disponible",
+        "variants": "Variantes",
+        "variantCount": "{{count}} variantes",
+        "createdAt": "Créé le",
+        "lastUpdated": "Dernière mise à jour",
+        "units": "unités"
+      },
+      "stock": {
+        "inStock": "En stock",
+        "lowStock": "Stock bas",
+        "outOfStock": "En rupture de stock"
+      },
+      "overview": {
+        "title": "Aperçu",
+        "description": "Détails de prix, variantes et fournisseur pour {{product}}",
+
+        "basePricing": "Prix de base",
+        "basePricingCaption": "Par {{unit}} — la référence pour chaque variante est mesurée par rapport à cette unité",
+
+        "variants": "Variantes & valeur", 
+        "variantsCaption": "Comparer la taille de chaque pack, prise en compte par {{unit}}",
+
+        "pricePer": "Prix · par {{unit}}",
+        "perUnit": "Par {{unit}}",
+
+        "price": "Prix",
+        "cost": "Coût",
+        "margin": "Marge",
+
+        "bestValue": "Meilleure valeur",
+        "baseUnit": "unité par défaut",
+        "vsBase": "vs base",
+
+        "unit": "unité"
+      }
     }
   },
   "collections": {

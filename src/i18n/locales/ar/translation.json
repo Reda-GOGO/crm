@@ -5,6 +5,7 @@
   "Items": "العناصر",
   "MAD": "د.م.",
   "Price": "السعر",
+  "Edit": "تعديل",
   "Collection": "المجموعة",
   "Order": "الطلب",
   "Product": "المنتج",
@@ -66,6 +67,89 @@
     "footer": "HTTP 404 — لم يتم العثور على المورد"
   },
   "products": {
+    "pricing": {
+      "title": "التسعير",
+      "description": "وحدة أساسية واحدة يتم تحديدها حسب التكلفة والسعر، ويتم بناء جميع أحجام العبوات اعتمادًا عليها.",
+
+      "buttons": {
+        "addUnit": "إضافة وحدة",
+        "addPackSize": "إضافة حجم عبوة"
+      },
+
+      "default": {
+        "badge": "الافتراضية",
+        "name": "الاسم",
+        "cost": "التكلفة",
+        "price": "السعر",
+        "profit": "الربح",
+        "pricedRelative": "يتم تسعير جميع أحجام العبوات نسبةً إلى هذه الوحدة",
+        "profitDescription": "الفرق بين سعر البيع والتكلفة"
+      },
+
+      "variant": {
+        "title": "أحجام العبوات",
+        "description": "قدّم خيارات بيع بالجملة مثل صندوق أو كرتونة، ويتم تسعيرها اعتمادًا على {{base}}",
+        "contains": "تحتوي على",
+        "profitPer": "الربح لكل {{base}}",
+        "vsDefault": "مقارنة بالوحدة الافتراضية"
+      },
+
+      "fields": {
+        "placeholderName": "مثال: كغ، قطعة، صندوق",
+        "placeholderNumber": "12",
+        "placeholderPrice": "0.00"
+      },
+
+      "empty": {
+        "title": "لا توجد وحدات",
+        "description": "لم تتم إضافة أي وحدات بعد"
+      }
+    },
+    "productBasic": {
+      "auto" : "تلقائي",
+      "information": "المعلومات",
+      "description": "الأساسيات: الاسم، المعرّف، والوصف",
+      "name": "الاسم",
+      "handle": "المعرّف",
+      "productDescription": "الوصف",
+      "placeholders": {
+        "name": "أدخل اسم المنتج",
+        "autoHandle": "يتم إنشاؤه تلقائيًا من الاسم",
+        "customHandle": "معرّف-مخصص-للمنتج",
+        "autoDescription": "سننشئ وصفًا مختصرًا اعتمادًا على بيانات المنتج",
+        "manualDescription": "اكتب وصفًا لهذا المنتج"
+      },
+      "handleDescription": {
+        "auto": "يتم إنشاؤه تلقائيًا من اسم المنتج.",
+        "manual": "يُستخدم في رابط المنتج — أحرف صغيرة وبدون مسافات."
+      },
+      "descriptionHelp": {
+        "auto": "سيتم إنشاؤه تلقائيًا بعد تحديد السعر والأنواع.",
+        "manual": "يظهر في المتجر ونتائج البحث."
+      },
+      "active": "نشط افتراضيًا",
+      "activeDescription": "سيظهر المنتج في الكتالوج بمجرد إنشائه.",
+      "imageHint": "صورة مربعة، بدقة لا تقل عن 800 × 800 بكسل",
+      "noImage": "لم يتم رفع أي صورة"
+    }, 
+    "heading": {
+      "common": {
+        "cancel": "إلغاء",
+        "saving": "جارٍ الحفظ..."
+      },
+      "productForm": {
+        "create": {
+          "title": "منتج جديد",
+          "description": "أنشئ منتجًا جديدًا ثم انشره عندما يصبح جاهزًا.",
+          "submit": "حفظ المنتج"
+        },
+        "update": {
+          "title": "تعديل المنتج",
+          "description": "حدّث معلومات المنتج للحفاظ على بيانات الكتالوج محدثة.",
+          "submit": "حفظ التغييرات"
+        }
+      }
+    },
     "placeholder" : "البحث عن المنتج",
     "statistics": {
       "salesOverview": "نظرة عامة على المبيعات",
@@ -77,6 +161,51 @@
       "selected": "تم تحديد {{count}} من {{total}} صف",
       "rowsPerPage": "عدد الصفوف",
       "pageInfo": "الصفحة {{page}} من {{total}}"
+    },
+    "single" : {
+      "common": {
+        "notAvailable": "—"
+      },
+      "product": {
+        "archived": "مؤرشف",
+        "noDescription": "لم يتم توفير وصف",
+        "about": "عن هذا المنتج",
+        "collection": "المجموعة",
+        "available": "متاح",
+        "variants": "المتغيرات",
+        "variantCount": "{{count}} من المتغيرات",
+        "createdAt": "تم الإنشاء في",
+        "lastUpdated": "آخر تحديث",
+        "units": "الوحدات"
+      },
+      "stock": {
+        "inStock": "متاح",
+        "lowStock": "مخزون منخفض",
+        "outOfStock": "مخزون منخفض"
+      },
+      "overview": {
+        "title": "نظرة عامة",
+        "description": "التفاصيل الرئيسية للمنتج {{product}}",
+
+        "basePricing": "سعر القاعدة",
+        "basePricingCaption": "لكل وحدة — المرجع الذي يتم مقارنته به كل من المنتجات", 
+
+        "variants": "المتغيرات والقيمة",  
+        "variantsCaption": "كيف يتم مقارنة حجم كل حزمة بالنسبة لـ {{unit}}",
+
+        "pricePer": "السعر · لكل {{unit}}",
+        "perUnit": "لكل {{unit}}",
+
+        "price": "السعر",
+        "cost": "التكلفة",
+        "margin": "الهامش",
+
+        "bestValue": "القيمة الأفضل",
+        "baseUnit": "الوحدة الافتراضية",
+        "vsBase": "vs base",
+
+        "unit": "وحدة"
+      }
     }
   },
   "collections": {

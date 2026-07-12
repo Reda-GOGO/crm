@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export type Filter = {
   key?: string;
-  value?: string;
+  value?: string | boolean | number;
 };
 
 export function useFilters(initial: Filter) {

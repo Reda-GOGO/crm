@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowDownUp, ListFilter, SearchIcon } from "lucide-react"
 import { useListContext } from "./ListContext"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useBoolean } from "@/hooks/useBoolean"
 
 type SearchRenderProps = {
@@ -20,9 +20,9 @@ export function Search<T>({
   children,
   resource,
 }: SearchProps) {
-  const { search, setSearch, pagination } = useListContext<T>()
+  const { search, setSearch, resetSearch, pagination } = useListContext<T>()
   const { t } = useTranslation();
-  const { value, toggle } = useBoolean(true)
+  const { value, toggle, on, off } = useBoolean(true)
 
   if (children) {
     return children({ search, setSearch })
@@ -31,6 +31,48 @@ export function Search<T>({
     setSearch(e.target.value)
     pagination.reset()
   }
+
+  useEffect(() => {
+    // We use a Set to track multiple keys simultaneously
+    const pressedKeys = new Set<string>();
+
+    const down = (e: KeyboardEvent) => {
+      pressedKeys.add(e.key);
+
+      // Check if both " " (Space) and "a" are in the Set
+      // Note: We use e.code === "Space" to avoid issues with scroll behavior
+      const isSpacePressed = pressedKeys.has(" ");
+      const isAPressed = pressedKeys.has("a") || pressedKeys.has("A");
+
+      if (isSpacePressed && isAPressed) {
+        // Prevent 'a' from being typed and 'Space' from scrolling the page
+        e.preventDefault();
+
+        if (value) {
+          resetSearch()
+          off()
+        } else {
+          resetSearch()
+          on()
+        }
+
+        // Clear the set after trigger to prevent "sticky" firing
+        pressedKeys.clear();
+      }
+    };
+
+    const up = (e: KeyboardEvent) => {
+      pressedKeys.delete(e.key);
+    };
+
+    document.addEventListener("keydown", down);
+    document.addEventListener("keyup", up);
+
+    return () => {
+      document.removeEventListener("keydown", down);
+      document.removeEventListener("keyup", up);
+    };
+  }, [value]);
   return (
 
     <div className="flex w-full gap-4 items-center pb-3 justify-between">

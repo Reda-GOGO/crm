@@ -23,16 +23,18 @@ type statsType = {
 export function Highlight({
   titleKey,
   stats,
+  namespace,
 }: {
   titleKey: string;
   stats: Array<statsType>;
+  namespace: string;
 }) {
 
 
   return (
     <Col className="px-2 gap-0">
-      <Header titleKey={titleKey} />
-      <Content stats={stats} />
+      <Header titleKey={namespace + titleKey} />
+      <Content stats={stats} namespace={namespace} />
     </Col>
   );
 }
@@ -42,12 +44,14 @@ Highlight.Content = Content;
 
 export function Content({
   stats,
+  namespace,
 }: {
   stats: Array<{
     labelKey: string;
     value: string | number | React.ReactNode;
     Icon: React.ComponentType<any>;
   }>;
+  namespace: string;
 }) {
   const { t, i18n } = useTranslation();
   const dir = i18n.resolvedLanguage === "ar" ? "rtl" : "ltr";
@@ -56,7 +60,7 @@ export function Content({
       <Row className="min-w-max gap-2">
         {stats.map((stat) => (
           <Note key={stat.labelKey} dir={dir}>
-            <NoteHeader label={t(stat.labelKey)} />
+            <NoteHeader label={t(namespace + stat.labelKey)} />
 
             <NoteContent className="flex items-center justify-between">
               <div className="font-bold">{stat.value}</div>

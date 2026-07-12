@@ -33,12 +33,12 @@ export function Layout({
 }) {
   const { t } = useTranslation()
   return (
-    <div className="w-full flex flex-col ">
+    <div className="w-full flex flex-col h-full">
       <div className="flex w-full justify-between gap-2 py-2">
         <Title title={t(name + ".page.title")} Icon={Icon} />
         <Actions name={name} show={showActions} renderer={renderActions} />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1 h-full">
         <h1 className="text-2xl font-semibold tracking-tight">
           {t(name + ".page.subtitle")}
         </h1>

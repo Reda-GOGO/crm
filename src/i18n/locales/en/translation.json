@@ -7,6 +7,7 @@
   "Price" : "Price",
   "Product" : "Product",
   "Collection" : "Collection",
+  "Edit" : "Edit",
   "Order" : "Order",
   "Dashboard": "Dashboard",
   "Products": "Products",
@@ -65,6 +66,89 @@
     "footer": "HTTP 404 — Resource not found"
   },
   "products":{
+    "pricing": {
+      "title": "Pricing",
+      "description": "One default unit, priced by cost and price — every pack size is built on top of it.",
+
+      "buttons": {
+        "addUnit": "Add unit",
+        "addPackSize": "Add pack size"
+      },
+
+      "default": {
+        "badge": "Default",
+        "name": "Name",
+        "cost": "Cost",
+        "price": "Price",
+        "profit": "Profit",
+        "pricedRelative": "Every pack size is priced relative to this",
+        "profitDescription": "How much the price is above or below the cost"
+      },
+
+      "variant": {
+        "title": "Pack sizes",
+        "description": "Offer bulk options like a box or a case, priced on top of {{base}}",
+        "contains": "Contains",
+        "profitPer": "Profit per {{base}}",
+        "vsDefault": "vs default"
+      },
+
+      "fields": {
+        "placeholderName": "e.g. kg, piece, box",
+        "placeholderNumber": "12",
+        "placeholderPrice": "0.00"
+      },
+
+      "empty": {
+        "title": "No units",
+        "description": "No units have been added yet"
+      }
+    },
+    "productBasic": {
+      "auto" : "Auto",
+      "information": "Information",
+      "description": "The basics — name, handle, and description",
+      "name": "Name",
+      "handle": "Handle",
+      "productDescription": "Description",
+      "placeholders": {
+        "name": "Enter product name",
+        "autoHandle": "auto-generated-from-name",
+        "customHandle": "custom-product-handle",
+        "autoDescription": "We'll generate a short description from the product details",
+        "manualDescription": "Write a description for this product"
+      },
+      "handleDescription": {
+        "auto": "Generated automatically from the product name.",
+        "manual": "Used in the product URL — lowercase, no spaces."
+      },
+      "descriptionHelp": {
+        "auto": "Generated automatically once pricing and variants are set.",
+        "manual": "Shown on the storefront and in search results."
+      },
+      "active": "Active by default",
+      "activeDescription": "Product is visible in the catalog as soon as it's created.",
+      "imageHint": "Square image, at least 800 × 800px",
+      "noImage": "No image uploaded"
+    },
+    "heading": {
+      "common": {
+        "cancel": "Cancel",
+        "saving": "Saving…"
+      },
+      "productForm": {
+        "create": {
+          "title": "New product",
+          "description": "Create a new product and publish it when you're ready.",
+          "submit": "Save product"
+        },
+        "update": {
+          "title": "Edit product",
+          "description": "Update the product information and keep your catalog up to date.",
+          "submit": "Save changes"
+        }
+      }
+    },
     "placeholder": "Search products...",
     "statistics": {
       "salesOverview": "Sales Overview",
@@ -76,6 +160,51 @@
       "selected": "{{count}} of {{total}} row(s) selected",
       "rowsPerPage": "Rows per page",
       "pageInfo": "Page {{page}} of {{total}}"
+    },
+    "single" : {
+      "common": {
+        "notAvailable": "—"
+      },
+      "product": {
+        "archived": "Archived",
+        "noDescription": "No description provided",
+        "about": "About this product",
+        "collection": "Collection",
+        "available": "Available",
+        "variants": "Variants",
+        "variantCount": "{{count}} variants",
+        "createdAt": "Created At",
+        "lastUpdated": "Last Updated",
+        "units": "units"
+      },
+      "stock": {
+        "inStock": "In stock",
+        "lowStock": "Low stock",
+        "outOfStock": "Out of stock"
+      },
+      "overview": {
+        "title": "Overview",
+        "description": "Pricing, variants, and provider details for {{product}}",
+
+        "basePricing": "Base pricing",
+        "basePricingCaption": "Per {{unit}} — the reference every variant is measured against",
+
+        "variants": "Variants & value",
+        "variantsCaption": "How each pack size compares, priced per {{unit}}",
+
+        "pricePer": "Price · per {{unit}}",
+        "perUnit": "Per {{unit}}",
+
+        "price": "Price",
+        "cost": "Cost",
+        "margin": "Margin",
+
+        "bestValue": "Best value",
+        "baseUnit": "default unit",
+        "vsBase": "vs base",
+
+        "unit": "unit"
+      }
     }
   },
   "collections": {
