@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
+import { stockStatus } from "../stockStatus";
+import { useTranslation } from "react-i18next";
 
 /**
  * `Product` doesn't carry provider fields yet — add this to your type:
@@ -31,7 +32,6 @@ type ProviderInfo = {
 };
 
 const EMPTY_PROVIDER: ProviderInfo = { name: "", email: "", phone: "", ice: "" };
-const LOW_STOCK_THRESHOLD = 10;
 
 type StockingProps = {
   product: Product;
@@ -41,6 +41,7 @@ type StockingProps = {
 export function Stocking({ product, setProduct }: StockingProps) {
   const base = product.units.find((u) => u.isBase);
   const provider = { ...EMPTY_PROVIDER, ...(product as { provider?: ProviderInfo }).provider };
+  const { t } = useTranslation()
 
   function setQuantity(qty: number) {
     setProduct((prev) => ({ ...prev, availableQty: Math.max(0, qty) }));
@@ -63,11 +64,11 @@ export function Stocking({ product, setProduct }: StockingProps) {
         <div className="flex items-center gap-2">
           <LayersPlus className="h-3.5 w-3.5 text-primary" />
           <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Stocking
+            {t("products.stocking.title")}
           </CardTitle>
         </div>
         <CardDescription>
-          Track the stock of your product — manage metadata about product providers.
+          {t("products.stocking.description")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -85,27 +86,6 @@ export function Stocking({ product, setProduct }: StockingProps) {
 }
 
 
-function stockStatus(qty: number) {
-  if (qty <= 0) {
-    return {
-      label: "Out of stock",
-      className:
-        "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-400",
-    };
-  }
-  if (qty < LOW_STOCK_THRESHOLD) {
-    return {
-      label: "Low stock",
-      className:
-        "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-400",
-    };
-  }
-  return {
-    label: "In stock",
-    className:
-      "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400",
-  };
-}
 
 function StockSection({
   quantity,
@@ -118,26 +98,25 @@ function StockSection({
   onSetQuantity: (qty: number) => void;
   onAdjust: (delta: number) => void;
 }) {
+  const { t } = useTranslation()
   if (!unitName) {
     return (
       <div className="rounded-xl border border-dashed px-4 py-6 text-center text-sm text-muted-foreground">
-        Set a default unit in Pricing to start tracking stock
+        {t("products.stocking.stock.missingUnit")}
       </div>
     );
   }
 
-  const status = stockStatus(quantity);
+  const status = stockStatus(quantity, t, "products.single.");
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-sm font-medium">Stock</span>
-          <p className="text-xs text-muted-foreground">Tracked in {unitName}</p>
+          <span className="text-sm font-medium">{t("products.stocking.stock.title")}</span>
+          <p className="text-xs text-muted-foreground">{t("products.stocking.stock.trackedIn", { unit: unitName })}</p>
         </div>
-        <Badge variant="outline" className={cn("font-normal", status.className)}>
-          {status.label}
-        </Badge>
+        {status.render()}
       </div>
 
       <div className="flex flex-col gap-4 rounded-xl border bg-muted/10 p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -146,7 +125,7 @@ function StockSection({
             type="number"
             min={0}
             value={quantity}
-            onChange={(e) => onSetQuantity(parseInt(e.target.value, 10) || 0)}
+            onChange={(e) => onSetQuantity(parseFloat(e.target.value) || 0)}
           />
           <span className="text-sm text-muted-foreground">
             {unitName}
@@ -162,7 +141,7 @@ function StockSection({
         </div>
       </div>
       <p className="px-1 text-xs text-muted-foreground">
-        Quantity is counted in {unitName} — pack sizes convert automatically wherever stock is shown.
+        {t("products.stocking.stock.quantityDescription", { unit: unitName })}
       </p>
     </div>
   );
@@ -184,17 +163,18 @@ function ProviderSection({
   provider: ProviderInfo;
   onChange: (patch: Partial<ProviderInfo>) => void;
 }) {
+  const { t } = useTranslation()
   return (
     <div className="space-y-3">
       <div>
-        <span className="text-sm font-medium">Provider</span>
-        <p className="text-xs text-muted-foreground">Who this product is sourced from</p>
+        <span className="text-sm font-medium">{t("products.stocking.provider.title")}</span>
+        <p className="text-xs text-muted-foreground">{t("products.stocking.provider.description")}</p>
       </div>
 
       <div className="space-y-4">
         <ProviderField
           icon={Building2}
-          label="Company"
+          label={t("products.stocking.provider.company")}
           value={provider.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="Acme Inc."
@@ -202,7 +182,7 @@ function ProviderSection({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <ProviderField
             icon={Mail}
-            label="Email"
+            label={t("products.stocking.provider.email")}
             type="email"
             value={provider.email}
             onChange={(e) => onChange({ email: e.target.value })}
@@ -210,7 +190,7 @@ function ProviderSection({
           />
           <ProviderField
             icon={Phone}
-            label="Phone"
+            label={t("products.stocking.provider.phone")}
             type="tel"
             value={provider.phone}
             onChange={(e) => onChange({ phone: e.target.value })}
@@ -219,7 +199,7 @@ function ProviderSection({
         </div>
         <ProviderField
           icon={Hash}
-          label="ICE"
+          label={t("products.stocking.provider.ice")}
           value={provider.ice}
           onChange={(e) => onChange({ ice: e.target.value })}
           placeholder="000000000000000"

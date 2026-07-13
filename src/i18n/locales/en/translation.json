@@ -66,6 +66,34 @@
     "footer": "HTTP 404 — Resource not found"
   },
   "products":{
+    "stocking": {
+      "title": "Stocking",
+      "description": "Track the stock of your product — manage metadata about product providers.",
+
+      "stock": {
+        "title": "Stock",
+        "trackedIn": "Tracked in {{unit}}",
+        "missingUnit": "Set a default unit in Pricing to start tracking stock.",
+        "quantityDescription": "Quantity is counted in {{unit}} — pack sizes convert automatically wherever stock is shown."
+      },
+
+      "provider": {
+        "title": "Provider",
+        "description": "Who this product is sourced from",
+
+        "company": "Company",
+        "email": "Email",
+        "phone": "Phone",
+        "ice": "ICE",
+
+        "placeholders": {
+          "company": "Acme Inc.",
+          "email": "contact@acme.com",
+          "phone": "+212 6 00 00 00 00",
+          "ice": "000000000000000"
+        }
+      }
+    },
     "pricing": {
       "title": "Pricing",
       "description": "One default unit, priced by cost and price — every pack size is built on top of it.",

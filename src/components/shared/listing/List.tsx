@@ -5,6 +5,7 @@ import { Search } from "./Search";
 import { Pagination } from "./Pagination";
 import { Filter } from "./Filter";
 import { Toolbar } from "./Toolbar";
+import { Grid } from "./Grid";
 
 
 export type Column<T> = {
@@ -14,23 +15,47 @@ export type Column<T> = {
   cell: (item: T) => React.ReactNode;
 };
 
-export function List<T>({
+
+type ListComponent = <T>({
   children,
   list,
 }: {
   children: React.ReactNode;
-  list: useListReturnType<T>
-}) {
-  return (
-    <ListContext.Provider value={list}>
-      {children}
-    </ListContext.Provider>
-  )
-}
+  list: useListReturnType<T>;
+}) => React.ReactNode;
 
 
-List.Toolbar = Toolbar;
-List.Filter = Filter;
-List.Search = Search;
-List.Table = Table;
-List.Pagination = Pagination;
+export const List = Object.assign(
+  function List<T>({
+    children,
+    list,
+  }: {
+    children: React.ReactNode;
+    list: useListReturnType<T>
+  }) {
+    return (
+      <ListContext.Provider value={list}>
+        {children}
+      </ListContext.Provider>
+    )
+  }
+  ,
+  {
+    Toolbar,
+    Filter,
+    Search,
+    Table,
+    Pagination,
+    Grid,
+  }
+
+) as ListComponent & {
+  Toolbar: typeof Toolbar;
+  Filter: typeof Filter;
+  Search: typeof Search;
+  Table: typeof Table;
+  Pagination: typeof Pagination;
+  Grid: typeof Grid;
+};
+
+

@@ -66,6 +66,34 @@
     "footer": "HTTP 404 — Ressource introuvable"
   },
   "products": {
+    "stocking": {
+      "title": "Stock",
+      "description": "Suivez le stock de votre produit et gérez les informations de son fournisseur.",
+
+      "stock": {
+        "title": "Stock",
+        "trackedIn": "Suivi en {{unit}}",
+        "missingUnit": "Définissez d'abord une unité par défaut dans Tarification pour commencer le suivi du stock.",
+        "quantityDescription": "La quantité est comptée en {{unit}} — les formats sont automatiquement convertis partout où le stock est affiché."
+      },
+
+      "provider": {
+        "title": "Fournisseur",
+        "description": "Origine de ce produit",
+
+        "company": "Entreprise",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "ice": "ICE",
+
+        "placeholders": {
+          "company": "Acme Inc.",
+          "email": "contact@acme.com",
+          "phone": "+212 6 00 00 00 00",
+          "ice": "000000000000000"
+        }
+      }
+    },
     "pricing": {
       "title": "Tarification",
       "description": "Une unité par défaut, définie par son coût et son prix. Toutes les tailles de conditionnement sont basées sur celle-ci.",

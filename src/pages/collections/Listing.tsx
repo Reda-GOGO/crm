@@ -1,17 +1,12 @@
 import {
   Award,
   ChartNoAxesCombined,
-  EllipsisVertical,
   Library,
   Package
 } from "lucide-react";
 import { Layout } from "../Layout";
-import { useTranslation } from "react-i18next";
 import { useList } from "@/hooks/useList";
-import { ProductImage } from "@/components/shared/ProductImage";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { List, type Column } from "@/components/shared/listing/List";
+import { List } from "@/components/shared/listing/List";
 import { Highlight } from "@/components/shared/Highlight";
 import Col from "@/components/shared/Col";
 import { createColumns } from "@/components/related/collections/createColumns";
@@ -40,8 +35,6 @@ const stats = [
 
 export default function Listing() {
 
-  const { t, i18n } = useTranslation();
-  const dir = i18n.resolvedLanguage === "ar" ? "rtl" : "ltr";
   const list = useList<Collection>({
     resource: "collections",
     mode: "page",

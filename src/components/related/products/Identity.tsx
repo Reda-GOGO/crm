@@ -17,15 +17,14 @@ import {
 import { formatNumber } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
-import type { TFunction } from "i18next";
+import { stockStatus } from "./stockStatus";
 
-const LOW_STOCK_THRESHOLD = 10;
 
 export function Identity({ product }: { product: Product }) {
   const base = product.units.find((unit) => unit.isBase);
   const namespace = "products.single."
   const { t, i18n } = useTranslation()
-  const status = stockStatus(product.availableQty, t, namespace);
+  const status = stockStatus(product.availableQty!, t, namespace);
 
   return (
     <Card className="overflow-hidden ">
@@ -87,7 +86,7 @@ export function Identity({ product }: { product: Product }) {
               {t(namespace + "product.available")}
             </dt>
             <dd className="font-mono font-medium tabular-nums">
-              {formatNumber(product.availableQty)}{" "}
+              {formatNumber(product.availableQty!)}{" "}
               {base?.name ?? t(namespace + "product.units")}
             </dd>
           </div>
@@ -111,7 +110,7 @@ export function Identity({ product }: { product: Product }) {
               {t(namespace + "product.createdAt")}
             </dt>
             <dd className="font-mono text-muted-foreground">
-              {new Date(product.createdAt).toLocaleDateString(i18n.language, {
+              {new Date(product.createdAt!).toLocaleDateString(i18n.language, {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
@@ -126,7 +125,7 @@ export function Identity({ product }: { product: Product }) {
               {t(namespace + "product.lastUpdated")}
             </dt>
             <dd className="font-mono text-muted-foreground">
-              {new Date(product.createdAt).toLocaleDateString(i18n.language, {
+              {new Date(product.createdAt!).toLocaleDateString(i18n.language, {
                 year: "numeric",
                 month: "short",
                 day: "numeric",
@@ -146,51 +145,4 @@ export function Identity({ product }: { product: Product }) {
 
 
 
-function stockStatus(qty: number, t: TFunction, namespace: string) {
-  if (qty <= 0) {
-    return {
-      label: t(namespace + "stock.outOfStock"),
-      className:
-        "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-400",
-      render: () => (
-        <Badge
-          variant="outline"
-          className="font-normal border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-400"
-        >
-          {t(namespace + "stock.outOfStock")}
-        </Badge>
-      ),
-    };
-  }
-
-  if (qty < LOW_STOCK_THRESHOLD) {
-    return {
-      label: t(namespace + "stock.lowStock"),
-      className:
-        "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-400",
-      render: () => (
-        <Badge
-          variant="outline"
-          className="font-normal border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-400"
-        >
-          {t(namespace + "stock.lowStock")}
-        </Badge>
-      ),
-    };
-  }
-
-  return {
-    label: t(namespace + "stock.inStock"),
-    className:
-      "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400",
-    render: () => (
-      <Badge
-        variant="outline"
-        className="font-normal border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400"
-      >
-        {t(namespace + "stock.inStock")}
-      </Badge>
-    ),
-  };
-}
 
