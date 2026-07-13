@@ -8,13 +8,20 @@ export type queryResponse<T> = {
   hasMore: boolean;
 };
 
-export function useQuery<T>(queryFn: () => Promise<T>) {
+export function useQuery<T>(
+  queryFn: () => Promise<T>,
+  options?: {
+    enabled?: boolean;
+  }
+) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const enabled = options?.enabled ?? true;
 
   const execute = useCallback(() => {
     let cancelled = false;
+    if (!enabled) return;
 
     setLoading(true);
     setError(null);
@@ -36,6 +43,7 @@ export function useQuery<T>(queryFn: () => Promise<T>) {
   }, [queryFn]);
 
   useEffect(() => {
+    if (!enabled) return;
     const cleanup = execute();
     return cleanup;
   }, [execute]);

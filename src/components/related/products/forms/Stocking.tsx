@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
 import { Building2, Hash, LayersPlus, Mail, Phone } from "lucide-react";
 import {
   Card,
@@ -12,9 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/types";
 import { stockStatus } from "../stockStatus";
 import { useTranslation } from "react-i18next";
+import type { useProductFormReturnType } from "@/hooks/forms/useProductForm";
 
 /**
  * `Product` doesn't carry provider fields yet — add this to your type:
@@ -33,12 +32,9 @@ type ProviderInfo = {
 
 const EMPTY_PROVIDER: ProviderInfo = { name: "", email: "", phone: "", ice: "" };
 
-type StockingProps = {
-  product: Product;
-  setProduct: Dispatch<SetStateAction<Product>>;
-};
 
-export function Stocking({ product, setProduct }: StockingProps) {
+export function Stocking({ form }: { form: useProductFormReturnType }) {
+  const { product, setProduct } = form;
   const base = product.units.find((u) => u.isBase);
   const provider = { ...EMPTY_PROVIDER, ...(product as { provider?: ProviderInfo }).provider };
   const { t } = useTranslation()

@@ -2,18 +2,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Price } from "@/components/shared/Price";
-import { cn, formatNumber } from "@/lib/utils";
-import type { Product } from "@/types";
+import { formatNumber } from "@/lib/utils";
+import type { Product, Unit } from "@/types";
 import {
-  DollarSign,
   Info,
-  Layers,
   Sparkles,
   Tag,
-  TrendingDown,
-  TrendingUp,
+  Trash,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import Row from "@/components/shared/Row";
+import Col from "@/components/shared/Col";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export function Overview({ product }: { product: Product }) {
   const { t } = useTranslation();
@@ -28,175 +30,213 @@ export function Overview({ product }: { product: Product }) {
         </div>
         <CardDescription>{t("products.single.overview.description", { product: product.name })}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6 pt-4">
+      <CardContent >
         <Pricing product={product} />
-        <Separator />
-        <Units product={product} />
-        <Separator />
       </CardContent>
     </Card>
   );
 }
 
-function Heading({
-  icon: Icon,
-  title,
-  caption,
-}: {
-  icon: React.ElementType;
-  title: string;
-  caption: string;
-}) {
-  return (
-    <div className="flex items-center gap-2">
-      <Icon className="h-3.5 w-3.5 text-muted-foreground" />
-      <div className="flex flex-col">
-        <span className="text-sm font-medium leading-none">{title}</span>
-        <span className="mt-1 text-xs text-muted-foreground">{caption}</span>
-      </div>
-    </div>
-  );
-}
-
-// product.price / product.cost describe the default (base) unit — everything
-// else in this card is expressed relative to that anchor.
 function Pricing({ product }: { product: Product }) {
-  const base = product.units.find((unit) => unit.isBase);
-  const margin = product.price - product.cost;
-  const marginPct = product.price !== 0 ? (margin / product.price) * 100 : 0;
-  const positive = margin >= 0;
-  const { t } = useTranslation();
-
   return (
-    <div className="space-y-3">
-      <Heading
-        icon={DollarSign}
-        title={t("products.single.overview.basePricing")}
-        caption={t("products.single.overview.basePricingCaption", { unit: base?.name ?? "unit" })}
-      />
-      <div className="flex flex-col gap-4 rounded-lg border bg-muted/10 p-4 sm:flex-row sm:items-end sm:justify-between">
-        <div className="space-y-1">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground">
-            {t("products.single.overview.pricePer", { unit: base?.name ?? "unit" })}
-          </span>
-          <div className="font-serif text-4xl font-medium leading-none tracking-tight tabular-nums">
-            <Price value={formatNumber(product.price)} />
-          </div>
-        </div>
-        <div className="flex gap-6 sm:gap-8">
-          <div className="flex flex-col gap-1">
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Tag className="h-3 w-3" />
-              {t("products.single.overview.cost")}
-            </span>
-            <span className="font-mono text-lg font-semibold tabular-nums">
-              <Price value={formatNumber(product.cost)} />
-            </span>
-          </div>
-          <div className="flex flex-col gap-1">
-            <span className="text-xs text-muted-foreground">{t("products.single.overview.margin")}</span>
-            <span
-              className={cn(
-                "flex items-center gap-1 font-mono text-lg font-semibold tabular-nums",
-                positive ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
-              )}
-            >
-              {positive ? (
-                <TrendingUp className="h-3.5 w-3.5" />
-              ) : (
-                <TrendingDown className="h-3.5 w-3.5" />
-              )}
-              {marginPct.toFixed(0)}%
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    <Units product={product} />
+  )
 }
+
+
+
 
 function Units({ product }: { product: Product }) {
-  const base = product.units.find((unit) => unit.isBase);
-  const baseUnitPrice = base?.quantityInBase ? base.price / base.quantityInBase : product.price;
 
-  const rows = product.units.map((unit) => {
-    const effective = unit.quantityInBase > 0 ? unit.price / unit.quantityInBase : unit.price;
-    const deltaPct = baseUnitPrice !== 0 ? ((effective - baseUnitPrice) / baseUnitPrice) * 100 : 0;
-    return { ...unit, effective, deltaPct };
-  });
-
-  const bestValue = rows.length > 1 ? rows.reduce((min, r) => (r.effective < min.effective ? r : min)) : null;
   const { t } = useTranslation();
+  const base = product.units.find((u) => u.isBase);
+  const variants = product.units.filter((u) => !u.isBase);
+
+
 
   return (
-    <div className="space-y-3">
-      <Heading
-        icon={Layers}
-        title={t("products.single.overview.variants")}
-        caption={t("products.single.overview.variantsCaption", { unit: base?.name ?? "unit" })}
-      />
-      <div className="divide-y divide-border rounded-lg border">
-        {rows.map((unit) => {
-          const isBestValue = bestValue?.id === unit.id && bestValue.effective < baseUnitPrice;
-          return (
-            <div key={unit.id} className="flex items-center justify-between gap-4 px-4 py-3">
-              <div className="flex items-center gap-2.5">
-                <Tag className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                <div className="flex flex-col gap-0.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-medium">{unit.name}</span>
-                    {isBestValue && (
-                      <Badge className="gap-1 border-emerald-200 bg-emerald-50 font-normal text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400">
-                        <Sparkles className="h-3 w-3" />
-                        Best value
-                      </Badge>
-                    )}
-                  </div>
-                  {unit.isBase ? (
-                    <span className="text-xs text-muted-foreground">{t("products.single.overview.baseUnit")}</span>
-                  ) : (
-                    <span className="font-mono text-xs text-muted-foreground">
-                      × {formatNumber(unit.quantityInBase)} {base?.name ?? ""}
-                    </span>
-                  )}
-                </div>
-              </div>
+    <div className="space-y-5">
 
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col items-end">
-                  <span className="text-xs text-muted-foreground">{t("products.single.overview.price")}</span>
-                  <span className="font-mono text-sm tabular-nums">
-                    <Price value={formatNumber(unit.price)} />
-                  </span>
-                </div>
-                <div className="flex min-w-[92px] flex-col items-end">
-                  <span className="text-xs text-muted-foreground">
-                    {t("products.single.overview.perUnit", { unit: base?.name ?? "unit" })}
-                  </span>
-                  <span className="font-mono text-sm font-semibold tabular-nums">
-                    <Price value={formatNumber(unit.effective)} />
-                  </span>
-                  {!unit.isBase && (
-                    <span
-                      className={cn(
-                        "font-mono text-xs tabular-nums",
-                        unit.deltaPct <= 0
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-rose-600 dark:text-rose-400"
-                      )}
-                    >
-                      {unit.deltaPct > 0 ? "+" : ""}
-                      {unit.deltaPct.toFixed(0)}% vs base
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <DefaultForm
+        unit={base!}
+      />
+
+      {variants && variants.length > 0 && (
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-medium">{t("products.pricing.variant.title")}</h3>
+            <p className="text-xs text-muted-foreground">
+              {t("products.pricing.variant.description", { base: base!.name })}
+            </p>
+          </div>
+          <Badge variant="outline" className="font-normal text-muted-foreground">
+            {variants.length}
+          </Badge>
+        </div>
+      )}
+      {
+        variants.map((variant) => {
+          return (
+            <VariantForm base={base!} unit={variant} key={variant.id} />
+          )
+        })
+      }
+
     </div>
   );
 }
 
 
+function VariantForm({
+  unit,
+  base,
+}: {
+  unit: Partial<Unit>;
+  base: Partial<Unit>;
+}) {
+  const basename = base.name
+  const { profit, percent } = calculateMargin(unit.cost!, unit.price!);
+  const { t } = useTranslation();
+  return (
+    <Col>
+
+      <Col className="w-full rounded-lg border p-4">
+        <Row className="items-start justify-between">
+
+          <Col>
+            <Input
+              value={unit.name}
+              placeholder="e.g kg, piece, box" />
+            <Row className="items-center gap-2">
+              <span className="text-muted-foreground">
+                {t("products.pricing.variant.contains")}
+              </span>
+              <Input
+                value={unit.defaultValue}
+                type="number"
+                placeholder="12"
+              />
+              <span className="text-muted-foreground">
+                {basename}
+              </span>
+            </Row>
+          </Col>
+
+
+          <Button
+            variant="outline" size="sm">
+            <Trash />
+          </Button>
+        </Row>
+
+        <Separator />
+        <Row className="items-start justify-between" >
+          <Col>
+            <Label>{t("products.pricing.default.cost")} </Label>
+            <Input
+              value={unit.cost}
+              onWheel={(e) => e.currentTarget.blur()}
+              type="number" placeholder="0,00" />
+          </Col>
+          <Col>
+            <Label>{t("products.pricing.default.price")} </Label>
+            <Input
+              value={unit.price}
+              onWheel={(e) => e.currentTarget.blur()}
+              type="number" placeholder="0,00" />
+          </Col>
+          <Col>
+            <Label>{t("products.pricing.default.profit", { base: basename })} </Label>
+            <div className="rounded-lg border px-2 py-1.5">
+              <Price value={formatNumber(profit.toFixed(2))} />
+            </div>
+            <span>
+
+              {percent >= 0 ? "+" : ""}
+              {percent.toFixed(2)}
+              %
+              vs default</span>
+          </Col>
+        </Row>
+
+      </Col>
+
+    </Col>
+  )
+
+}
+
+
+function DefaultForm({
+  unit
+}: {
+  unit: Partial<Unit>,
+}) {
+  const { profit, percent } = calculateMargin(unit.cost!, unit.price!);
+  const { t } = useTranslation();
+  return (
+    <Row className="items-start p-4 border rounded-lg justify-start">
+      <div className="flex rounded-lg border muted p-4 items-center justify-center">
+        <Tag className="h-4 w-4" />
+      </div>
+
+      <Col>
+
+        <Col>
+          <Label>{t("products.pricing.default.name")}</Label>
+          <div className="rounded-lg border px-2 py-1.5">
+            {unit.name}
+          </div>
+
+        </Col>
+        <span className="text-xs text-muted-foreground">
+          {t("products.pricing.default.pricedRelative")}
+        </span>
+        <Badge className="gap-1 font-normal">
+          <Sparkles className="h-3 w-3" />
+          {t("products.pricing.default.badge")}
+        </Badge>
+      </Col>
+
+      <Col>
+        <Label>{t("products.pricing.default.cost")} </Label>
+        <div className="rounded-lg border px-2 py-1.5">
+          <Price value={formatNumber(unit.cost!.toFixed(2))} />
+        </div>
+      </Col>
+
+      <Col>
+        <Label>{t("products.pricing.default.price")} </Label>
+        <div className="rounded-lg border px-2 py-1.5">
+          <Price value={formatNumber(unit.price!.toFixed(2))} />
+        </div>
+      </Col>
+
+      <Col>
+        <Label>{t("products.pricing.variant.profitPer", { base: unit.name })} </Label>
+        <div className="rounded-lg border px-2 py-1.5">
+          <Price value={formatNumber(profit.toFixed(2))} />
+        </div>
+        <span className="text-xs text-muted-foreground">
+          {t("products.pricing.default.profitDescription")}
+        </span>
+        <span>
+          {percent >= 0 ? "+" : ""}
+          {percent.toFixed(2)}
+          %
+        </span>
+      </Col>
+
+
+    </Row>
+
+  )
+}
+
+
+function calculateMargin(cost: number, price: number) {
+  const profit = price - cost;
+  const percent = price === 0 ? 0 : (profit / price) * 100;
+
+  return { profit, percent };
+}

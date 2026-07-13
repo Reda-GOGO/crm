@@ -11,6 +11,25 @@ import {
 import { Button } from "@/components/ui/button"
 import { useList } from "@/hooks/useList";
 import { List } from "@/components/shared/listing/List";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useNavigate } from "react-router";
+import { createColumns } from "@/components/related/products/createColumns";
+import { useBoolean } from "@/hooks/useBoolean";
 
 const stats = [
   { labelKey: "productsSold", value: 100, Icon: Package },
@@ -72,42 +91,69 @@ export default function Listing() {
   )
 }
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useNavigate } from "react-router";
-import { createColumns } from "@/components/related/products/createColumns";
 
 
 function Action({ product }: { product: Product }) {
   const navigate = useNavigate();
+  const open = useBoolean()
+  const isArchived = product.archived
 
   const edit = () => navigate(`/products/${product.handle}/edit`)
   const view = () => navigate(`/products/${product.handle}`)
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
-          <EllipsisVertical />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onClick={edit}><Pencil /> Edit</DropdownMenuItem>
-        <DropdownMenuItem onClick={view}><Eye /> View</DropdownMenuItem>
-        <DropdownMenuItem className="text-red-400"><Award /> Archive</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm">
+            <EllipsisVertical />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={edit}><Pencil /> Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={view}><Eye /> View</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => open.on()} className="text-red-400">
+            <Award /> {isArchived ? "Restore" : "Archive"}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Alert
+        open={open.value}
+        onClose={() => open.off()}
+        onConfirm={() => open.off()}
+      />
+    </>
+  )
+}
+function Alert({
+  open,
+  onClose,
+  onConfirm
+}: {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}) {
+  return (
+    <AlertDialog open={open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
-
 function Actions() {
-
-
   return (
     <>
       <DropdownMenuItem ><Pencil /> Edit</DropdownMenuItem>

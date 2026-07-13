@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
 import {
   FilePlus2,
   Plus,
@@ -15,8 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { formatNumber, tempId } from "@/lib/utils";
-import type { Product, Unit } from "@/types";
+import { formatNumber } from "@/lib/utils";
+import type { Unit } from "@/types";
 import Col from "@/components/shared/Col";
 import { Button } from "@/components/ui/button";
 import Row from "@/components/shared/Row";
@@ -32,14 +31,16 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useTranslation } from "react-i18next";
+import type { useProductFormReturnType } from "@/hooks/forms/useProductForm";
 
+function calculateMargin(cost: number, price: number) {
+  const profit = price - cost;
+  const percent = price === 0 ? 0 : (profit / price) * 100;
 
-type PricingProps = {
-  product: Product;
-  setProduct: Dispatch<SetStateAction<Product>>;
-};
+  return { profit, percent };
+}
 
-export function Pricing({ product, setProduct }: PricingProps) {
+export function Pricing({ form }: { form: useProductFormReturnType }) {
   const { t } = useTranslation();
   return (
     <Card className="w-full">
@@ -55,62 +56,23 @@ export function Pricing({ product, setProduct }: PricingProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Units product={product} setProduct={setProduct} />
+        <Units form={form} />
       </CardContent>
     </Card>
   );
 }
 
 
-function Units({ product, setProduct }: PricingProps) {
-  const initial: Omit<Unit, "isBase"> = {
-    id: tempId(),
-    name: "",
-    cost: 0,
-    price: 0,
-    createdAt: new Date(),
-    updatedAt: null,
-    archived: false,
-    productId: product.id,
-    quantityInBase: 1,
-    defaultValue: 1,
-    variantValue: 1,
-  }
+function Units({ form }: { form: useProductFormReturnType }) {
+
   const { t } = useTranslation();
-  const base = product.units.find((u) => u.isBase);
-  const variants = product.units.filter((u) => !u.isBase);
-  const addBase = () => {
-    setProduct((prev) => ({
-      ...prev,
-      units: [...prev.units, { ...initial, isBase: true }],
-    }));
-  }
-  const addVariant = () => {
-    setProduct((prev) => ({
-      ...prev,
-      units: [...prev.units, { ...initial, isBase: false }],
-    }));
-  }
-
-  const removeVariant = (id: number) => {
-    setProduct((prev) => ({ ...prev, units: prev.units.filter((u) => u.id !== id) }));
-  }
-
-  const updateBase = (id: number, patch: Partial<Unit>) => {
-    setProduct((prev) => {
-      return {
-        ...prev,
-        cost: patch.cost || prev.cost,
-        price: patch.price || prev.price,
-        unit: patch.name || prev.unit,
-        units: prev.units.map((u) => (u.id === id ? { ...u, ...patch } : u))
-      }
-    })
-  }
-  const updateVariant = (id: number, patch: Partial<Unit>) => {
-    setProduct((prev) => ({ ...prev, units: prev.units.map((u) => (u.id === id ? { ...u, ...patch } : u)) }))
-  }
-
+  const {
+    base,
+    variants,
+    addBase,
+    updateBase,
+    addVariant,
+  } = form.unit;
 
   if (!base) return <NoBase addBase={addBase} />
 
@@ -135,12 +97,7 @@ function Units({ product, setProduct }: PricingProps) {
       {
         variants.map((variant) => {
           return (
-            <VariantForm
-              unit={variant}
-              base={base}
-              onChange={(patch) => updateVariant(variant.id, patch)}
-              key={variant.id}
-              onRemove={() => removeVariant(variant.id)} />
+            <VariantForm form={form} unit={variant} key={variant.id} />
           )
         })
       }
@@ -159,18 +116,16 @@ function Units({ product, setProduct }: PricingProps) {
 
 function VariantForm({
   unit,
-  onChange,
-  base,
-  onRemove,
+  form,
 }: {
   unit: Partial<Unit>;
-  onChange: (patch: Partial<Unit>) => void;
-  base: Partial<Unit>;
-  onRemove: () => void;
+  form: useProductFormReturnType;
 }) {
-  const basename = base.name
-  const profit = unit.price! - unit.cost!
-  const percent = unit.price != 0 ? (profit / unit.price!) * 100 : 0;
+  const basename = form.unit.base!.name
+  const { profit, percent } = calculateMargin(unit.cost!, unit.price!);
+  const { removeVariant, updateVariant } = form.unit;
+  const onRemove = () => removeVariant(unit.id!);
+  const onChange = (patch: Partial<Unit>) => updateVariant(unit.id!, patch);
   const { t } = useTranslation();
   return (
     <Col>
@@ -191,8 +146,8 @@ function VariantForm({
                 value={unit.defaultValue}
                 onChange={
                   (e) => onChange({
-                    quantityInBase: parseFloat(e.target.value) || 0,
-                    defaultValue: parseFloat(e.target.value) || 0,
+                    quantityInBase: parseFloat(e.target.value) ?? 0,
+                    defaultValue: parseFloat(e.target.value) ?? 0,
                   })
                 }
                 type="number"
@@ -219,7 +174,7 @@ function VariantForm({
             <Input
               value={unit.cost}
               onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) => onChange({ cost: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => onChange({ cost: parseFloat(e.target.value) ?? 0 })}
               type="number" placeholder="0,00" />
           </Col>
           <Col>
@@ -227,7 +182,7 @@ function VariantForm({
             <Input
               value={unit.price}
               onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) => onChange({ price: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => onChange({ price: parseFloat(e.target.value) ?? 0 })}
               type="number" placeholder="0,00" />
           </Col>
           <Col>
@@ -259,8 +214,7 @@ function DefaultForm({
   unit: Partial<Unit>,
   onChange: (patch: Partial<Unit>) => void
 }) {
-  const profit = unit.price! - unit.cost!
-  const percent = unit.price != 0 ? (profit / unit.price!) * 100 : 0;
+  const { profit, percent } = calculateMargin(unit.cost!, unit.price!);
   const { t } = useTranslation();
   return (
     <Row className="items-start p-4 border rounded-lg justify-start">
@@ -293,7 +247,7 @@ function DefaultForm({
         <Input
           value={unit.cost}
           onWheel={(e) => e.currentTarget.blur()}
-          onChange={(e) => onChange({ cost: parseFloat(e.target.value) || 0 })}
+          onChange={(e) => onChange({ cost: parseFloat(e.target.value) ?? 0 })}
           type="number" placeholder="0,00" />
       </Col>
 
@@ -302,7 +256,7 @@ function DefaultForm({
         <Input
           value={unit.price}
           onWheel={(e) => e.currentTarget.blur()}
-          onChange={(e) => onChange({ price: parseFloat(e.target.value) || 0 })}
+          onChange={(e) => onChange({ price: parseFloat(e.target.value) ?? 0 })}
           type="number" placeholder="0,00" />
       </Col>
 

@@ -69,5 +69,48 @@ router.get("/:handle", async (req, res, next) => {
   }
 });
 
+
+router.patch("/:handle", async (req, res, next) => {
+  try {
+    const product = await database.product.findUnique({
+      where: {
+        handle: req.params.handle
+      }
+    });
+    if (!product) return res.status(404).send({ error: "Not found" });
+    await database.product.update({
+      where: {
+        id: product.id,
+      },
+      data: req.body
+    });
+    res.json({ success: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.delete("/:handle", async (req, res, next) => {
+  try {
+    const product = await database.product.findUnique({
+      where: {
+        handle: req.params.handle
+      }
+    });
+    if (!product) return res.status(404).send({ error: "Not found" });
+    await database.product.update({
+      where: {
+        id: product.id,
+      },
+      data: {
+        archived: true,
+      }
+    });
+    res.json({ success: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
 export default router;
 

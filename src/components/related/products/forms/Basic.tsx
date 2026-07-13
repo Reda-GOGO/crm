@@ -1,4 +1,4 @@
-import { useState, type Dispatch, useEffect, useRef, type SetStateAction } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Hash, ImagePlus, Info, Sparkles, Pencil, Trash2 } from "lucide-react";
 import {
   Card,
@@ -20,20 +20,10 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import type { Product } from "@/types";
 import { Button } from "@/components/ui/button";
+import type { useProductFormReturnType } from "@/hooks/forms/useProductForm";
 
-export function Basic({
-  product,
-  setProduct,
-  imageFile,
-  setImageFile
-}: {
-  product: Product,
-  setProduct: Dispatch<SetStateAction<Product>>
-  imageFile: File | null,
-  setImageFile: Dispatch<SetStateAction<File | null>>
-}) {
+export function Basic({ form }: { form: useProductFormReturnType }) {
   const [autoHandle, setAutoHandle] = useState(true);
   const [autoDescription, setAutoDescription] = useState(true);
   const { t } = useTranslation()
@@ -54,9 +44,9 @@ export function Basic({
         <div
           className="relative aspect-square w-full overflow-hidden rounded-lg border border-dashed bg-muted/20 transition-colors hover:bg-muted/30">
           <ImageCard
-            image={product.image}
-            file={imageFile}
-            onFileChange={setImageFile} />
+            image={form.product.image}
+            file={form.imageFile}
+            onFileChange={form.setImageFile} />
 
           <div className="hidden ddflex pointer-events-none absolute inset-x-0 bottom-0  items-center justify-center gap-1.5 bg-gradient-to-t from-background/90 to-transparent py-3 text-xs text-muted-foreground">
             Square image, at least 800 × 800px
@@ -69,8 +59,8 @@ export function Basic({
               {t(namespace + ".productBasic.name")}
             </FieldLabel>
             <Input
-              value={product.name}
-              onChange={(e) => setProduct({ ...product, name: e.target.value })}
+              value={form.product.name}
+              onChange={(e) => form.setProduct({ ...form.product, name: e.target.value })}
               placeholder={t(namespace + ".productBasic.placeholders.name")} />
           </Field>
 
@@ -91,8 +81,8 @@ export function Basic({
                 <Hash className="h-3.5 w-3.5" />
               </div>
               <Input
-                value={product.handle}
-                onChange={(e) => setProduct({ ...product, handle: e.target.value })}
+                value={form.product.handle}
+                onChange={(e) => form.setProduct({ ...form.product, handle: e.target.value })}
                 disabled={autoHandle}
                 placeholder={autoHandle ?
                   t(namespace + ".productBasic.placeholders.autoHandle")
@@ -122,8 +112,8 @@ export function Basic({
             </div>
             <Textarea
               disabled={autoDescription}
-              value={product.description!}
-              onChange={(e) => setProduct({ ...product, description: e.target.value })}
+              value={form.product.description!}
+              onChange={(e) => form.setProduct({ ...form.product, description: e.target.value })}
               placeholder={
                 autoDescription
                   ? t(namespace + ".productBasic.placeholders.autoDescription")

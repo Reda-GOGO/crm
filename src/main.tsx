@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router";
 import { TooltipProvider } from './components/ui/tooltip.tsx';
 import i18n from "./i18n";
 import { ThemeProvider } from './contexts/theme.tsx';
+import { Toaster } from "./components/ui/sonner"
 
 
 function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,9 +24,10 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     return () => {
       i18n.off("languageChanged", applyLanguage);
     };
-  }, [i18n]);
+  }, []);
   return (
     <TooltipProvider>
+      <Toaster />
       {children}
     </TooltipProvider>
   )
