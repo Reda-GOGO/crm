@@ -8,6 +8,11 @@
   "Product" : "Product",
   "Collection" : "Collection",
   "Edit" : "Edit",
+  "View" : "View",
+  "Archive" : "Archive",
+  "Restore" : "Restore",
+  "Delete" : "Delete",
+  "Cancel" : "Cancel",
   "Order" : "Order",
   "Dashboard": "Dashboard",
   "Products": "Products",
@@ -66,6 +71,10 @@
     "footer": "HTTP 404 — Resource not found"
   },
   "products":{
+    "alert": {
+      "title" : "Are you absolutely sure?",
+      "description" : "This action cannot be undone. This will permanently delete your account from our servers."
+    },
     "stocking": {
       "title": "Stocking",
       "description": "Track the stock of your product — manage metadata about product providers.",

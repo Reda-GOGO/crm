@@ -6,6 +6,11 @@
   "Price" : "Prix",
   "Product" : "Produit",
   "Edit" : "Modifier",
+  "View" : "Voir",
+  "Archive" : "Archiver",
+  "Restore" : "Restaurer",
+  "Delete" : "Supprimer",
+  "Cancel" : "Annuler",
   "Collection" : "Collection",
   "Order" : "Commande",
   "selectLanguage": "Sélectionnez votre langue préférée.",
@@ -66,6 +71,10 @@
     "footer": "HTTP 404 — Ressource introuvable"
   },
   "products": {
+    "alert": {
+      "title" : "Êtes-vous absolument sûr?",
+      "description" : "Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte de nos serveurs."
+    },
     "stocking": {
       "title": "Stock",
       "description": "Suivez le stock de votre produit et gérez les informations de son fournisseur.",

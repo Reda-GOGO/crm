@@ -30,6 +30,7 @@ import {
 import { useNavigate } from "react-router";
 import { createColumns } from "@/components/related/products/createColumns";
 import { useBoolean } from "@/hooks/useBoolean";
+import { useTranslation } from "react-i18next";
 
 const stats = [
   { labelKey: "productsSold", value: 100, Icon: Package },
@@ -97,6 +98,7 @@ function Action({ product }: { product: Product }) {
   const navigate = useNavigate();
   const open = useBoolean()
   const isArchived = product.archived
+  const { t } = useTranslation()
 
   const edit = () => navigate(`/products/${product.handle}/edit`)
   const view = () => navigate(`/products/${product.handle}`)
@@ -110,10 +112,10 @@ function Action({ product }: { product: Product }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={edit}><Pencil /> Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={view}><Eye /> View</DropdownMenuItem>
+          <DropdownMenuItem onClick={edit}><Pencil /> {t("Edit")}</DropdownMenuItem>
+          <DropdownMenuItem onClick={view}><Eye /> {t("View")}</DropdownMenuItem>
           <DropdownMenuItem onClick={() => open.on()} className="text-red-400">
-            <Award /> {isArchived ? "Restore" : "Archive"}
+            <Award /> {isArchived ? t("Restore") : t("Archive")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -134,19 +136,19 @@ function Alert({
   onClose: () => void;
   onConfirm: () => void;
 }) {
+  const { t } = useTranslation()
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>{t("products.alert.title")}</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account from our servers.
+            {t("products.alert.description")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction variant={"destructive"} onClick={onConfirm}>Archive</AlertDialogAction>
+          <AlertDialogCancel onClick={onClose}>{t("Cancel")}</AlertDialogCancel>
+          <AlertDialogAction variant={"destructive"} onClick={onConfirm}>{t("Archive")}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -154,11 +156,12 @@ function Alert({
 }
 
 function Actions() {
+  const { t } = useTranslation()
   return (
     <>
-      <DropdownMenuItem ><Pencil /> Edit</DropdownMenuItem>
-      <DropdownMenuItem ><Eye /> View</DropdownMenuItem>
-      <DropdownMenuItem className="text-red-400"><Award /> Archive</DropdownMenuItem>
+      <DropdownMenuItem ><Pencil /> {t("Edit")}</DropdownMenuItem>
+      <DropdownMenuItem ><Eye /> {t("View")}</DropdownMenuItem>
+      <DropdownMenuItem className="text-red-400"><Award /> {t("Archive")}</DropdownMenuItem>
     </>
   )
 }
