@@ -69,6 +69,7 @@
     "stocking": {
       "title": "Stock",
       "description": "Suivez le stock de votre produit et gérez les informations de son fournisseur.",
+      "quantity" : "Quantité disponible",
 
       "stock": {
         "title": "Stock",

@@ -69,7 +69,7 @@
     "stocking": {
       "title": "Stocking",
       "description": "Track the stock of your product — manage metadata about product providers.",
-
+      "quantity" : "Available quantity",
       "stock": {
         "title": "Stock",
         "trackedIn": "Tracked in {{unit}}",

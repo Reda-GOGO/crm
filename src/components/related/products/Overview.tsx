@@ -8,14 +8,12 @@ import {
   Info,
   Sparkles,
   Tag,
-  Trash,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Row from "@/components/shared/Row";
 import Col from "@/components/shared/Col";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { stockStatus } from "./stockStatus";
 
 export function Overview({ product }: { product: Product }) {
   const { t } = useTranslation();
@@ -31,15 +29,19 @@ export function Overview({ product }: { product: Product }) {
         <CardDescription>{t("products.single.overview.description", { product: product.name })}</CardDescription>
       </CardHeader>
       <CardContent >
-        <Pricing product={product} />
+        <Body product={product} />
       </CardContent>
     </Card>
   );
 }
 
-function Pricing({ product }: { product: Product }) {
+function Body({ product }: { product: Product }) {
   return (
-    <Units product={product} />
+    <>
+      <Units product={product} />
+      <Separator />
+      <Stocking product={product} />
+    </>
   )
 }
 
@@ -55,7 +57,7 @@ function Units({ product }: { product: Product }) {
 
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 pb-2">
 
       <DefaultForm
         unit={base!}
@@ -101,49 +103,39 @@ function VariantForm({
     <Col>
 
       <Col className="w-full rounded-lg border p-4">
-        <Row className="items-start justify-between">
+        <Row className="items-start ">
+          <div className="rounded-lg border px-2 py-1.5 w-30">
+            1 {unit.name}
+          </div>
 
-          <Col>
-            <Input
-              value={unit.name}
-              placeholder="e.g kg, piece, box" />
-            <Row className="items-center gap-2">
-              <span className="text-muted-foreground">
-                {t("products.pricing.variant.contains")}
-              </span>
-              <Input
-                value={unit.defaultValue}
-                type="number"
-                placeholder="12"
-              />
-              <span className="text-muted-foreground">
-                {basename}
-              </span>
-            </Row>
-          </Col>
+          <Row className="items-center gap-2">
+            <span className="text-muted-foreground">
+              {t("products.pricing.variant.contains")}
+            </span>
+            <div className="rounded-lg border px-2 py-1 5 w-20">
+              {unit.defaultValue}
+            </div>
+            <span className="text-muted-foreground">
+              {basename}
+            </span>
+          </Row>
 
 
-          <Button
-            variant="outline" size="sm">
-            <Trash />
-          </Button>
         </Row>
 
         <Separator />
         <Row className="items-start justify-between" >
           <Col>
             <Label>{t("products.pricing.default.cost")} </Label>
-            <Input
-              value={unit.cost}
-              onWheel={(e) => e.currentTarget.blur()}
-              type="number" placeholder="0,00" />
+            <span className="rounded-lg border px-2 py-1 5 ">
+              <Price value={formatNumber(unit.cost!.toFixed(2))} />
+            </span>
           </Col>
           <Col>
             <Label>{t("products.pricing.default.price")} </Label>
-            <Input
-              value={unit.price}
-              onWheel={(e) => e.currentTarget.blur()}
-              type="number" placeholder="0,00" />
+            <span className="rounded-lg border px-2 py-1 5 ">
+              <Price value={formatNumber(unit.price!.toFixed(2))} />
+            </span>
           </Col>
           <Col>
             <Label>{t("products.pricing.default.profit", { base: basename })} </Label>
@@ -230,6 +222,37 @@ function DefaultForm({
 
     </Row>
 
+  )
+}
+
+
+function Stocking({ product }: { product: Product }) {
+  const { t } = useTranslation()
+  const status = stockStatus(product.availableQty!, t, "products.single.");
+  return (
+    <div className="space-y-3 pt-2">
+      <div className="flex items-center justify-between">
+        <div>
+          <span className="text-sm font-medium">{t("products.stocking.stock.title")}</span>
+          <p className="text-xs text-muted-foreground">{t("products.stocking.stock.trackedIn", { unit: product.unit })}</p>
+        </div>
+      </div>
+      <Row className="items-start justify-between">
+        <Col>
+          <span className="text-sm font-medium">{t("products.stocking.quantity")}</span>
+          <div dir="ltr" className="rounded-lg border px-2 py-1.5 flex gap-9">
+            <span>{formatNumber(product.availableQty!)}</span>
+            <span>{product.unit}</span>
+          </div>
+        </Col>
+
+        {status.render()}
+
+      </Row>
+      <p className="px-1 text-xs text-muted-foreground">
+        {t("products.stocking.stock.quantityDescription", { unit: product.unit })}
+      </p>
+    </div>
   )
 }
 

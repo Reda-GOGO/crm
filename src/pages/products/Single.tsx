@@ -43,7 +43,7 @@ function Content({ product }: { product: Product }) {
     <div className="mx-auto w-full max-w-screen-xl ">
       <Action />
       <div className="grid grid-cols-12 gap-6 pb-10">
-        <div className="col-span-12 lg:col-span-5  lg:top-6 lg:self-start">
+        <div className="col-span-12 lg:col-span-5  ">
           <Identity product={product} />
         </div>
         <div className="col-span-12 flex flex-col gap-6 lg:col-span-7">

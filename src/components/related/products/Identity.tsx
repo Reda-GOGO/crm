@@ -27,7 +27,7 @@ export function Identity({ product }: { product: Product }) {
   const status = stockStatus(product.availableQty!, t, namespace);
 
   return (
-    <Card className="overflow-hidden ">
+    <Card className="overflow-hidden h-full ">
       <div className="p-4">
         <div className="relative aspect-square w-full overflow-hidden border-b bg-muted/30 rounded-lg">
           <ImageCard image={product.image} />
