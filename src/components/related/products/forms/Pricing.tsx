@@ -54,6 +54,11 @@ export function Pricing({ form }: { form: useProductFormReturnType }) {
         <CardDescription>
           {t("products.pricing.description")}
         </CardDescription>
+        {form.errors.units && form.errors.units[-1] && (
+          <div className="span text-sm font-normal text-red-500">
+            {form.errors.units[-1].name}
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <Units form={form} />
@@ -80,6 +85,7 @@ function Units({ form }: { form: useProductFormReturnType }) {
     <div className="space-y-5">
 
       <DefaultForm
+        form={form}
         unit={base}
         onChange={(patch) => updateBase(base.id, patch)} />
 
@@ -138,6 +144,13 @@ function VariantForm({
               value={unit.name}
               onChange={(e) => onChange({ name: e.target.value })}
               placeholder="e.g kg, piece, box" />
+            {
+              form.errors.units && form.errors.units[unit.id!] && (
+                <div className="span text-sm font-normal text-red-500">
+                  {form.errors.units[unit.id!].name}
+                </div>
+              )
+            }
             <Row className="items-center gap-2">
               <span className="text-muted-foreground">
                 {t("products.pricing.variant.contains")}
@@ -208,9 +221,11 @@ function VariantForm({
 
 
 function DefaultForm({
+  form,
   unit,
   onChange
 }: {
+  form: useProductFormReturnType;
   unit: Partial<Unit>,
   onChange: (patch: Partial<Unit>) => void
 }) {
@@ -231,6 +246,13 @@ function DefaultForm({
             onChange={(e) => onChange({ name: e.target.value })}
             className="w-60"
             placeholder="e.g kg, piece, box" />
+          {
+            form.errors.units && form.errors.units[unit.id!] && (
+              <div className="span text-sm font-normal text-red-500">
+                {form.errors.units[unit.id!].name}
+              </div>
+            )
+          }
 
         </Col>
         <span className="text-xs text-muted-foreground">

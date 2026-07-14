@@ -65,6 +65,6 @@ export function useUnits({
     }
   }
   return {
-    unit
+    ...unit
   }
 }

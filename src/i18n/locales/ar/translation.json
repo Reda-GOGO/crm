@@ -11,6 +11,7 @@
   "Restore": "استعادة",
   "Delete": "حذف",
   "Cancel": "إلغاء",
+  "Dismiss": "رفض",
   "Collection": "المجموعة",
   "Order": "الطلب",
   "Product": "المنتج",
@@ -72,6 +73,12 @@
     "footer": "HTTP 404 — لم يتم العثور على المورد"
   },
   "products": {
+    "notify": {
+      "successTitle": "تم إنشاء المنتج",
+      "successDescription": "تم حفظ المنتج بنجاح.",
+      "errorTitle": "فشل إنشاء المنتج",
+      "errorDescription": "لم يتم حفظ المنتج."
+    },
     "alert": {
       "title" : "هل تريد حقا مستوى؟",
       "description" : "هذا الإجراء لا يمكن التراجع عنه. سيؤدي هذا إلى حذف حسابك من خلال خدماتنا."

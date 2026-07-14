@@ -65,17 +65,27 @@ class HttpClient {
       queryString ? `${url}?${queryString}` : url
     );
   }
-  post<T>(url: string, body?: any) {
+  post<T>(url: string, body?: any, options: RequestInit = {}) {
     return this.request<T>(url, {
       method: "POST",
       body: body instanceof FormData ? body : JSON.stringify(body),
+      ...options,
     });
   }
 
-  put<T>(url: string, body?: any) {
+  put<T>(url: string, body?: any, options: RequestInit = {}) {
     return this.request<T>(url, {
       method: "PUT",
       body: body instanceof FormData ? body : JSON.stringify(body),
+      ...options,
+    });
+  }
+
+  patch<T>(url: string, body?: any, options: RequestInit = {}) {
+    return this.request<T>(url, {
+      method: "PATCH",
+      body: body instanceof FormData ? body : JSON.stringify(body),
+      ...options,
     });
   }
 

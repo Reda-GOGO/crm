@@ -40,13 +40,13 @@ export function useQuery<T>(
     return () => {
       cancelled = true;
     };
-  }, [queryFn]);
+  }, [queryFn, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
     const cleanup = execute();
     return cleanup;
-  }, [execute]);
+  }, [execute, enabled]);
 
   return {
     data,

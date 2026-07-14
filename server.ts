@@ -19,18 +19,20 @@ const app = express();
 
 app.set("query parser", "extended");
 app.set("json spaces", 2);
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(morgan("dev"));
-
 app.use(cors({
   origin: [
     "http://localhost:5173",
     "http://localhost:4173",
     "http://localhost:5544",
-  ]
+  ],
+  credentials: true,
 }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan("dev"));
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

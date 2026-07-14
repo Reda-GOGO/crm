@@ -42,9 +42,6 @@ export function validate(product: Product): FormError {
 
     const unitErrors: {
       name?: string;
-      cost?: string;
-      price?: string;
-      quantityInBase?: string;
     } = {};
 
 
@@ -52,21 +49,6 @@ export function validate(product: Product): FormError {
       unitErrors.name = "Unit name is required";
     }
 
-
-    if (unit.price <= 0) {
-      unitErrors.price = "Price must be greater than 0";
-    }
-
-
-    if (unit.cost < 0) {
-      unitErrors.cost = "Cost cannot be negative";
-    }
-
-
-    if (unit.quantityInBase! <= 0) {
-      unitErrors.quantityInBase =
-        "Quantity must be greater than 0";
-    }
 
 
     if (Object.keys(unitErrors).length) {

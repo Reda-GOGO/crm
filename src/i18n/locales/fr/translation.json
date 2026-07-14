@@ -11,6 +11,7 @@
   "Restore" : "Restaurer",
   "Delete" : "Supprimer",
   "Cancel" : "Annuler",
+  "Dismiss" : "Rejeter",
   "Collection" : "Collection",
   "Order" : "Commande",
   "selectLanguage": "Sélectionnez votre langue préférée.",
@@ -71,6 +72,12 @@
     "footer": "HTTP 404 — Ressource introuvable"
   },
   "products": {
+    "notify": {
+      "successTitle": "Produit créé",
+      "successDescription": "Votre produit a été créé avec succès.",
+      "errorTitle": "Échec de la création du produit",
+      "errorDescription": "Votre produit n'a pas été créé."
+    },
     "alert": {
       "title" : "Êtes-vous absolument sûr?",
       "description" : "Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte de nos serveurs."

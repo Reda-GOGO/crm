@@ -23,6 +23,7 @@ dist-server
 *.njsproj
 *.sln
 *.sw?
+*.txt
 
 /src/generated/prisma
 

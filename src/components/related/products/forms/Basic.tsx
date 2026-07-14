@@ -10,6 +10,7 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
@@ -44,6 +45,7 @@ export function Basic({ form }: { form: useProductFormReturnType }) {
         <div
           className="relative aspect-square w-full overflow-hidden rounded-lg border border-dashed bg-muted/20 transition-colors hover:bg-muted/30">
           <ImageCard
+            reset={form.resetImage}
             image={form.product.image}
             file={form.imageFile}
             onFileChange={form.setImageFile} />
@@ -60,8 +62,9 @@ export function Basic({ form }: { form: useProductFormReturnType }) {
             </FieldLabel>
             <Input
               value={form.product.name}
-              onChange={(e) => form.setProduct({ ...form.product, name: e.target.value })}
+              onChange={(e) => form.setProduct((prev) => ({ ...prev, name: e.target.value }))}
               placeholder={t(namespace + ".productBasic.placeholders.name")} />
+            {form.errors.name && <FieldError>{form.errors.name}</FieldError>}
           </Field>
 
           <Field>
@@ -183,12 +186,14 @@ function AutoToggle({
 
 
 type ImageCardProps = {
+  reset: () => void;
   image?: string | null;
   file: File | null;
   onFileChange: (file: File | null) => void;
 };
 
 export function ImageCard({
+  reset,
   image,
   file,
   onFileChange,
@@ -221,6 +226,7 @@ export function ImageCard({
   };
 
   const handleRemove = () => {
+    reset();
     onFileChange(null);
 
     if (inputRef.current) {

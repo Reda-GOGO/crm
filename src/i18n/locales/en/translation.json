@@ -13,6 +13,7 @@
   "Restore" : "Restore",
   "Delete" : "Delete",
   "Cancel" : "Cancel",
+  "Dismiss" : "Dismiss",
   "Order" : "Order",
   "Dashboard": "Dashboard",
   "Products": "Products",
@@ -71,6 +72,12 @@
     "footer": "HTTP 404 — Resource not found"
   },
   "products":{
+    "notify": {
+      "successTitle": "Product created",
+      "successDescription": "Your product has been saved successfully.",
+      "errorTitle": "Product creation failed",
+      "errorDescription": "Your product has not been saved."
+    },
     "alert": {
       "title" : "Are you absolutely sure?",
       "description" : "This action cannot be undone. This will permanently delete your account from our servers."
