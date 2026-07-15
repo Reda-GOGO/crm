@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import product from "./routers/products";
 import collection from "./routers/collections";
+import order from "./routers/orders";
 
 
 
@@ -35,6 +36,7 @@ app.use("/uploads", express.static(path.resolve(process.cwd(), "uploads")));
 
 app.use("/products", product);
 app.use("/collections", collection);
+app.use("/orders", order);
 
 
 const port = 1337;
