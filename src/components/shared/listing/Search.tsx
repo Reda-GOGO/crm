@@ -33,7 +33,6 @@ export function Search<T>({
   }
 
   useEffect(() => {
-    // We use a Set to track multiple keys simultaneously
     const pressedKeys = new Set<string>();
 
     const down = (e: KeyboardEvent) => {
