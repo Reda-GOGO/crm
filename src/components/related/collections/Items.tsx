@@ -136,7 +136,7 @@ function Item({ item }: { item: Product }) {
 
 function NoContent() {
   return (
-    <div className="flex h-160 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-2 text-center">
+    <div className="flex h-160 flex-col items-center justify-center gap-3 rounded-lg  border-dashed border-2 text-center">
       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
         <PackageX className="h-6 w-6 text-muted-foreground" />
       </div>
