@@ -132,7 +132,7 @@ router.patch("/:handle", upload.single("image"), async (req, res, next) => {
     if (cost) payload.cost = Number(cost);
     if (price) payload.price = Number(price);
     if (unit) payload.unit = unit;
-    if (archived) payload.archived = Boolean(archived);
+    if (archived) payload.archived = archived.trim() === "true";
     if (availableQty) payload.availableQty = Number(availableQty);
     payload.image = req.file?.filename ? "/uploads/" + req.file.filename : image;
 

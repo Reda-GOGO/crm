@@ -66,4 +66,26 @@ router.get("/:handle", async (req, res, next) => {
   }
 });
 
+
+router.delete("/:handle", async (req, res, next) => {
+  try {
+    const collection = await database.collection.findUnique({
+      where: {
+        handle: req.params.handle
+      }
+    });
+    if (!collection) return res.status(404).send({ error: "Not found" });
+    await database.collection.update({
+      where: {
+        id: collection.id,
+      },
+      data: {
+        archived: true,
+      }
+    });
+    res.json({ success: true });
+  } catch (e) {
+    next(e);
+  }
+});
 export default router;
