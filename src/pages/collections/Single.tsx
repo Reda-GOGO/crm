@@ -81,7 +81,7 @@ function Loading() {
   return (
     <div className="mx-auto w-full max-w-screen-xl py-6">
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-12 lg:col-span-5">
+        <div className="col-span-12 lg:col-span-4">
           <Card className="overflow-hidden">
             <div className="w-full rounded-xl p-4">
               <Skeleton className="aspect-square w-full rounded-none" />
@@ -96,7 +96,7 @@ function Loading() {
             </CardContent>
           </Card>
         </div>
-        <div className="col-span-12 h-full flex flex-col gap-6 lg:col-span-7">
+        <div className="col-span-12 h-full flex flex-col gap-6 lg:col-span-8">
           <Skeleton className="h-full w-full rounded-lg" />
         </div>
       </div>
