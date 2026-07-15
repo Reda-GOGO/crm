@@ -20,6 +20,18 @@ export async function syncUnits({
   productId: number;
   units: Unit[]
 }) {
+  const existingIds = units
+    .filter((u) => u.id != null)
+    .map((u) => u.id!);
+
+  await tx.productUnit.deleteMany({
+    where: {
+      productId,
+      id: {
+        notIn: existingIds,
+      },
+    },
+  });
   for (const unit of units) {
     await tx.productUnit.upsert({
       where: {

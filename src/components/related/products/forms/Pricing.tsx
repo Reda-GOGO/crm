@@ -139,38 +139,77 @@ function VariantForm({
       <Col className="w-full rounded-lg border p-4">
         <Row className="items-start justify-between">
 
-          <Col>
-            <Input
-              value={unit.name}
-              onChange={(e) => onChange({ name: e.target.value })}
-              placeholder="e.g kg, piece, box" />
-            {
-              form.errors.units && form.errors.units[unit.id!] && (
-                <div className="span text-sm font-normal text-red-500">
-                  {form.errors.units[unit.id!].name}
-                </div>
-              )
-            }
-            <Row className="items-center gap-2">
-              <span className="text-muted-foreground">
-                {t("products.pricing.variant.contains")}
-              </span>
-              <Input
-                value={unit.defaultValue}
-                onChange={
-                  (e) => onChange({
-                    quantityInBase: parseFloat(e.target.value) ?? 0,
-                    defaultValue: parseFloat(e.target.value) ?? 0,
-                  })
+          <Row>
+
+            <Col>
+              <Col>
+                <Label>{t("Name")}</Label>
+                <Input
+                  value={unit.name}
+                  onChange={(e) => onChange({ name: e.target.value })}
+                  placeholder="e.g kg, piece, box" />
+                {
+                  form.errors.units && form.errors.units[unit.id!] && (
+                    <div className="span text-sm font-normal text-red-500">
+                      {form.errors.units[unit.id!].name}
+                    </div>
+                  )
                 }
-                type="number"
-                placeholder="12"
-              />
-              <span className="text-muted-foreground">
-                {basename}
-              </span>
+              </Col>
+              <Col>
+                <Label className="text-xs">value per <b>{basename}</b></Label>
+                <Row className="items-center gap-2">
+                  <span className="text-muted-foreground">
+                    {t("products.pricing.variant.contains")}
+                  </span>
+                  <Input
+                    value={unit.defaultValue}
+                    onChange={
+                      (e) => onChange({
+                        quantityInBase: parseFloat(e.target.value) ?? 0,
+                        defaultValue: parseFloat(e.target.value) ?? 0,
+                      })
+                    }
+                    type="number"
+                    placeholder="12"
+                  />
+                  <span className="text-muted-foreground">
+                    {basename}
+                  </span>
+                </Row>
+              </Col>
+            </Col>
+            <Row className="items-start justify-between" >
+              <Col>
+                <Label>{t("products.pricing.default.cost")} </Label>
+                <Input
+                  value={unit.cost}
+                  onWheel={(e) => e.currentTarget.blur()}
+                  onChange={(e) => onChange({ cost: parseFloat(e.target.value) ?? 0 })}
+                  type="number" placeholder="0,00" />
+              </Col>
+              <Col>
+                <Label>{t("products.pricing.default.price")} </Label>
+                <Input
+                  value={unit.price}
+                  onWheel={(e) => e.currentTarget.blur()}
+                  onChange={(e) => onChange({ price: parseFloat(e.target.value) ?? 0 })}
+                  type="number" placeholder="0,00" />
+              </Col>
+              <Col>
+                <Label>{t("products.pricing.default.profit", { base: basename })} </Label>
+                <div className="rounded-lg border px-2 py-1.5">
+                  <Price value={formatNumber(profit.toFixed(2))} />
+                </div>
+                <span>
+
+                  {percent >= 0 ? "+" : ""}
+                  {percent.toFixed(2)}
+                  %
+                  vs default</span>
+              </Col>
             </Row>
-          </Col>
+          </Row>
 
 
           <Button
@@ -181,36 +220,6 @@ function VariantForm({
         </Row>
 
         <Separator />
-        <Row className="items-start justify-between" >
-          <Col>
-            <Label>{t("products.pricing.default.cost")} </Label>
-            <Input
-              value={unit.cost}
-              onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) => onChange({ cost: parseFloat(e.target.value) ?? 0 })}
-              type="number" placeholder="0,00" />
-          </Col>
-          <Col>
-            <Label>{t("products.pricing.default.price")} </Label>
-            <Input
-              value={unit.price}
-              onWheel={(e) => e.currentTarget.blur()}
-              onChange={(e) => onChange({ price: parseFloat(e.target.value) ?? 0 })}
-              type="number" placeholder="0,00" />
-          </Col>
-          <Col>
-            <Label>{t("products.pricing.default.profit", { base: basename })} </Label>
-            <div className="rounded-lg border px-2 py-1.5">
-              <Price value={formatNumber(profit.toFixed(2))} />
-            </div>
-            <span>
-
-              {percent >= 0 ? "+" : ""}
-              {percent.toFixed(2)}
-              %
-              vs default</span>
-          </Col>
-        </Row>
 
       </Col>
 

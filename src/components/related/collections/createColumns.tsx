@@ -53,7 +53,9 @@ export function createColumns({
       header: t("Collection"),
       className: dir === "rtl" ? "text-right" : "text-left",
       cell: (collection) => (
-        <div className="flex items-center gap-2">
+        <div
+          onClick={() => view ? view(collection) : null}
+          className="flex items-center gap-2">
           <ProductImage src={collection.image!} />
           <span>{collection.name}</span>
         </div>

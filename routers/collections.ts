@@ -55,6 +55,9 @@ router.get("/:handle", async (req, res, next) => {
       where: {
         handle: req.params.handle,
       },
+      include: {
+        products: true,
+      }
     });
     if (!collection) return res.status(404).json({ error: "Not found" });
     res.json(collection);

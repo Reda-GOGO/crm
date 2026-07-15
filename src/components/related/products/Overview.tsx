@@ -14,6 +14,7 @@ import Row from "@/components/shared/Row";
 import Col from "@/components/shared/Col";
 import { Label } from "@/components/ui/label";
 import { stockStatus } from "./stockStatus";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export function Overview({ product }: { product: Product }) {
   const { t } = useTranslation();
@@ -77,19 +78,55 @@ function Units({ product }: { product: Product }) {
         </div>
       )}
       {
-        variants.map((variant) => {
-          return (
-            <VariantForm base={base!} unit={variant} key={variant.id} />
-          )
-        })
+        variants.length > 0 ? (
+          <div className="rounded-lg border">
+            <Table className="w-full ">
+              <TableHeader>
+                <TableRow className="bg-muted">
+                  <TableHead>{t("Name")}</TableHead>
+                  <TableHead>{t("Cost")}</TableHead>
+                  <TableHead>{t("Price")}</TableHead>
+                  <TableHead> {t("Profit")}</TableHead>
+                  <TableHead> Value Per <b>{base!.name}</b> </TableHead>
+                </TableRow>
+
+              </TableHeader>
+              <TableBody className="max-h-90">
+
+                {
+                  variants.map((variant) => {
+                    return (
+                      <VariantLine base={base!} unit={variant} key={variant.id} />
+                    )
+                  })
+                }
+              </TableBody>
+
+            </Table>
+          </div>
+        ) : <VariantEmpty />
       }
 
     </div>
   );
 }
 
-
-function VariantForm({
+function VariantEmpty() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 rounded-lg border-dashed border-2 text-center p-2">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+        <Info className="h-6 w-6 text-muted-foreground" />
+      </div>
+      <div className="space-y-1">
+        <p className="text-sm uppercase font-semibold ">No variants in this product yet</p>
+        <p className="text-sm text-muted-foreground">
+          Add variants to see them listed here.
+        </p>
+      </div>
+    </div>
+  )
+}
+function VariantLine({
   unit,
   base,
 }: {
@@ -98,62 +135,31 @@ function VariantForm({
 }) {
   const basename = base.name
   const { profit, percent } = calculateMargin(unit.cost!, unit.price!);
-  const { t } = useTranslation();
   return (
-    <Col>
+    <TableRow>
+      <TableCell>
+        {unit.name}
+      </TableCell>
+      <TableCell>
+        <Price value={formatNumber(unit.cost!)} />
+      </TableCell>
+      <TableCell>
+        <Price value={formatNumber(unit!.price!)} />
+      </TableCell>
+      <TableCell>
+        <div>
+          <Price value={formatNumber(profit)} />
+          <span>{percent.toFixed(2)} %</span>
+        </div>
+      </TableCell>
+      <TableCell>
+        <div className="flex gap-2 items-center">
+          {unit.quantityInBase}
+          <b>{basename}</b>
+        </div>
+      </TableCell>
 
-      <Col className="w-full rounded-lg border p-4">
-        <Row className="items-start ">
-          <div className="rounded-lg border px-2 py-1.5 w-30">
-            1 {unit.name}
-          </div>
-
-          <Row className="items-center gap-2">
-            <span className="text-muted-foreground">
-              {t("products.pricing.variant.contains")}
-            </span>
-            <div className="rounded-lg border px-2 py-1 5 w-20">
-              {unit.defaultValue}
-            </div>
-            <span className="text-muted-foreground">
-              {basename}
-            </span>
-          </Row>
-
-
-        </Row>
-
-        <Separator />
-        <Row className="items-start justify-between" >
-          <Col>
-            <Label>{t("products.pricing.default.cost")} </Label>
-            <span className="rounded-lg border px-2 py-1 5 ">
-              <Price value={formatNumber(unit.cost!.toFixed(2))} />
-            </span>
-          </Col>
-          <Col>
-            <Label>{t("products.pricing.default.price")} </Label>
-            <span className="rounded-lg border px-2 py-1 5 ">
-              <Price value={formatNumber(unit.price!.toFixed(2))} />
-            </span>
-          </Col>
-          <Col>
-            <Label>{t("products.pricing.default.profit", { base: basename })} </Label>
-            <div className="rounded-lg border px-2 py-1.5">
-              <Price value={formatNumber(profit.toFixed(2))} />
-            </div>
-            <span>
-
-              {percent >= 0 ? "+" : ""}
-              {percent.toFixed(2)}
-              %
-              vs default</span>
-          </Col>
-        </Row>
-
-      </Col>
-
-    </Col>
+    </TableRow>
   )
 
 }

@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import type { useListReturnType } from "@/hooks/useList";
 import { formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+
 type Product = {
   id: number;
   name: string;
@@ -67,7 +68,7 @@ export function createColumns({
       key: "price",
       header: t("Price"),
       className: dir === "rtl" ? "text-right" : "text-left",
-      cell: (product) => (
+      cell: (product: Product) => (
         <div onClick={() => view(product)}>
           <Price value={formatNumber(product.price)} />
         </div>
