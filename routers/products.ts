@@ -3,10 +3,13 @@ import database from "../services/database";
 import { clause, parse, rank } from "../utilities";
 import { Product } from "../generated/prisma/client";
 import { upload } from "../middlewares/upload";
+import { syncUnits } from "../services/products";
 
 const router = express.Router({
   mergeParams: true,
 });
+
+
 router.post("/", upload.single("image"), async (req, res, next) => {
   try {
     const { name, handle, description, cost, price, unit, availableQty, archived } = req.body
@@ -110,6 +113,7 @@ router.get("/:handle", async (req, res, next) => {
 });
 
 
+
 router.patch("/:handle", upload.single("image"), async (req, res, next) => {
   try {
     const { name, description, cost, price, unit, image, availableQty, archived } = req.body
@@ -145,33 +149,7 @@ router.patch("/:handle", upload.single("image"), async (req, res, next) => {
           ...payload,
         }
       });
-      for (const unit of units) {
-        await tx.productUnit.upsert({
-          where: {
-            id: unit.id,
-          },
-          update: {
-            name: unit.name,
-            quantityInBase: unit.quantityInBase,
-            isBase: unit.isBase,
-            defaultValue: unit.defaultValue,
-            variantValue: unit.variantValue,
-            cost: unit.cost,
-            price: unit.price,
-          },
-          create: {
-            productId: product.id,
-            name: unit.name,
-            quantityInBase: unit.quantityInBase,
-            isBase: unit.isBase,
-            defaultValue: unit.defaultValue,
-            variantValue: unit.variantValue,
-            cost: unit.cost,
-            price: unit.price,
-
-          }
-        })
-      }
+      await syncUnits({ tx, productId: product.id, units })
     })
     res.json({ success: true });
   } catch (e) {
