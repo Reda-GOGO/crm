@@ -39,7 +39,7 @@ export function Overview({ product }: { product: Product }) {
 function Body({ product }: { product: Product }) {
   return (
     <>
-      <Units product={product} />
+      {product.units.length > 0 && <Units product={product} />}
       <Separator />
       <Stocking product={product} />
     </>
