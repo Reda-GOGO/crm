@@ -5,6 +5,7 @@ type Options = {
   initialLimit?: number;
 };
 
+export type usePaginationReturnType = ReturnType<typeof usePagination>;
 export function usePagination({
   initialPage = 1,
   initialLimit = 10,

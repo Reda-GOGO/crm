@@ -1,33 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { usePaginationReturnType } from "../usePagination";
 
 type Mode = "page" | "infinite";
 
 export function useListItems<T>({
   data,
   mode,
-  page,
   queryKey,
-  activeQueryKey,
-  resetCount,
+  pagination,
 }: {
   data?: {
     items: T[];
   } | null;
   mode: Mode;
-  page: number;
   queryKey: string;
-  activeQueryKey: React.RefObject<string>;
-  resetCount: number;
+  pagination: usePaginationReturnType;
 }) {
   const [items, setItems] = useState<T[]>([]);
-
-  const clearItems = useCallback(() => {
-    setItems([]);
-  }, []);
+  const previousQueryKey = useRef(queryKey);
 
   useEffect(() => {
-    clearItems();
-  }, [resetCount, clearItems]);
+    if (previousQueryKey.current === queryKey) return;
+
+    previousQueryKey.current = queryKey;
+    setItems([]);
+    pagination.reset();
+  }, [queryKey, pagination]);
+
 
   useEffect(() => {
     if (!data) return;
@@ -37,25 +36,17 @@ export function useListItems<T>({
       return;
     }
 
-    if (queryKey !== activeQueryKey.current) {
+    if (queryKey !== previousQueryKey.current) {
       return;
     }
 
-    setItems((previous) =>
-      page === 1
-        ? data.items
-        : [...previous, ...data.items]
-    );
-  }, [
-    data,
-    mode,
-    page,
-    queryKey,
-    activeQueryKey,
-  ]);
+    if (pagination.page === 1) {
+      setItems(data.items);
+    } else {
+      setItems(prev => [...prev, ...data.items]);
+    }
+  }, [data, mode]);
+  return items;
 
-  return {
-    items,
-    clearItems,
-  };
 }
+
