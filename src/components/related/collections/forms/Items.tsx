@@ -31,8 +31,6 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
     limit: 10,
   })
   const initialized = useRef(false);
-  console.log("collection products : ", form.collection.products);
-  console.log("hook.draftSelection items : ", hook.draftSelection.items);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -69,7 +67,7 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
       <CardContent className="space-y-6 h-full">
         <div className="w-full h-full flex flex-col">
           <Browse hook={hook} toggle={toggle} />
-          <ItemContent hook={hook} form={form} toggle={toggle} />
+          <ItemContent hook={hook} toggle={toggle} />
         </div>
       </CardContent>
     </Card>
@@ -78,15 +76,13 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
 
 export function ItemContent({
   hook,
-  form,
   toggle
 }: {
   hook: useListReturnType<Product>
-  form: useCollectionFormReturnType
   toggle: (item: Product) => void
 }) {
   const selection = hook.draftSelection;
-  const items = form.collection.products!;
+  const items = [...hook.draftSelection.items.values()];
   if (items.length === 0) return <NoContent />
   return (
     <div className="flex-1 min-h-0 gap-4 overflow-hidden">
