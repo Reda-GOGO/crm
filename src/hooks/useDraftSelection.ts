@@ -54,6 +54,20 @@ export function useDraftSelection<T extends { id: number }>() {
     });
   }, []);
 
+  const replace = useCallback((items: T[]) => {
+    const map = new Map<number, DraftItem<T>>();
+
+    for (const item of items) {
+      map.set(item.id, {
+        ...item,
+        quantity: 1,
+        unitPrice: (item as any).price,
+      });
+    }
+
+    setItems(map);
+  }, []);
+
   const clear = useCallback(() => {
     setItems(new Map());
   }, []);
@@ -64,6 +78,7 @@ export function useDraftSelection<T extends { id: number }>() {
     selectedArray: Array.from(items.values()),
 
     toggle,
+    replace,
     updateField,
     remove,
     clear,

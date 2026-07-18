@@ -17,7 +17,7 @@ import { List } from "@/components/shared/listing/List";
 import { ProductImage } from "@/components/shared/ProductImage";
 import Row from "@/components/shared/Row";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import Col from "@/components/shared/Col";
 import { Price } from "@/components/shared/Price";
@@ -30,6 +30,31 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
     mode: "infinite",
     limit: 10,
   })
+  const initialized = useRef(false);
+  console.log("collection products : ", form.collection.products);
+  console.log("hook.draftSelection items : ", hook.draftSelection.items);
+
+  useEffect(() => {
+    if (initialized.current) return;
+    if (!form.collection.products?.length) return;
+
+    hook.draftSelection.replace(form.collection.products ?? []);
+    initialized.current = true;
+  }, [form.collection.products]);
+
+  const toggle = (item: Product) => {
+    const selected = hook.draftSelection.isSelected(item.id!);
+
+    hook.draftSelection.toggle(item);
+
+    form.setCollection(prev => ({
+      ...prev,
+      products: selected
+        ? prev.products!.filter(p => p.id !== item.id)
+        : [...prev.products!, item],
+    }));
+  };
+
   return (
     <Card className="w-full h-full">
       <CardHeader>
@@ -43,8 +68,8 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
       </CardHeader>
       <CardContent className="space-y-6 h-full">
         <div className="w-full h-full flex flex-col">
-          <Browse hook={hook} form={form} />
-          <ItemContent hook={hook} form={form} />
+          <Browse hook={hook} toggle={toggle} />
+          <ItemContent hook={hook} form={form} toggle={toggle} />
         </div>
       </CardContent>
     </Card>
@@ -53,14 +78,16 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
 
 export function ItemContent({
   hook,
-  form
+  form,
+  toggle
 }: {
   hook: useListReturnType<Product>
   form: useCollectionFormReturnType
+  toggle: (item: Product) => void
 }) {
   const selection = hook.draftSelection;
   const items = form.collection.products!;
-  if (selection.count === 0) return <NoContent />
+  if (items.length === 0) return <NoContent />
   return (
     <div className="flex-1 min-h-0 gap-4 overflow-hidden">
       <div className="flex-1 min-h-0 overflow-hidden  gap-2 py-2">
@@ -69,7 +96,7 @@ export function ItemContent({
             {items.map((item) => (
               <Item key={item.id}
                 isAdded={selection.isSelected(item.id)}
-                add={() => selection.toggle(item)}
+                add={() => toggle(item)}
                 product={item} />
             ))}
           </div>
@@ -113,10 +140,10 @@ export function NoContent() {
 
 function Browse({
   hook,
-  form
+  toggle
 }: {
   hook: useListReturnType<Product>
-  form: useCollectionFormReturnType
+  toggle: (item: Product) => void
 }) {
   return (
     <div className="flex w-full">
@@ -139,7 +166,7 @@ function Browse({
             <DialogTitle>Products</DialogTitle>
             <DialogDescription>Select products to add to your collection.</DialogDescription>
           </DialogHeader>
-          <BrowseContent hook={hook} form={form} />
+          <BrowseContent hook={hook} toggle={toggle} />
         </DialogContent>
 
       </Dialog>
@@ -149,10 +176,10 @@ function Browse({
 
 function BrowseContent({
   hook,
-  form
+  toggle
 }: {
   hook: useListReturnType<Product>
-  form: useCollectionFormReturnType
+  toggle: (item: Product) => void
 }) {
   const items = hook.data;
   const pagination = hook.pagination;
@@ -164,19 +191,6 @@ function BrowseContent({
     hasMore: meta.hasMore || false,
     onLoadMore: pagination.next
   })
-  const isAdded = (item: Product) => {
-    const product = form.collection.products!.find((p) => p.id === item.id!);
-    if (product) return true;
-    return false;
-  };
-  const add = (item: Product) => {
-    selection.toggle(item);
-    if (selection.isSelected(item.id!)) {
-      form.setCollection((prev) => ({ ...prev, products: prev.products!.filter((p) => p.id !== item.id!) }))
-    } else {
-      form.setCollection((prev) => ({ ...prev, products: [...prev.products!, item] }))
-    };
-  }
 
 
   return (
@@ -207,8 +221,8 @@ function BrowseContent({
             <div className="flex flex-col gap-2 px-4">
               {items.map((item) => (
                 <Item key={item.id}
-                  isAdded={isAdded(item)}
-                  add={() => add(item)}
+                  isAdded={selection.isSelected(item.id)}
+                  add={() => toggle(item)}
                   product={item} />
               ))}
               <InfiniteLoader ref={observerTarget} loading={hook.loading} hasMore={meta.hasMore} />

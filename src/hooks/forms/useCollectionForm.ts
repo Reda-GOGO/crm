@@ -14,13 +14,14 @@ type FormOptions =
   };
 
 function initialize() {
+  const handle = genRanHex(16);
   return {
     id: 0,
     name: "",
-    handle: genRanHex(16),
+    handle,
     image: "",
     products: [],
-    description: "",
+    description: `this is a description of collection with handle ${handle}`,
     createdAt: new Date(),
     updatedAt: new Date(),
     archived: false,
