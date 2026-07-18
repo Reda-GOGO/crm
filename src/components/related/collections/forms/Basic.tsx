@@ -11,11 +11,14 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import type { useCollectionFormReturnType } from "@/hooks/forms/useCollectionForm";
 import { cn } from "@/lib/utils";
 import { Hash, ImagePlus, Info, Pencil, Sparkles, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-export function Basic() {
+export function Basic({ form }: { form: useCollectionFormReturnType }) {
+  const [autoHandle, setAutoHandle] = useState(true);
+  const [autoDescription, setAutoDescription] = useState(true);
   return (
     <Card className="w-full">
       <CardHeader>
@@ -32,10 +35,10 @@ export function Basic() {
         <div
           className="relative aspect-square w-full overflow-hidden rounded-lg border border-dashed bg-muted/20 transition-colors hover:bg-muted/30">
           <ImageCard
-            reset={() => { }}
-            image={""}
-            file={null}
-            onFileChange={() => { }} />
+            reset={form.resetImage}
+            image={form.collection.image}
+            file={form.imageFile}
+            onFileChange={form.setImageFile} />
 
           <div className="hidden ddflex pointer-events-none absolute inset-x-0 bottom-0  items-center justify-center gap-1.5 bg-gradient-to-t from-background/90 to-transparent py-3 text-xs text-muted-foreground">
             Square image, at least 800 × 800px
@@ -45,7 +48,10 @@ export function Basic() {
 
         <Field>
           <FieldLabel className="text-xs font-medium uppercase tracking-wide text-muted-foreground"> Name</FieldLabel>
-          <Input placeholder="Collection name" />
+          <Input
+            value={form.collection.name}
+            onChange={(e) => form.setCollection((prev) => ({ ...prev, name: e.target.value }))}
+            placeholder="Collection name" />
         </Field>
 
 
@@ -55,23 +61,26 @@ export function Basic() {
             <FieldLabel className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Handle
             </FieldLabel>
-            <AutoToggle checked={true} onCheckedChange={() => { }} />
+            <AutoToggle checked={autoHandle} onCheckedChange={setAutoHandle} />
           </div>
 
 
           <div
             className={cn(
               "flex items-center gap-1 transition-colors focus-within:ring-1 focus-within:ring-ring",
-              true && "bg-muted/30"
+              autoHandle && "bg-muted/30"
             )}
           >
             <div className="p-2 ">
               <Hash className="h-3.5 w-3.5" />
             </div>
             <Input
+              value={form.collection.handle}
+              onChange={(e) => form.setCollection({ ...form.collection, handle: e.target.value })}
+              disabled={autoHandle}
               className={cn(
                 "border-0 font-mono shadow-none focus-visible:ring-0",
-                true && "text-muted-foreground"
+                autoHandle && "text-muted-foreground"
               )}
             />
           </div>
@@ -88,10 +97,13 @@ export function Basic() {
             <FieldLabel className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Description
             </FieldLabel>
-            <AutoToggle checked={true} onCheckedChange={() => { }} />
+            <AutoToggle checked={autoDescription} onCheckedChange={setAutoDescription} />
           </div>
           <Textarea
-            className={cn(true && "bg-muted/30 text-muted-foreground")}
+            value={form.collection.description!}
+            onChange={(e) => form.setCollection({ ...form.collection, description: e.target.value })}
+            disabled={autoDescription}
+            className={cn(autoDescription && "bg-muted/30 text-muted-foreground")}
             rows={4}
           />
           <FieldDescription>

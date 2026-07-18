@@ -9,6 +9,7 @@ import { useSelection } from "./useSelection";
 import { useListMeta } from "./useList/useListMeta";
 import { createListQueryKey } from "./useList/createListQueryKey";
 import { useListItems } from "./useList/useListItems";
+import { useDraftSelection } from "./useDraftSelection";
 
 type Mode = "page" | "infinite";
 export type useListReturnType<T> = ReturnType<typeof useList<T>>;
@@ -26,6 +27,7 @@ export function useList<T>({
   const pagination = usePagination({ initialLimit: limit });
   const filters = useFilters({});
   const selection = useSelection<number>();
+  const draftSelection = useDraftSelection<T>();
   const queryKey = createListQueryKey({
     search: search.debouncedSearch,
     filters: filters.value,
@@ -67,6 +69,7 @@ export function useList<T>({
 
     filters,
     selection,
+    draftSelection,
     pagination,
 
     meta,
