@@ -61,7 +61,7 @@ export function Items({ form }: { form: useCollectionFormReturnType }) {
           Collection Product(s)
         </CardTitle>
         <CardDescription>
-          Basic information about the collection
+          Manage the products in this collection.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 h-full">
@@ -114,8 +114,8 @@ export function NoContent() {
           </EmptyMedia>
           <EmptyTitle>No Product Added Yet</EmptyTitle>
           <EmptyDescription>
-            You haven&apos;t added any product yet, Start adding products to
-            your collection .
+            You haven't added any products yet.
+            Browse products to start building your collection.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>

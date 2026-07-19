@@ -1,3 +1,7 @@
+export interface Identifiable {
+  id: number;
+}
+
 export type Product = {
   id: number;
   name: string;

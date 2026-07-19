@@ -1,3 +1,4 @@
+import type { Identifiable } from "@/types";
 import { useState, useCallback } from "react";
 
 type DraftItem<T> = T & {
@@ -6,7 +7,7 @@ type DraftItem<T> = T & {
   unitName?: string;
 };
 
-export function useDraftSelection<T extends { id: number }>() {
+export function useDraftSelection<T extends Identifiable>() {
   const [items, setItems] = useState<Map<number, DraftItem<T>>>(new Map());
 
   const toggle = useCallback((item: T) => {

@@ -10,11 +10,51 @@ import { useListMeta } from "./useList/useListMeta";
 import { createListQueryKey } from "./useList/createListQueryKey";
 import { useListItems } from "./useList/useListItems";
 import { useDraftSelection } from "./useDraftSelection";
+import type { Identifiable } from "@/types";
 
 type Mode = "page" | "infinite";
-export type useListReturnType<T> = ReturnType<typeof useList<T>>;
+export type useListReturnType<T extends Identifiable> = ReturnType<typeof useList<T>>;
 
-export function useList<T>({
+/**
+ * Central hook for managing CRUD resource listings.
+ *
+ * Combines data fetching, search, filtering, pagination,
+ * row selection, draft selection, and list metadata into a
+ * single reusable API.
+ *
+ * Supports both page-based and infinite scrolling modes.
+ *
+ * @template T Resource type extending {@link Identifiable}.
+ *
+ * @param options Configuration options.
+ * @param options.resource API resource name (e.g. `"products"` or `"collections"`).
+ * @param [options.mode="page"] Pagination strategy. Use `"page"` for traditional pagination or `"infinite"` for infinite scrolling.
+ * @param [options.limit=7] Number of items requested per page.
+ *
+ * @returns An object containing:
+ * - `data` - The current list of resources.
+ * - `loading` - Whether a request is in progress.
+ * - `error` - The last request error, if any.
+ * - `refetch` - Reloads the current list.
+ * - `search` - Current search query.
+ * - `setSearch` - Updates the search query.
+ * - `resetSearch` - Clears the current search.
+ * - `filters` - Filter state and helpers.
+ * - `selection` - Row selection state.
+ * - `draftSelection` - Editable selection state for workflows such as collections or orders.
+ * - `pagination` - Pagination controls and state.
+ * - `meta` - Derived metadata such as total pages and item count.
+ *
+ * @example
+ * ```ts
+ * const products = useList<Product>({
+ *   resource: "products",
+ *   mode: "infinite",
+ *   limit: 20,
+ * });
+ * ``
+ */
+export function useList<T extends Identifiable>({
   resource,
   mode = "page",
   limit = 7,
