@@ -10,7 +10,7 @@ export default function Update() {
   return (
     <Back>
       <div className="mx-auto w-full max-w-screen-xl py-6">
-        <Heading mode="update" />
+        <Heading mode="update" isSaving={form.isSaving} save={form.save} />
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-4">
             <Forms.Basic form={form} />

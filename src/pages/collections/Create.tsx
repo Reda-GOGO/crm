@@ -8,7 +8,7 @@ export default function Create() {
   return (
     <Back className="h-full">
       <div className="mx-auto w-full max-w-screen-xl py-6">
-        <Heading mode="create" />
+        <Heading mode="create" isSaving={form.isSaving} save={form.save} />
 
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12 flex-1 min-h-0 lg:col-span-4">

@@ -4,11 +4,13 @@ import { useNavigate } from "react-router";
 type HeadingProps = {
   mode: "create" | "update";
   isSaving?: boolean;
+  save?: () => void;
 };
 
 export function Heading({
   mode,
   isSaving = false,
+  save,
 }: HeadingProps) {
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ export function Heading({
         </Button>
 
         <Button
+          onClick={save}
         >
           {isSaving
             ? "Saving ..."

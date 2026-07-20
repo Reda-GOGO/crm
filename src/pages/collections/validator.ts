@@ -1,11 +1,12 @@
 import type { Collection } from "@/types";
 
-type FormError = {
+export type FormError = {
   name?: string;
   handle?: string;
 };
 
-export function validate(collection: Collection): FormError {
+type CollectionDTO = Omit<Collection, "tags" | "_count">;
+export function validate(collection: CollectionDTO): FormError {
   const errors: FormError = {};
 
   if (!collection.name.trim()) {
