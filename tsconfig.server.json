@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "rootDir": ".",
+    "outDir": "dist-server",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "skipLibCheck": true
   },
   "include": [
     "server.ts",
@@ -16,5 +19,9 @@
     "prisma/**/*",
     "utilities/**/*",
     "services/**/*"
-  ]
+  ],
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "resolveFullExtension": ".js"
+  }
 }
