@@ -6,6 +6,7 @@ export type FormError = {
 };
 
 type CollectionDTO = Omit<Collection, "tags" | "_count">;
+
 export function validate(collection: CollectionDTO): FormError {
   const errors: FormError = {};
 

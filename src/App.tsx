@@ -28,6 +28,9 @@ function App() {
         <Route path="collections/:handle" element={<Collection.Single />} />
         <Route path="collections/:handle/edit" element={<Collection.Update />} />
         <Route path="orders" element={<Orders.Listing />} />
+        <Route path="orders/create" element={<Orders.Create />} />
+        <Route path="orders/:handle" element={<Orders.Single />} />
+        <Route path="orders/:handle/edit" element={<Orders.Update />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="setting" element={<Settings />} />

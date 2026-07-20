@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2023",
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "rootDir": ".",
     "strict": true,
-    "esModuleInterop": true,
-    "ignoreDeprecations": "6.0",
-    "outDir": "dist-server",
-    "rootDir": "."
+    "esModuleInterop": true
   },
   "include": [
     "server.ts",
     "routers/**/*",
-    "services/**/*",
+    "middlewares/**/*",
+    "generated/**/*",
     "prisma/**/*",
-    "uploads/**/*"
+    "utilities/**/*",
+    "services/**/*"
   ]
 }

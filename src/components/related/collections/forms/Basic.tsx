@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,6 +52,7 @@ export function Basic({ form }: { form: useCollectionFormReturnType }) {
             value={form.collection.name}
             onChange={(e) => form.setCollection((prev) => ({ ...prev, name: e.target.value }))}
             placeholder="Collection name" />
+          <FieldError>{form.errors.name}</FieldError>
         </Field>
 
 
@@ -87,6 +88,7 @@ export function Basic({ form }: { form: useCollectionFormReturnType }) {
           <FieldDescription>
             Generated automatically from the collection name.
           </FieldDescription>
+          <FieldError>{form.errors.handle}</FieldError>
         </Field>
 
 

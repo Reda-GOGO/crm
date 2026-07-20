@@ -8,6 +8,7 @@
     "dev:server": "tsx watch server.ts",
     "build:client": "tsc && vite build",
     "build:server": "tsup",
+    "compile:server" : "tsc -b ./tsconfig.server.json" ,
     "typecheck": "tsc -b",
     "start": "node dist-server/server.js",
     "lint": "eslint .",
