@@ -31,6 +31,7 @@ function App() {
         <Route path="orders/create" element={<Orders.Create />} />
         <Route path="orders/:handle" element={<Orders.Single />} />
         <Route path="orders/:handle/edit" element={<Orders.Update />} />
+        <Route path="orders/purchase/" element={<Orders.Purchase />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="setting" element={<Settings />} />

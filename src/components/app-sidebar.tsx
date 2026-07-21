@@ -1,8 +1,6 @@
 import * as React from "react"
 
 import { NavMain } from "@/components/nav-main"
-// import { NavProjects } from "@/components/nav-projects"
-// import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -96,7 +94,12 @@ export const data = {
 
         <ShoppingCart />
       ),
-      items: [],
+      items: [
+        {
+          title: "Purchase",
+          url: "/orders/purchase",
+        }
+      ],
     },
     {
       title: "Inventory",
@@ -105,7 +108,6 @@ export const data = {
         <Layers2 />
       ),
       items: [],
-      // isActive: true,
     },
     {
       title: "Analytics",
@@ -172,10 +174,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
