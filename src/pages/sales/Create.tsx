@@ -1,4 +1,4 @@
-import { Heading } from "@/components/related/orders/Heading";
+import { Heading } from "@/components/related/sales/Heading";
 import Back from "@/components/shared/Back";
 
 export default function Create() {

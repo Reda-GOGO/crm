@@ -16,11 +16,11 @@ export function Heading({
     <div className=" top-0 z-10 -mx-6 mb-6 flex items-center justify-between border-b bg-background/95 px-6 py-4 backdrop-blur">
       <div>
         <h1 className="font-serif text-2xl font-medium tracking-tight">
-          {mode === "create" ? "New Order" : "Edit Order"}
+          {mode === "create" ? "New Sale" : "Edit Sale"}
         </h1>
 
         <p className="text-sm text-muted-foreground">
-          {mode === "create" ? "Start creating your own order here ." : "Edit your given order with new information "}
+          {mode === "create" ? "Start creating your own sale order here ." : "Edit your given sale order with new information "}
 
         </p>
       </div>

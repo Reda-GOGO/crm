@@ -12,7 +12,7 @@ import { Highlight } from "@/components/shared/Highlight";
 import { formatNumber } from "@/lib/utils";
 import { Price } from "@/components/shared/Price";
 import { useList } from "@/hooks/useList";
-import { createColumns } from "@/components/related/orders/createColumns";
+import { createColumns } from "@/components/related/sales/createColumns";
 import { List } from "@/components/shared/listing/List";
 import type { Sale } from "@/types";
 

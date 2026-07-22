@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import product from "./routers/products";
 import collection from "./routers/collections";
 import sale from "./routers/sales";
+import purchase from "./routers/purchases";
 
 
 
@@ -37,6 +38,7 @@ app.use("/uploads", express.static(path.resolve(process.cwd(), "uploads")));
 app.use("/products", product);
 app.use("/collections", collection);
 app.use("/sales", sale);
+app.use("/purchases", purchase);
 
 
 const port = 1337;
