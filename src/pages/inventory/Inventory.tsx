@@ -6,7 +6,8 @@ export default function Inventory() {
   const { t } = useTranslation()
   return (
     <Layout
-      name="Inventory"
+      translationKey="Inventory"
+      urlPrefix="inventory"
       Icon={Layers2}
       showActions={true}>
       <div>{t("Inventory.page.title")}</div>

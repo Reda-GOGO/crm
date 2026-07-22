@@ -7,7 +7,8 @@ export default function Home() {
   return (
     <Layout
       Icon={LayoutDashboard}
-      name="Dashboard"
+      translationKey="Dashboard"
+      urlPrefix="dashboard"
       showActions={false}>
       <div>
         <h1 className="">{t("hello")}</h1>

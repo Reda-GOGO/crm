@@ -6,7 +6,8 @@ export default function Teams() {
   const { t } = useTranslation()
   return (
     <Layout
-      name="Team"
+      translationKey="Team"
+      urlPrefix="teams"
       Icon={KeyRound}
       showActions={true}>
       <div>{t("Team.page.title")}</div>

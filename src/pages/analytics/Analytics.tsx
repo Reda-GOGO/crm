@@ -8,7 +8,8 @@ export default function Analytics() {
   const { t } = useTranslation()
   return (
     <Layout
-      name="Analytic"
+      translationKey="Analytic"
+      urlPrefix="analytics"
       Icon={ChartNoAxesCombined}
       showActions={false}>
       <div>{t("Analytic.page.title")}</div>

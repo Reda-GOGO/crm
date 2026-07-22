@@ -20,7 +20,8 @@ export default function Settings() {
   const { t } = useTranslation()
   return (
     <Layout
-      name="Setting"
+      translationKey="Setting"
+      urlPrefix="settings"
       Icon={Settings2}
       showActions={false}>
       <div>{t("Setting.page.title")}</div>
