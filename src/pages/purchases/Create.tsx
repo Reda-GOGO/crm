@@ -1,9 +1,9 @@
 import Back from "@/components/shared/Back";
 
-export default function Purchase() {
+export default function Create() {
   return (
     <Back>
-      <h1>Purchase</h1>
+      <div>Create</div>
     </Back>
   )
 }

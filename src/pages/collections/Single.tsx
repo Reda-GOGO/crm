@@ -37,7 +37,7 @@ export default function Single() {
 
 function Content({ collection }: { collection: Collection }) {
   return (
-    <div className="mx-auto w-full max-w-screen-xl ">
+    <div className="mx-auto w-full max-w-7xl ">
       <Action />
       <div className="grid grid-cols-12 gap-6 pb-10">
         <div className="col-span-12 lg:col-span-4  ">
@@ -79,7 +79,7 @@ function Action() {
 
 function Loading() {
   return (
-    <div className="mx-auto w-full max-w-screen-xl py-6">
+    <div className="mx-auto w-full max-w-7xl py-6">
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-4">
           <Card className="overflow-hidden">
@@ -106,7 +106,7 @@ function Loading() {
 
 function NotFound() {
   return (
-    <div className="mx-auto flex w-full max-w-screen-xl h-full flex-col items-center justify-center gap-3 py-24 text-center">
+    <div className="mx-auto flex w-full max-w-7xl h-full flex-col items-center justify-center gap-3 py-24 text-center">
       <div
         className="flex items-center justify-center h-20 w-20 rounded-full bg-muted"
       >

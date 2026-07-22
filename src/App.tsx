@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound"
 import Product from "./pages/products/"
 import Collection from "./pages/collections"
 import Sale from "./pages/sales"
+import Purchase from "./pages/purchases"
 
 function App() {
 
@@ -36,6 +37,12 @@ function App() {
           <Route path="create" element={<Sale.Create />} />
           <Route path=":handle" element={<Sale.Single />} />
           <Route path=":handle/edit" element={<Sale.Update />} />
+        </Route>
+        <Route path="purchases">
+          <Route index element={<Purchase.Listing />} />
+          <Route path="create" element={<Purchase.Create />} />
+          <Route path=":handle" element={<Purchase.Single />} />
+          <Route path=":handle/edit" element={<Purchase.Update />} />
         </Route>
         <Route path="inventory" element={<Inventory />} />
         <Route path="analytics" element={<Analytics />} />

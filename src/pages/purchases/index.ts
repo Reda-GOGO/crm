@@ -3,11 +3,11 @@ import Listing from "./Listing";
 import Single from "./Single";
 import Update from "./Update";
 
-const Sale = {
+const Purchase = {
   Listing: Listing,
   Create: Create,
   Update: Update,
   Single: Single,
 }
 
-export default Sale;
+export default Purchase;
