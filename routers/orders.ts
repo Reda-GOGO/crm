@@ -21,9 +21,9 @@ router.get("/", async (req, res, next) => {
       };
     }
 
-    const allItems = await database.order.count();
+    const allItems = await database.sale.count();
 
-    const orders = await database.order.findMany({
+    const sales = await database.sale.findMany({
       where,
       orderBy,
       take,
@@ -34,15 +34,15 @@ router.get("/", async (req, res, next) => {
     });
 
     if (query.search) {
-      orders.sort((a, b) =>
+      sales.sort((a, b) =>
         rank(a.customer.name, query.search!) - rank(b.customer.name, query.search!)
       );
     }
 
     res.json({
-      items: orders,
+      items: sales,
       allItems,
-      totalItems: orders.length,
+      totalItems: sales.length,
       totalPages: Math.ceil(allItems / take),
       currentPage: query.pagination?.page ?? 1,
     });

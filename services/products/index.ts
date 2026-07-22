@@ -5,8 +5,6 @@ type Unit = {
   name: string;
   quantityInBase: number;
   isBase: boolean;
-  defaultValue: number;
-  variantValue: number;
   cost: number;
   price: number;
 }
@@ -24,7 +22,7 @@ export async function syncUnits({
     .filter((u) => u.id != null)
     .map((u) => u.id!);
 
-  await tx.productUnit.deleteMany({
+  await tx.unit.deleteMany({
     where: {
       productId,
       id: {
@@ -33,7 +31,7 @@ export async function syncUnits({
     },
   });
   for (const unit of units) {
-    await tx.productUnit.upsert({
+    await tx.unit.upsert({
       where: {
         id: unit.id,
       },
@@ -41,8 +39,6 @@ export async function syncUnits({
         name: unit.name,
         quantityInBase: unit.quantityInBase,
         isBase: unit.isBase,
-        defaultValue: unit.defaultValue,
-        variantValue: unit.variantValue,
         cost: unit.cost,
         price: unit.price,
       },
@@ -51,8 +47,6 @@ export async function syncUnits({
         name: unit.name,
         quantityInBase: unit.quantityInBase,
         isBase: unit.isBase,
-        defaultValue: unit.defaultValue,
-        variantValue: unit.variantValue,
         cost: unit.cost,
         price: unit.price,
 

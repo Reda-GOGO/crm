@@ -2055,7 +2055,7 @@
       "updatedAt": null,
       "availableQty": 0,
       "archived": false,
-      "collectionId": 14,
+      "collectionId": null,
       "units": [
         {
           "id": 267,
@@ -2071,18 +2071,7 @@
           "updatedAt": null,
           "archived": false
         }
-      ],
-      "Collection": {
-        "id": 14,
-        "name": "test is working",
-        "handle": "7fc936445e23200ed124342e",
-        "description": "Description for Collection: test is working, with handle: 7fc936445e23200ed124342e",
-        "tags": null,
-        "image": "/uploads/1778619864629-497827366.png",
-        "createdAt": {},
-        "updatedAt": {},
-        "archived": true
-      }
+      ]
     },
     {
       "id": 117,
@@ -2099,7 +2088,7 @@
       "updatedAt": null,
       "availableQty": 0,
       "archived": false,
-      "collectionId": 14,
+      "collectionId": null,
       "units": [
         {
           "id": 266,
@@ -2115,18 +2104,7 @@
           "updatedAt": null,
           "archived": false
         }
-      ],
-      "Collection": {
-        "id": 14,
-        "name": "test is working",
-        "handle": "7fc936445e23200ed124342e",
-        "description": "Description for Collection: test is working, with handle: 7fc936445e23200ed124342e",
-        "tags": null,
-        "image": "/uploads/1778619864629-497827366.png",
-        "createdAt": {},
-        "updatedAt": {},
-        "archived": true
-      }
+      ]
     },
     {
       "id": 94,

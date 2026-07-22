@@ -31,8 +31,6 @@ router.post("/", upload.single("image"), async (req, res, next) => {
             name: unit.name,
             quantityInBase: Number(unit.quantityInBase),
             isBase: unit.isBase === true || unit.isBase === "true",
-            defaultValue: Number(unit.defaultValue),
-            variantValue: Number(unit.variantValue),
             cost: Number(unit.cost),
             price: Number(unit.price),
           })),
@@ -96,7 +94,7 @@ router.get("/:handle", async (req, res, next) => {
         handle: req.params.handle,
       },
       include: {
-        Collection: {
+        collection: {
           select: {
             name: true,
             handle: true,
