@@ -70,7 +70,8 @@ export default function Listing() {
   return (
     <Layout
       Icon={Package}
-      name="Product"
+      translationKey="Product"
+      urlPrefix="products"
       showActions={true}
       renderActions={() => <Actions />}
     >

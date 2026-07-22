@@ -67,7 +67,8 @@ export default function Listing() {
   const columns = createColumns({ list, view, Action })
   return (
     <Layout
-      name="Collection"
+      urlPrefix="collections"
+      translationKey="Collection"
       Icon={Library}
       showActions={true}
       renderActions={() => <Actions />}

@@ -20,13 +20,15 @@ import { useNavigate } from "react-router";
 
 export function Layout({
   children,
-  name,
+  urlPrefix,
+  translationKey,
   Icon,
   showActions = true,
   renderActions,
 }: {
   children: React.ReactNode;
-  name: string;
+  urlPrefix: string;
+  translationKey: string;
   Icon: LucideIcon;
   showActions?: boolean;
   renderActions?: () => React.ReactNode;
@@ -35,15 +37,15 @@ export function Layout({
   return (
     <div className="w-full flex flex-col h-full">
       <div className="flex w-full justify-between gap-2 py-2">
-        <Title title={t(name + ".page.title")} Icon={Icon} />
-        <Actions name={name} show={showActions} renderer={renderActions} />
+        <Title title={t(translationKey + ".page.title")} Icon={Icon} />
+        <Actions urlPrefix={urlPrefix} translationKey={translationKey} show={showActions} renderer={renderActions} />
       </div>
       <div className="space-y-1 h-full">
         <h1 className="text-2xl font-semibold tracking-tight">
-          {t(name + ".page.subtitle")}
+          {t(translationKey + ".page.subtitle")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          {t(name + ".page.desc")}
+          {t(translationKey + ".page.desc")}
         </p>
         {children}
       </div>
@@ -53,11 +55,13 @@ export function Layout({
 
 
 function Actions({
-  name,
+  urlPrefix,
+  translationKey,
   show,
   renderer
 }: {
-  name: string;
+  urlPrefix: string;
+  translationKey: string;
   show: boolean
   renderer?: () => React.ReactNode;
 }) {
@@ -92,11 +96,11 @@ function Actions({
         </DropdownMenuContent>
       </DropdownMenu >
       <Button
-        onClick={() => navigate(`/${name.toLowerCase()}s/create`)}
+        onClick={() => navigate(`/${urlPrefix}/create`)}
         size={"sm"}
         className="capitalize"
       >
-        {t(name + ".page.create")}{" "}
+        {t(translationKey + ".page.create")}{" "}
       </Button>
     </div >
   )

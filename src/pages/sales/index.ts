@@ -4,7 +4,7 @@ import Purchase from "./Purchase";
 import Single from "./Single";
 import Update from "./Update";
 
-const Orders = {
+const Sale = {
   Listing: Listing,
   Create: Create,
   Update: Update,
@@ -12,4 +12,4 @@ const Orders = {
   Purchase: Purchase,
 }
 
-export default Orders;
+export default Sale;

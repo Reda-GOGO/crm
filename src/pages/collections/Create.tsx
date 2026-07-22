@@ -7,7 +7,7 @@ export default function Create() {
   const form = useCollectionForm({ mode: "create" });
   return (
     <Back className="h-full">
-      <div className="mx-auto w-full max-w-screen-xl py-6">
+      <div className="mx-auto w-full max-w-7xl py-6">
         <Heading mode="create" isSaving={form.isSaving} save={form.save} />
 
         <div className="grid grid-cols-12 gap-6">

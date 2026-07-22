@@ -1,13 +1,4 @@
-import { Prisma } from "../../generated/prisma/client";
-
-type Unit = {
-  id?: number;
-  name: string;
-  quantityInBase: number;
-  isBase: boolean;
-  cost: number;
-  price: number;
-}
+import { Prisma, Unit } from "../../generated/prisma/client";
 
 export async function syncUnits({
   tx,

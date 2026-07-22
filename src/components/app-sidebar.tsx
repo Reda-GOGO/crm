@@ -23,7 +23,8 @@ import {
   LayoutDashboard,
   Package,
   Library,
-  ShoppingCart
+  ShoppingCart,
+  ShoppingBasket
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
@@ -88,18 +89,22 @@ export const data = {
       items: [],
     },
     {
-      title: "Orders",
-      url: "/orders",
+      title: "Sales",
+      url: "/sales",
       icon: (
 
         <ShoppingCart />
       ),
-      items: [
-        {
-          title: "Purchase",
-          url: "/orders/purchase",
-        }
-      ],
+      items: [],
+    },
+    {
+      title: "Purchases",
+      url: "/purchases",
+      icon: (
+
+        <ShoppingBasket />
+      ),
+      items: [],
     },
     {
       title: "Inventory",

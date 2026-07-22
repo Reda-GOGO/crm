@@ -9,7 +9,7 @@ import Teams from "./pages/teams/Teams"
 import NotFound from "./pages/NotFound"
 import Product from "./pages/products/"
 import Collection from "./pages/collections"
-import Orders from "./pages/orders"
+import Sale from "./pages/sales"
 
 function App() {
 
@@ -19,19 +19,24 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="*" element={<NotFound />} />
         <Route index element={<Home />} />
-        <Route path="products" element={<Product.Listing />} />
-        <Route path="products/create" element={<Product.Create />} />
-        <Route path="products/:handle" element={<Product.Single />} />
-        <Route path="products/:handle/edit" element={<Product.Update />} />
-        <Route path="collections" element={<Collection.Listing />} />
-        <Route path="collections/create" element={<Collection.Create />} />
-        <Route path="collections/:handle" element={<Collection.Single />} />
-        <Route path="collections/:handle/edit" element={<Collection.Update />} />
-        <Route path="orders" element={<Orders.Listing />} />
-        <Route path="orders/create" element={<Orders.Create />} />
-        <Route path="orders/:handle" element={<Orders.Single />} />
-        <Route path="orders/:handle/edit" element={<Orders.Update />} />
-        <Route path="orders/purchase/" element={<Orders.Purchase />} />
+        <Route path="products">
+          <Route index element={<Product.Listing />} />
+          <Route path="create" element={<Product.Create />} />
+          <Route path=":handle" element={<Product.Single />} />
+          <Route path=":handle/edit" element={<Product.Update />} />
+        </Route>
+        <Route path="collections">
+          <Route index element={<Collection.Listing />} />
+          <Route path="create" element={<Collection.Create />} />
+          <Route path=":handle" element={<Collection.Single />} />
+          <Route path=":handle/edit" element={<Collection.Update />} />
+        </Route>
+        <Route path="sales">
+          <Route index element={<Sale.Listing />} />
+          <Route path="create" element={<Sale.Create />} />
+          <Route path=":handle" element={<Sale.Single />} />
+          <Route path=":handle/edit" element={<Sale.Update />} />
+        </Route>
         <Route path="inventory" element={<Inventory />} />
         <Route path="analytics" element={<Analytics />} />
         <Route path="setting" element={<Settings />} />

@@ -7,7 +7,7 @@ export default function Create() {
   const form = useProductForm({ mode: "create" });
   return (
     <Back>
-      <div className="mx-auto w-full max-w-screen-xl py-6">
+      <div className="mx-auto w-full max-w-7xl py-6">
         <Heading mode="create" isSaving={form.isSaving} save={form.save} />
         <Content form={form} />
       </div>

@@ -12,9 +12,9 @@ import { Highlight } from "@/components/shared/Highlight";
 import { formatNumber } from "@/lib/utils";
 import { Price } from "@/components/shared/Price";
 import { useList } from "@/hooks/useList";
-import type { Order } from "@/types";
 import { createColumns } from "@/components/related/orders/createColumns";
 import { List } from "@/components/shared/listing/List";
+import type { Sale } from "@/types";
 
 const stats = [
   { labelKey: "totalOrders", value: 208, Icon: ShoppingCart },
@@ -26,14 +26,15 @@ const stats = [
 ];
 
 export default function Listing() {
-  const list = useList<Order>({
-    resource: "orders",
+  const list = useList<Sale>({
+    resource: "sales",
     mode: "page",
   })
   const columns = createColumns({ list })
   return (
     <Layout
-      name="Order"
+      urlPrefix="sales"
+      translationKey="Order"
       Icon={ShoppingCart}
       showActions={true}>
 

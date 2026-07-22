@@ -4,7 +4,7 @@ import Back from "@/components/shared/Back";
 export default function Create() {
   return (
     <Back>
-      <div className="mx-auto w-full max-w-screen-xl py-6">
+      <div className="mx-auto w-full max-w-7xl py-6">
         <Heading mode="create" />
       </div>
     </Back>
