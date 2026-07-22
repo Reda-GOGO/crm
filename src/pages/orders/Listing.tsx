@@ -36,6 +36,7 @@ export default function Listing() {
       name="Order"
       Icon={ShoppingCart}
       showActions={true}>
+
       <Highlight
         namespace="orders.statistics."
         titleKey="salesOverview"

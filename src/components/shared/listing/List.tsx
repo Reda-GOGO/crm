@@ -6,6 +6,7 @@ import { Pagination } from "./Pagination";
 import { Filter } from "./Filter";
 import { Toolbar } from "./Toolbar";
 import { Grid } from "./Grid";
+import type { Identifiable } from "@/types";
 
 
 export type Column<T> = {
@@ -16,7 +17,7 @@ export type Column<T> = {
 };
 
 
-type ListComponent = <T>({
+type ListComponent = <T extends Identifiable>({
   children,
   list,
 }: {
@@ -26,7 +27,7 @@ type ListComponent = <T>({
 
 
 export const List = Object.assign(
-  function List<T>({
+  function List<T extends Identifiable>({
     children,
     list,
   }: {

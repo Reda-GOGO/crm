@@ -12,22 +12,21 @@ datasource db {
         provider = "sqlite"
 }
 
-//
-// USER, ROLES & PERMISSIONS
-//
-
 model User {
-        id        Int        @id @default(autoincrement())
-        name      String
-        email     String     @unique
-        password  String
-        language  String     @default("en")
-        createdAt DateTime   @default(now())
-        role      Role       @relation(fields: [roleId], references: [id])
-        roleId    Int
-        orders    Order[]
-        archived  Boolean    @default(false)
-        Timeline  Timeline[]
+        id Int @id @default(autoincrement())
+
+        name     String
+        email    String @unique
+        password String
+        language String @default("en")
+
+        role   Role @relation(fields: [roleId], references: [id])
+        roleId Int
+
+        activity Activity[]
+
+        createdAt DateTime @default(now())
+        archived  Boolean  @default(false)
 }
 
 model Role {
@@ -39,70 +38,83 @@ model Role {
 }
 
 model Permission {
-        id        Int       @id @default(autoincrement())
-        resource  String
-        action    String
-        roleId    Int
-        role      Role      @relation(fields: [roleId], references: [id])
+        id Int @id @default(autoincrement())
+
+        resource String
+        action   String
+
+        roleId Int
+        role   Role @relation(fields: [roleId], references: [id])
+
         createdAt DateTime  @default(now())
         updatedAt DateTime?
 }
 
-//
-// PRODUCTS, UNITS & INVENTORY & COLLECTIONS
-//
-
 model Product {
-        id             Int              @id @default(autoincrement())
-        name           String
-        handle         String           @unique
-        image          String?
-        description    String?
-        cost           Float
-        price          Float
-        unit           String // base unit (e.g., "kg", "piece")
-        vendorName     String?
-        vendorContact  String?
-        units          ProductUnit[]
-        orderItems     OrderItem[]
-        stats          ProductStats[]
-        createdAt      DateTime         @default(now())
-        updatedAt      DateTime?
-        availableQty   Float            @default(0) // current stock in this unit
-        storageHistory StorageHistory[]
-        archived       Boolean          @default(false)
-        Collection     Collection?      @relation(fields: [collectionId], references: [id])
-        collectionId   Int?
-}
+        id Int @id @default(autoincrement())
 
-model StorageHistory {
-        id        Int       @id @default(autoincrement())
-        quantity  Float
-        unit      String
+        name        String
+        handle      String  @unique
+        image       String?
+        description String?
+        cost        Float
+        price       Float
+
+        unit  String // base unit (e.g., "kg", "piece")
+        units Unit[]
+
+        availableQty Float @default(0) // current stock in this unit
+
+        collection   Collection? @relation(fields: [collectionId], references: [id])
+        collectionId Int?
+
+        stats ProductStats[]
+
+        SaleItem       SaleItem[]
+        PurchaseItem   PurchaseItem[]
+        StorageHistory StorageHistory[]
+
         createdAt DateTime  @default(now())
         updatedAt DateTime?
         archived  Boolean   @default(false)
-        product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
-        productId Int?
 }
 
-model ProductUnit {
-        id             Int         @id @default(autoincrement())
-        product        Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+model Unit {
+        id             Int     @id @default(autoincrement())
+        product        Product @relation(fields: [productId], references: [id], onDelete: Cascade)
         productId      Int
         name           String // e.g., "packet", "box", "kg"
         quantityInBase Float // e.g., 25 (means 1 packet = 25kg)
         isBase         Boolean
-        defaultValue   Float
-        variantValue   Float
         price          Float // selling price per unit
         cost           Float
-        createdAt      DateTime    @default(now())
-        updatedAt      DateTime?
-        orderItems     OrderItem[]
-        archived       Boolean     @default(false)
+
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+        archived  Boolean   @default(false)
+
+        SaleItem       SaleItem[]
+        StorageHistory StorageHistory[]
 
         @@unique([productId, name])
+}
+
+model StorageHistory {
+        id       Int    @id @default(autoincrement())
+        quantity Float
+        cost     Float
+        unit     String
+
+        Unit   Unit @relation(fields: [UnitId], references: [id])
+        UnitId Int
+
+        purchase   Purchase @relation(fields: [purchaseId], references: [id])
+        purchaseId Int
+
+        product   Product @relation(fields: [productId], references: [id])
+        productId Int
+
+        createdAt DateTime @default(now())
 }
 
 model Collection {
@@ -121,66 +133,197 @@ model Collection {
         CollectionStats CollectionStats[]
 }
 
-//
-// ORDERS, ITEMS, CUSTOMERS & INVOICES
-//
+model Purchase {
+        id     Int            @id @default(autoincrement())
+        handle String         @unique
+        status PurchaseStatus
 
-model Order {
-        id                 Int         @id @default(autoincrement())
-        items              OrderItem[] @relation("OrderItems")
-        totalAmount        Float
-        tax                Float
-        totalAmountWithTax Float
-        discount           Float?
-        profit             Float
-        partiallyPaidIn    Float?
-        totalAmountString  String
-        status             String      @default("Pending") // Pending , PartiallyPaid , Paid , Cancelled 
-        type               String
-        paymentMode        String? // espèce , cheque , virement , effet , without
-        paymentRef         String?
-        orderRef           String?
-        createdAt          DateTime    @default(now())
-        updatedAt          DateTime?
-        invoice            Invoice?
-        customer           Customer    @relation(fields: [customerId], references: [id])
-        customerId         Int
-        user               User        @relation(fields: [createdBy], references: [id])
-        createdBy          Int
-        archived           Boolean     @default(false)
-        deleted            Boolean     @default(false)
-        Timeline           Timeline?
+        items PurchaseItem[]
+
+        supplier   Supplier @relation(fields: [supplierId], references: [id])
+        supplierId Int
+
+        StorageHistory StorageHistory[]
+        documents      PurchaseDocument[]
+
+        createdAt DateTime @default(now())
+        updatedAt DateTime @updatedAt
+        archived  Boolean  @default(false)
 }
 
-model OrderItem {
-        id            Int          @id @default(autoincrement())
-        name          String
-        quantity      Float
-        unitPrice     Float
-        totalAmount   Float
-        unitProfit    Float // profit per unit
-        totalProfit   Float // total profit for this item
-        unit          String // e.g., "kg", "packet"
-        productUnitId Int?
-        productUnit   ProductUnit? @relation(fields: [productUnitId], references: [id])
-        productId     Int
-        product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
-        orderId       Int
-        order         Order        @relation(name: "OrderItems", fields: [orderId], references: [id], onDelete: Cascade)
-        createdAt     DateTime     @default(now())
-        archived      Boolean      @default(false)
-        deleted       Boolean      @default(false)
-        updatedAt     DateTime?
+model PurchaseItem {
+        id         Int      @id @default(autoincrement())
+        purchaseId Int
+        purchase   Purchase @relation(fields: [purchaseId], references: [id])
+
+        productId Int
+        product   Product @relation(fields: [productId], references: [id])
+
+        name     String // product name at the time of purchase
+        quantity Float
+        cost     Float // cost at the time of purchase
+
+        createdAt DateTime @default(now())
+        updatedAt DateTime @updatedAt
+        archived  Boolean  @default(false)
 }
 
-model Timeline {
-        id        Int       @id @default(autoincrement())
-        order     Order     @relation(fields: [orderId], references: [id])
-        orderId   Int       @unique
-        user      User      @relation(fields: [createdBy], references: [id])
-        action    String
-        content   String
+model Sale {
+        id           Int        @id @default(autoincrement())
+        handle       String     @unique
+        documentType SaleType
+        status       SaleStatus
+        discount     Float?
+        profit       Float
+        tax          Float
+
+        totalAmount          Float
+        totalAmountInLetters String
+        totalAmountWithTax   Float
+
+        sellingItems SaleItem[] @relation("SaleItems")
+
+        customer   Customer @relation(fields: [customerId], references: [id])
+        customerId Int
+
+        shippingAddress String?
+        shippingMethod  String?
+        shippingCost    Float?
+
+        payment        Payment[]
+        regularization Regularization?
+        activity       Activity[]
+
+        documents SaleDocument[]
+
+        archived  Boolean   @default(false)
+        deleted   Boolean   @default(false)
+        createdAt DateTime  @default(now())
+        updatedAt DateTime?
+}
+
+model SaleItem {
+        id Int @id @default(autoincrement())
+
+        product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+        productId Int
+
+        quantity Float
+        price    Float // price at the time of sale
+        profit   Float // profit at the time of sale
+        name     String // product name at the time of sale
+
+        totalAmount Float
+        totalProfit Float
+
+        unit String // e.g., "kg", "packet" unit name at the time of sale
+
+        Unit   Unit? @relation(fields: [UnitId], references: [id])
+        UnitId Int?
+
+        sale   Sale @relation(name: "SaleItems", fields: [saleId], references: [id], onDelete: Cascade)
+        saleId Int
+
+        createdAt DateTime  @default(now())
+        archived  Boolean   @default(false)
+        deleted   Boolean   @default(false)
+        updatedAt DateTime?
+
+        sourceAllocation  RegularizationItem[] @relation("SourceItem")
+        invoiceAllocation RegularizationItem[] @relation("InvoiceItem")
+}
+
+model Regularization {
+        id Int @id @default(autoincrement())
+
+        actualAmount      Float
+        regularizedAmount Float
+        receivedAmount    Float
+        cashReturned      Float
+
+        note String?
+
+        items RegularizationItem[]
+
+        invoice   Sale @relation(fields: [invoiceId], references: [id])
+        invoiceId Int  @unique
+
+        createdAt DateTime  @default(now())
+        updatedAt DateTime  @updatedAt
+        deletedAt DateTime?
+}
+
+model RegularizationItem {
+        id Int @id @default(autoincrement())
+
+        regularizationId Int
+        regularization   Regularization @relation(fields: [regularizationId], references: [id])
+
+        sourceItemId Int
+        sourceItem   SaleItem @relation(name: "SourceItem", fields: [sourceItemId], references: [id])
+
+        invoiceItemId Int
+        invoiceItem   SaleItem @relation(name: "InvoiceItem", fields: [invoiceItemId], references: [id])
+
+        quantity Float
+        amount   Float
+
+        createdAt DateTime @default(now())
+}
+
+model SaleDocument {
+        id Int @id @default(autoincrement())
+
+        sale   Sale @relation(fields: [saleId], references: [id])
+        saleId Int
+
+        version Int
+
+        snapshot Json
+
+        createdAt DateTime @default(now())
+}
+
+model PurchaseDocument {
+        id Int @id @default(autoincrement())
+
+        purchase   Purchase @relation(fields: [purchaseId], references: [id])
+        purchaseId Int
+
+        version Int
+
+        snapshot Json
+
+        createdAt DateTime @default(now())
+}
+
+model Payment {
+        id     Int  @id @default(autoincrement())
+        sale   Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+        saleId Int
+
+        method PaymentMethod
+
+        receivedAmount  Float
+        remainingAmount Float
+        cashReturned    Float
+
+        reference String?
+        createdAt DateTime @default(now())
+}
+
+model Activity {
+        id Int @id @default(autoincrement())
+
+        user    User   @relation(fields: [createdBy], references: [id])
+        action  String
+        content String
+
         createdBy Int
+
+        sale   Sale @relation(fields: [saleId], references: [id])
+        saleId Int
+
         createdAt DateTime  @default(now())
         updatedAt DateTime?
         archived  Boolean   @default(false)
@@ -195,22 +338,23 @@ model Customer {
         address   String?
         createdAt DateTime  @default(now())
         updatedAt DateTime?
-        orders    Order[]
         archived  Boolean   @default(false)
+        sales     Sale[]
 }
 
-model Invoice {
-        id        Int       @id @default(autoincrement())
-        order     Order     @relation(fields: [orderId], references: [id])
-        orderId   Int       @unique
-        createdAt DateTime  @default(now())
-        updatedAt DateTime?
-        archived  Boolean   @default(false)
-}
+model Supplier {
+        id      Int     @id @default(autoincrement())
+        name    String
+        email   String?
+        phone   String?
+        ice     String?
+        address String?
 
-//
-// ANALYTICS MODELS
-//
+        createdAt DateTime   @default(now())
+        updatedAt DateTime   @updatedAt
+        archived  Boolean    @default(false)
+        purchases Purchase[]
+}
 
 model ProductStats {
         id           Int         @id @default(autoincrement())
@@ -254,12 +398,37 @@ model CollectionStats {
         @@index([period, key, createdAt])
 }
 
-//
-// ENUMS
-//
-
 enum StatsPeriod {
         DAILY
         WEEKLY
         MONTHLY
+}
+
+enum SaleType {
+        EMPTY
+        QUOTATION
+        INVOICE
+        DELIVERY_NOTE
+}
+
+enum SaleStatus {
+        DRAFT
+        PENDING
+        PARTIALLY_PAID
+        PAID
+        CANCELLED
+}
+
+enum PaymentMethod {
+        CASH
+        CHEQUE
+        BANK_TRANSFER
+        EFFECT
+}
+
+enum PurchaseStatus {
+        DRAFT
+        ORDERED
+        RECEIVED
+        CANCELLED
 }
