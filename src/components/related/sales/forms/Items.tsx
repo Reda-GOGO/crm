@@ -4,8 +4,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Package, PackageMinus, Search } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
+import { useBoolean } from "@/hooks/useBoolean";
+import { Browser } from "./Browser";
+import { useList } from "@/hooks/useList";
+import type { Product } from "@/types";
+
+
 
 export function Items() {
+  const open = useBoolean();
+  const list = useList<Product>({
+    resource: "products",
+    mode: "infinite",
+    limit: 10,
+  });
   return (
     <Card className="overflow-hidden">
       <CardHeader>
@@ -26,23 +39,46 @@ export function Items() {
             <Input
               type="text"
               placeholder="search for product"
+              onFocus={() => open.on()}
               className="pl-8"
             ></Input>
           </div>
-          <Button variant="outline" >
-            Browse
-          </Button>
-          <Button variant="default" >
-            Previous Sales
-          </Button>
+          <Row>
+            <Browser open={open} list={list} />
+            <PreviousSales />
+          </Row>
         </Row>
-        <ItemsList />
+        <SaleItems />
       </CardContent>
     </Card>
   )
 }
 
-function ItemsList() {
+
+
+function PreviousSales() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button size={"sm"} variant={"default"}>
+          Previous Sales
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        className="flex flex-col w-full sm:max-w-4xl h-[90vh] p-0 gap-0 overflow-hidden"
+      >
+        <DialogHeader className="px-6 pt-6 pb-4 shrink-0">
+          <DialogTitle>Previous Sales</DialogTitle>
+          <DialogDescription>Select from previous sales products to add to the order.</DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+
+
+function SaleItems() {
   return (
     <div className="w-full">
       <div className="flex w-full">
@@ -59,7 +95,7 @@ function ItemsList() {
 
 function NoItems() {
   return (
-    <div className="h-110 flex w-full items-center justify-center">
+    <div className="h-130 flex w-full items-center justify-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">

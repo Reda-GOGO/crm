@@ -40,7 +40,7 @@ export function Basic({ form }: { form: useCollectionFormReturnType }) {
             file={form.imageFile}
             onFileChange={form.setImageFile} />
 
-          <div className="hidden ddflex pointer-events-none absolute inset-x-0 bottom-0  items-center justify-center gap-1.5 bg-gradient-to-t from-background/90 to-transparent py-3 text-xs text-muted-foreground">
+          <div className="hidden ddflex pointer-events-none absolute inset-x-0 bottom-0  items-center justify-center gap-1.5 bg-linear-to-t from-background/90 to-transparent py-3 text-xs text-muted-foreground">
             Square image, at least 800 × 800px
           </div>
         </div>
