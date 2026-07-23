@@ -1,5 +1,5 @@
 import { genRanHex } from "@/lib/utils";
-import type { Collection } from "@/types";
+import type { Collection, Product } from "@/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "../useQuery";
 import { http } from "@/infrastructure/http";
@@ -34,7 +34,9 @@ function initialize() {
 
 export type useCollectionFormReturnType = ReturnType<typeof useCollectionForm>
 
-type CollectionDTO = Omit<Collection, "tags" | "_count">;
+type CollectionDTO = Omit<Collection, "tags" | "_count"> & {
+  products?: Product[]
+};
 
 export function useCollectionForm(options: FormOptions) {
   const [collection, setCollection] = useState<CollectionDTO>(initialize());
@@ -69,7 +71,6 @@ export function useCollectionForm(options: FormOptions) {
       notify.error();
       return;
     }
-    console.log(collection);
     const formData = new FormData();
     formData.append("name", collection.name);
     formData.append("handle", collection.handle);
