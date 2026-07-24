@@ -7,8 +7,11 @@ import { Package, PackageMinus, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useBoolean } from "@/hooks/useBoolean";
 import { Browser } from "./Browser";
-import { useList } from "@/hooks/useList";
+import { useList, type useListReturnType } from "@/hooks/useList";
 import type { Product } from "@/types";
+import { Item } from "./Item";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import Col from "@/components/shared/Col";
 
 
 
@@ -30,7 +33,7 @@ export function Items() {
           Products associated with the sale
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4 ">
+      <CardContent className="space-y-3 ">
         <Row className="w-full justify-between">
           <div
             className="flex relative w-full"
@@ -45,10 +48,10 @@ export function Items() {
           </div>
           <Row>
             <Browser open={open} list={list} />
-            <PreviousSales />
+            <LoadPrevious />
           </Row>
         </Row>
-        <SaleItems />
+        <SaleItems list={list} />
       </CardContent>
     </Card>
   )
@@ -56,7 +59,7 @@ export function Items() {
 
 
 
-function PreviousSales() {
+function LoadPrevious() {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -78,15 +81,35 @@ function PreviousSales() {
 
 
 
-function SaleItems() {
+function SaleItems({ list }: { list: useListReturnType<Product> }) {
+  const selection = list.draftSelection;
+  const items = [...selection.items.values()];
+
   return (
     <div className="w-full">
       <div className="flex w-full">
         <span className="text-sm uppercase text-muted-foreground">
-          0 Selected Items
+          {items.length} Selected Items
         </span>
       </div>
-      <NoItems />
+      {
+        items.length > 0 ? (
+          <Col className="py-1.5 h-140">
+            <ScrollArea className="h-full px-3">
+              <Col>
+                {items.map((item) => (
+                  <Item key={item.id}
+                    isAdded={selection.isSelected(item.id)}
+                    toggle={() => selection.toggle(item)}
+                    product={item} />
+                ))}
+              </Col>
+              <ScrollBar />
+            </ScrollArea>
+          </Col>
+
+        ) : <NoItems />
+      }
     </div>
 
   )
@@ -95,7 +118,7 @@ function SaleItems() {
 
 function NoItems() {
   return (
-    <div className="h-130 flex w-full items-center justify-center">
+    <div className="h-140 flex w-full items-center justify-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">

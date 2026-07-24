@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, Hash, Info, Mail, Phone, PlusSquare, SearchIcon, User, UserPlus } from "lucide-react";
+import { Building2, Hash, Info, Mail, Phone, Plus, SearchIcon, User, UserPlus } from "lucide-react";
 import { Field } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -111,7 +111,9 @@ function Create() {
 
 
       <div className="flex w-full justify-center items-center gap-2 pt-6 pb-2">
-        <Button variant="default"><PlusSquare /> Add Customer</Button>
+        <Button variant="default" className="w-full">
+          <Plus /> Add Customer
+        </Button>
       </div>
     </div>
   )
