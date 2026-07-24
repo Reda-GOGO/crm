@@ -1,4 +1,4 @@
-import type { Product } from "@/types";
+import type { Product as ProductType, Unit } from "@/types";
 
 export type FormError = {
   name?: string;
@@ -12,15 +12,18 @@ export type FormError = {
   }>;
 };
 
+type Product = Partial<ProductType> & {
+  units?: Partial<Unit>[];
+};
 
 export function validate(product: Product): FormError {
   const errors: FormError = {};
 
-  if (!product.name.trim()) {
+  if (!product.name?.trim()) {
     errors.name = "Name is required";
   }
 
-  if (!product.handle.trim()) {
+  if (!product.handle?.trim()) {
     errors.handle = "Handle is required";
   }
 
@@ -29,7 +32,7 @@ export function validate(product: Product): FormError {
   }
 
 
-  if (!product.units.length) {
+  if (!product.units?.length) {
     errors.units = {
       [-1]: {
         name: "At least one unit is required"
@@ -38,14 +41,14 @@ export function validate(product: Product): FormError {
   }
 
 
-  product.units.forEach((unit) => {
+  product.units?.forEach((unit) => {
 
     const unitErrors: {
       name?: string;
     } = {};
 
 
-    if (!unit.name.trim()) {
+    if (!unit.name?.trim()) {
       unitErrors.name = "Unit name is required";
     }
 
@@ -56,7 +59,7 @@ export function validate(product: Product): FormError {
         errors.units = {};
       }
 
-      errors.units[unit.id] = unitErrors;
+      errors.units[unit.id!] = unitErrors;
     }
 
   });

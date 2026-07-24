@@ -1,7 +1,7 @@
 import { http } from "@/infrastructure/http";
 import { genRanHex } from "@/lib/utils"
 import { validate, type FormError } from "@/pages/products/validator";
-import type { Product } from "@/types";
+import type { Product as ProductType, Unit } from "@/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "../useQuery";
 import { notify } from "@/pages/products/notify";
@@ -27,6 +27,9 @@ function initialize() {
 
   }
 }
+type Product = Partial<ProductType> & {
+  units?: Partial<Unit>[];
+};
 
 export type useProductFormReturnType = ReturnType<typeof useProductForm>
 
@@ -80,11 +83,11 @@ export function useProductForm(options: FormOptions) {
 
     const formData = new FormData();
 
-    formData.append("name", product.name);
-    formData.append("handle", product.handle);
+    formData.append("name", product.name!);
+    formData.append("handle", product.handle!);
     formData.append("description", product.description ?? "");
-    formData.append("cost", product.cost.toString());
-    formData.append("price", product.price.toString());
+    formData.append("cost", product.cost!.toString());
+    formData.append("price", product.price!.toString());
     formData.append("unit", product.unit ?? "");
     formData.append("units", JSON.stringify(product.units));
     formData.append("image", imageFile ?? product.image ?? "");

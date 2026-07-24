@@ -30,7 +30,7 @@ export function Items() {
           Products associated with the sale
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4 pt-6">
+      <CardContent className="space-y-4 ">
         <Row className="w-full justify-between">
           <div
             className="flex relative w-full"

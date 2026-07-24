@@ -1,6 +1,9 @@
 import { tempId } from "@/lib/utils";
-import type { Product, Unit } from "@/types"
+import type { Product as ProductType, Unit } from "@/types";
 
+type Product = Partial<ProductType> & {
+  units?: Partial<Unit>[];
+};
 
 function init(product: Product) {
   return {
@@ -13,8 +16,6 @@ function init(product: Product) {
     archived: false,
     productId: product.id,
     quantityInBase: 1,
-    defaultValue: 1,
-    variantValue: 1,
   }
 }
 
@@ -26,8 +27,8 @@ export function useUnits({
   setProduct: React.Dispatch<React.SetStateAction<Product>>;
 }) {
 
-  const base = product.units.find((u) => u.isBase);
-  const variants = product.units.filter((u) => !u.isBase);
+  const base = product.units!.find((u) => u.isBase);
+  const variants = product.units!.filter((u) => !u.isBase);
 
   const unit = {
     base,
@@ -35,7 +36,7 @@ export function useUnits({
     addBase: () => {
       setProduct((prev) => ({
         ...prev,
-        units: [...prev.units, { ...init(prev), isBase: true }],
+        units: [...prev.units!, { ...init(prev), isBase: true }],
       }));
     },
     updateBase: (id: number, patch: Partial<Unit>) => {
@@ -45,23 +46,23 @@ export function useUnits({
           cost: patch.cost ?? prev.cost,
           price: patch.price ?? prev.price,
           unit: patch.name ?? prev.unit,
-          units: prev.units.map((u) => (u.id === id ? { ...u, ...patch } : u))
+          units: prev.units!.map((u) => (u.id === id ? { ...u, ...patch } : u))
         }
       })
     },
     addVariant: () => {
       setProduct((prev) => ({
         ...prev,
-        units: [...prev.units, { ...init(prev), isBase: false }],
+        units: [...prev.units!, { ...init(prev), isBase: false }],
       }));
     },
 
     removeVariant: (id: number) => {
-      setProduct((prev) => ({ ...prev, units: prev.units.filter((u) => u.id !== id) }));
+      setProduct((prev) => ({ ...prev, units: prev.units!.filter((u) => u.id !== id) }));
     },
 
     updateVariant: (id: number, patch: Partial<Unit>) => {
-      setProduct((prev) => ({ ...prev, units: prev.units.map((u) => (u.id === id ? { ...u, ...patch } : u)) }))
+      setProduct((prev) => ({ ...prev, units: prev.units!.map((u) => (u.id === id ? { ...u, ...patch } : u)) }))
     }
   }
   return {
