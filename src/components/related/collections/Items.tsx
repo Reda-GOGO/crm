@@ -5,9 +5,11 @@ import Row from "@/components/shared/Row"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
-import type { Collection, Product } from "@/types"
+import type { Collection as CollectionType, Product } from "@/types"
 import { Package, CircleCheck, CircleOff, Hash, PackageCheck, PackageX } from "lucide-react"
-
+type Collection = CollectionType & {
+  products?: Product[]
+}
 export function Items({ collection }: { collection: Collection }) {
 
   return (

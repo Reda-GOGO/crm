@@ -12,16 +12,18 @@ import type { Product } from "@/types";
 import { Item } from "./Item";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Col from "@/components/shared/Col";
+import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
 
 
 
-export function Items() {
+export function Items({ form }: { form: useSaleFormReturnType }) {
   const open = useBoolean();
   const list = useList<Product>({
     resource: "products",
     mode: "infinite",
     limit: 10,
   });
+  console.log(form.sale.sellingItems)
   return (
     <Card className="overflow-hidden">
       <CardHeader>
@@ -47,7 +49,7 @@ export function Items() {
             ></Input>
           </div>
           <Row>
-            <Browser open={open} list={list} />
+            <Browser open={open} list={list} form={form} />
             <LoadPrevious />
           </Row>
         </Row>

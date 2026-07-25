@@ -11,6 +11,7 @@ import { forwardRef } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Item } from "./Item";
+import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
 
 
 type useBooleanType = {
@@ -23,9 +24,11 @@ type useBooleanType = {
 export function Browser({
   open,
   list,
+  form,
 }: {
   open: useBooleanType
   list: useListReturnType<Product>
+  form: useSaleFormReturnType
 }) {
   return (
     <Dialog open={open.value} onOpenChange={open.toggle}>
@@ -42,7 +45,7 @@ export function Browser({
           <DialogDescription>Select products to add to the order.</DialogDescription>
         </DialogHeader>
 
-        <Content list={list} />
+        <Content list={list} form={form} />
 
         <DialogFooter className="mb-0 mx-0">
 
@@ -56,7 +59,13 @@ export function Browser({
 }
 
 
-function Content({ list }: { list: useListReturnType<Product> }) {
+function Content({
+  list,
+  form
+}: {
+  list: useListReturnType<Product>;
+  form: useSaleFormReturnType
+}) {
   const items = list.data;
   const pagination = list.pagination;
   const meta = list.meta;
@@ -67,6 +76,32 @@ function Content({ list }: { list: useListReturnType<Product> }) {
     hasMore: meta.hasMore || false,
     onLoadMore: pagination.next
   })
+
+  const toggle = (item: Product) => {
+    const selected = selection.isSelected(item.id!);
+
+    selection.toggle(item);
+
+    form.setSale(prev => ({
+      ...prev,
+      sellingItems: selected
+        ? prev.sellingItems!.filter(p => p.productId !== item.id)
+        : [...prev.sellingItems!, {
+          productId: item.id,
+          product: item,
+          name: item.name,
+          price: item.price,
+          unit: item.unit,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          archived: item.archived,
+          profit: item.price - item.cost,
+          quantity: 1,
+          totalAmount: item.price * 1,
+        }],
+    }));
+  };
+
   return (
     <div className="flex flex-col flex-1 min-h-0  pb-0 gap-4">
       <List list={list}>
@@ -100,7 +135,7 @@ function Content({ list }: { list: useListReturnType<Product> }) {
                 {items.map((item) => (
                   <Item key={item.id}
                     isAdded={selection.isSelected(item.id)}
-                    toggle={() => selection.toggle(item)}
+                    toggle={() => toggle(item)}
                     product={item} />
                 ))}
                 <InfiniteLoader ref={observerTarget} loading={list.loading} hasMore={meta.hasMore} />

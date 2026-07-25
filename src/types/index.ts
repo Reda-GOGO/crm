@@ -1,4 +1,4 @@
-import { type Product as ProductDB } from "../../generated/prisma/client"
+import { Prisma, type Product as ProductDB } from "../../generated/prisma/client"
 import { type Unit as UnitDB } from "../../generated/prisma/client"
 import { type Collection as CollectionDB } from "../../generated/prisma/client"
 import { type Sale as SaleDB } from "../../generated/prisma/client"
@@ -19,3 +19,9 @@ export type Collection = CollectionDB
 export type Purchase = PurchaseDB
 export type Customer = CustomerDB
 export type Supplier = SupplierDB
+export type SaleFull = Prisma.SaleGetPayload<{
+  include: {
+    sellingItems: true
+    customer: true
+  }
+}>

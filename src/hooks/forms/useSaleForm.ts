@@ -1,16 +1,21 @@
+import type { Sale, SaleItem } from "@/types"
 import { useState } from "react"
 
-type Sale = {
-  id: number
-  createdAt: Date
+export type SaleItemPartial = Partial<SaleItem>
+type SaleType = Sale & {
+  sellingItems: SaleItemPartial[]
 }
+
+export type useSaleFormReturnType = ReturnType<typeof useSaleForm>
 export function useSaleForm() {
-  const [sale, setSale] = useState<Sale>({
+  const [sale, setSale] = useState<Partial<SaleType>>({
     id: 0,
+    sellingItems: [],
     createdAt: new Date(),
   })
   return {
-    sale, setSale,
+    sale,
+    setSale,
     isSaving: false,
     save: () => { },
   }
