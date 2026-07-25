@@ -50,7 +50,7 @@ export function Item({
           active={isAdded}
         />
 
-        <Col className="min-w-0 gap-2">
+        <Col className="min-w-0 gap-0.5">
           <ProductHeader
             name={product.name}
             handle={product.handle}
@@ -126,7 +126,7 @@ function ProductHeader({
 
 function OrderLineDetails() {
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-1">
       <div className="grid w-full grid-cols-3 divide-x max-sm:grid-cols-1 max-sm:divide-x-0">
         <UnitField />
         <PriceField />
@@ -247,8 +247,8 @@ function EditableField({
   children: React.ReactNode;
 }) {
   return (
-    <Field className="gap-1 px-2">
-      <FieldLabel className="flex justify-between">
+    <Field className="gap-0 px-2">
+      <FieldLabel className="flex justify-between items-center ">
         <Label className="text-xs uppercase text-muted-foreground">
           {label}
         </Label>

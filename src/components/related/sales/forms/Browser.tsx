@@ -82,7 +82,7 @@ function Content({ list }: { list: useListReturnType<Product> }) {
                     placeholder="Search products ..."
                   />
                   <Badge className="flex p-2 h-8">
-                    <span className="text-sm">collection</span>
+                    <span className="text-sm">All</span>
                     <ChevronsUpDown className="ml-auto size-4" />
                   </Badge>
                   <Button variant="outline" size="sm">
