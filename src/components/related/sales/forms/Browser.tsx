@@ -61,15 +61,14 @@ export function Browser({
 
 function Content({
   list,
-  form
+  form,
 }: {
   list: useListReturnType<Product>;
-  form: useSaleFormReturnType
+  form: useSaleFormReturnType;
 }) {
   const items = list.data;
   const pagination = list.pagination;
   const meta = list.meta;
-  const selection = list.draftSelection;
 
   const observerTarget = useInfiniteScroll({
     loading: list.loading || false,
@@ -77,30 +76,6 @@ function Content({
     onLoadMore: pagination.next
   })
 
-  const toggle = (item: Product) => {
-    const selected = selection.isSelected(item.id!);
-
-    selection.toggle(item);
-
-    form.setSale(prev => ({
-      ...prev,
-      sellingItems: selected
-        ? prev.sellingItems!.filter(p => p.productId !== item.id)
-        : [...prev.sellingItems!, {
-          productId: item.id,
-          product: item,
-          name: item.name,
-          price: item.price,
-          unit: item.unit,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          archived: item.archived,
-          profit: item.price - item.cost,
-          quantity: 1,
-          totalAmount: item.price * 1,
-        }],
-    }));
-  };
 
   return (
     <div className="flex flex-col flex-1 min-h-0  pb-0 gap-4">
@@ -134,8 +109,9 @@ function Content({
               <div className="flex flex-col gap-2 px-4">
                 {items.map((item) => (
                   <Item key={item.id}
-                    isAdded={selection.isSelected(item.id)}
-                    toggle={() => toggle(item)}
+                    form={form}
+                    isAdded={form.isSelected(item.id)}
+                    toggle={() => form.toggleLine(item)}
                     product={item} />
                 ))}
                 <InfiniteLoader ref={observerTarget} loading={list.loading} hasMore={meta.hasMore} />

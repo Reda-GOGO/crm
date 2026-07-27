@@ -7,7 +7,7 @@ import { Package, PackageMinus, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useBoolean } from "@/hooks/useBoolean";
 import { Browser } from "./Browser";
-import { useList, type useListReturnType } from "@/hooks/useList";
+import { useList } from "@/hooks/useList";
 import type { Product } from "@/types";
 import { Item } from "./Item";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -23,7 +23,7 @@ export function Items({ form }: { form: useSaleFormReturnType }) {
     mode: "infinite",
     limit: 10,
   });
-  console.log(form.sale.sellingItems)
+
   return (
     <Card className="overflow-hidden">
       <CardHeader>
@@ -53,7 +53,7 @@ export function Items({ form }: { form: useSaleFormReturnType }) {
             <LoadPrevious />
           </Row>
         </Row>
-        <SaleItems list={list} />
+        <SaleItems form={form} />
       </CardContent>
     </Card>
   )
@@ -83,9 +83,14 @@ function LoadPrevious() {
 
 
 
-function SaleItems({ list }: { list: useListReturnType<Product> }) {
-  const selection = list.draftSelection;
-  const items = [...selection.items.values()];
+function SaleItems({
+  form,
+  product,
+}: {
+  form: useSaleFormReturnType;
+  product: Product;
+}) {
+  const items = form.sale.sellingItems ?? [];
 
   return (
     <div className="w-full">
@@ -101,9 +106,10 @@ function SaleItems({ list }: { list: useListReturnType<Product> }) {
               <Col>
                 {items.map((item) => (
                   <Item key={item.id}
-                    isAdded={selection.isSelected(item.id)}
-                    toggle={() => selection.toggle(item)}
-                    product={item} />
+                    form={form}
+                    isAdded={form.isSelected(item.product!.id)}
+                    toggle={() => form.toggleLine(item.product!)}
+                    product={item.product!} />
                 ))}
               </Col>
               <ScrollBar />

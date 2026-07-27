@@ -25,3 +25,8 @@ export type SaleFull = Prisma.SaleGetPayload<{
     customer: true
   }
 }>
+export type SaleItemFull = Prisma.SaleItemGetPayload<{
+  include: {
+    product: true
+  }
+}>

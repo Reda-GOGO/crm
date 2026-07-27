@@ -20,9 +20,11 @@ import {
   Trash,
   X,
 } from "lucide-react";
+import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
 
 
 interface ItemProps {
+  form: useSaleFormReturnType;
   product: Product;
   isAdded: boolean;
   toggle: () => void;
@@ -30,6 +32,7 @@ interface ItemProps {
 
 
 export function Item({
+  form,
   product,
   isAdded,
   toggle,
@@ -57,7 +60,7 @@ export function Item({
             showHandle={!isAdded}
           />
 
-          {isAdded && <OrderLineDetails />}
+          {isAdded && <OrderLineDetails product={product} form={form} />}
         </Col>
       </Row>
 
@@ -124,18 +127,44 @@ function ProductHeader({
 }
 
 
-function OrderLineDetails() {
+function OrderLineDetails({
+  product,
+  form,
+}: {
+  product: Product;
+  form: useSaleFormReturnType;
+}) {
+  const line = form?.sale?.sellingItems?.find(item => item.productId === product.id);
+  const unit = {
+    value: line?.unit,
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => form.patchLine(product.id, { unit: e.target.value }),
+  }
+
+  const price = {
+    value: line?.price,
+    onChange: (e) => form.patchLine(product.id, { price: Number(e.target.value) }),
+  }
+
+  const quantity = {
+    value: line?.quantity,
+    onChange: (e) => form.patchLine(product.id, { quantity: Number(e.target.value) }),
+  }
+
+  const totalAmount = {
+    value: line?.totalAmount,
+    onChange: (e) => form.patchLine(product.id, { totalAmount: Number(e.target.value) }),
+  }
   return (
     <div className="flex w-full flex-col gap-1">
       <div className="grid w-full grid-cols-3 divide-x max-sm:grid-cols-1 max-sm:divide-x-0">
-        <UnitField />
-        <PriceField />
-        <QuantityField />
+        <UnitField value={unit.value!} onChange={unit.onChange} />
+        <PriceField value={price.value!} onChange={price.onChange} />
+        <QuantityField value={quantity.value!} onChange={quantity.onChange} />
       </div>
 
       <Separator />
 
-      <TotalField />
+      <TotalField value={totalAmount.value!} onChange={totalAmount.onChange} />
     </div>
   );
 }
@@ -165,7 +194,13 @@ function RemoveButton({
 }
 
 
-function TotalField() {
+function TotalField({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const editing = useBoolean();
 
   return (
@@ -182,12 +217,13 @@ function TotalField() {
         {editing.value ? (
           <EditableInput
             type="number"
-            value={299.34}
+            value={value}
+            onChange={onChange}
             onConfirm={editing.off}
             onCancel={editing.off}
           />
         ) : (
-          <PriceDisplay value={299.34} />
+          <PriceDisplay value={value} />
         )}
       </FieldValue>
     </Row>
@@ -195,18 +231,25 @@ function TotalField() {
 }
 
 
-function UnitField() {
+function UnitField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}) {
   const editing = useBoolean();
 
   return (
     <EditableField
       label="Unit"
       editing={editing}
-      display="piece"
+      display={value}
     >
       <EditableInput
         type="text"
-        value="piece"
+        value={value}
+        onChange={onChange}
         onConfirm={editing.off}
         onCancel={editing.off}
       />
@@ -215,18 +258,25 @@ function UnitField() {
 }
 
 
-function PriceField() {
+function PriceField({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const editing = useBoolean();
 
   return (
     <EditableField
       label="Price"
       editing={editing}
-      display={<Price value={formatNumber(299.34)} />}
+      display={<Price value={formatNumber(value)} />}
     >
       <EditableInput
         type="number"
-        value={299.34}
+        value={value}
+        onChange={onChange}
         onConfirm={editing.off}
         onCancel={editing.off}
       />
@@ -266,7 +316,13 @@ function EditableField({
 }
 
 
-function QuantityField() {
+function QuantityField({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   return (
     <Field className="gap-1 px-2">
       <FieldLabel>
@@ -276,13 +332,15 @@ function QuantityField() {
       </FieldLabel>
 
       <Row className="gap-1">
-        <Button size="icon" className="h-7 w-7">
+        <Button
+          size="icon" className="h-7 w-7">
           <Minus className="h-4 w-4" />
         </Button>
 
         <Input
           type="number"
-          value={1}
+          value={value}
+          onChange={onChange}
           onWheel={(e) => e.currentTarget.blur()}
           className="h-7 text-center text-[13px]"
         />
@@ -364,10 +422,12 @@ function EditableInput({
   type,
   value,
   onConfirm,
+  onChange,
   onCancel,
 }: {
   type: "text" | "number";
   value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onConfirm: () => void;
   onCancel: () => void;
 }) {
@@ -376,6 +436,7 @@ function EditableInput({
       <Input
         type={type}
         value={value}
+        onChange={onChange}
         placeholder="0.00"
         onWheel={(e) => e.currentTarget.blur()}
         className="h-7 text-center text-[13px]"
