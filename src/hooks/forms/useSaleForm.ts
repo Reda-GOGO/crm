@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Product, Sale, SaleItemFull } from "@/types";
+import { useSaleLineForm } from "./useSaleItemForm";
 
 export type SaleItemPartial = Partial<SaleItemFull>;
 
@@ -17,9 +18,14 @@ export type useSaleFormReturnType = ReturnType<typeof useSaleForm>;
 
 export function useSaleForm() {
   const [sale, setSale] = useState(initialSale);
+  const lines = useSaleLineForm();
 
   const isSelected = (productId: number) =>
     sale.sellingItems?.some(item => item.productId === productId) ?? false;
+
+  const hasLine = (productId: number) =>
+    sale.sellingItems?.some(item => item.productId === productId) ?? false;
+
 
   const toggleLine = (product: Product) => {
     setSale(prev => {
@@ -35,6 +41,9 @@ export function useSaleForm() {
     });
   };
 
+  const getLine = (productId: number) => {
+    return sale.sellingItems?.find(item => item.productId === productId);
+  }
 
   const patchLine = (productId: number, saleItem: SaleItemPartial) => {
     setSale(prev => {
@@ -55,12 +64,22 @@ export function useSaleForm() {
     });
   };
 
+  const actions = {
+    has: hasLine,
+    toggle: toggleLine,
+    patch: patchLine,
+    get: getLine,
+  }
+
   return {
     sale,
     setSale,
     isSelected,
     toggleLine,
     patchLine,
+    actions,
+    lines: sale.sellingItems,
+    actuallines: lines
   };
 }
 

@@ -9,10 +9,10 @@ import { useBoolean } from "@/hooks/useBoolean";
 import { Browser } from "./Browser";
 import { useList } from "@/hooks/useList";
 import type { Product } from "@/types";
-import { Item } from "./Item";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Col from "@/components/shared/Col";
 import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
+import { Line } from "./Line";
 
 
 
@@ -85,31 +85,29 @@ function LoadPrevious() {
 
 function SaleItems({
   form,
-  product,
 }: {
   form: useSaleFormReturnType;
-  product: Product;
 }) {
-  const items = form.sale.sellingItems ?? [];
+  const lines = form.actuallines.items;
+  const actions = form.actuallines.actions;
 
   return (
     <div className="w-full">
       <div className="flex w-full">
         <span className="text-sm uppercase text-muted-foreground">
-          {items.length} Selected Items
+          {lines.length} Selected Items
         </span>
       </div>
       {
-        items.length > 0 ? (
+        lines.length > 0 ? (
           <Col className="py-1.5 h-140">
             <ScrollArea className="h-full px-3">
               <Col>
-                {items.map((item) => (
-                  <Item key={item.id}
-                    form={form}
-                    isAdded={form.isSelected(item.product!.id)}
-                    toggle={() => form.toggleLine(item.product!)}
-                    product={item.product!} />
+                {lines.map((line) => (
+                  <Line key={line.productId}
+                    line={line}
+                    product={line.product!}
+                    actions={actions} />
                 ))}
               </Col>
               <ScrollBar />

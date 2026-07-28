@@ -10,8 +10,8 @@ import { List } from "@/components/shared/listing/List";
 import { forwardRef } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Item } from "./Item";
 import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
+import { Line } from "./Line";
 
 
 type useBooleanType = {
@@ -108,10 +108,9 @@ function Content({
             <ScrollArea className="h-full">
               <div className="flex flex-col gap-2 px-4">
                 {items.map((item) => (
-                  <Item key={item.id}
-                    form={form}
-                    isAdded={form.isSelected(item.id)}
-                    toggle={() => form.toggleLine(item)}
+                  <Line key={item.id}
+                    line={form.actuallines.actions.get(item.id)}
+                    actions={form.actuallines.actions}
                     product={item} />
                 ))}
                 <InfiniteLoader ref={observerTarget} loading={list.loading} hasMore={meta.hasMore} />
