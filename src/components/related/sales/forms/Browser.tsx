@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { ChevronsUpDown, ListFilter, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter } from "@/components/ui/dialog";
 import Row from "@/components/shared/Row";
-import type { useListReturnType } from "@/hooks/useList";
+import { useList, } from "@/hooks/useList";
 import type { Product } from "@/types";
 import { List } from "@/components/shared/listing/List";
 import { forwardRef } from "react";
@@ -23,11 +23,9 @@ type useBooleanType = {
 
 export function Browser({
   open,
-  list,
   form,
 }: {
   open: useBooleanType
-  list: useListReturnType<Product>
   form: useSaleFormReturnType
 }) {
   return (
@@ -45,7 +43,7 @@ export function Browser({
           <DialogDescription>Select products to add to the order.</DialogDescription>
         </DialogHeader>
 
-        <Content list={list} form={form} />
+        <Content form={form} />
 
         <DialogFooter className="mb-0 mx-0">
 
@@ -60,12 +58,16 @@ export function Browser({
 
 
 function Content({
-  list,
   form,
 }: {
-  list: useListReturnType<Product>;
   form: useSaleFormReturnType;
 }) {
+
+  const list = useList<Product>({
+    resource: "products",
+    mode: "infinite",
+    limit: 10,
+  });
   const items = list.data;
   const pagination = list.pagination;
   const meta = list.meta;
@@ -109,8 +111,8 @@ function Content({
               <div className="flex flex-col gap-2 px-4">
                 {items.map((item) => (
                   <Line key={item.id}
-                    line={form.actuallines.actions.get(item.id)}
-                    actions={form.actuallines.actions}
+                    line={form.lines.actions.get(item.id)}
+                    actions={form.lines.actions}
                     product={item} />
                 ))}
                 <InfiniteLoader ref={observerTarget} loading={list.loading} hasMore={meta.hasMore} />

@@ -11,6 +11,7 @@ import { useBoolean } from "@/hooks/useBoolean";
 import { cn, formatNumber } from "@/lib/utils";
 import type { Product } from "@/types";
 import { Check, CheckCircle2, Hash, Minus, Pencil, Plus, Trash, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type LineProps = {
   line?: SaleItemPartial;
@@ -81,7 +82,7 @@ function Details({ line, actions }: { line: SaleItemPartial, actions: useSaleLin
         quantity={line.quantity!}
         unit={line.unit!}
         price={line.price!}
-        value={line.totalAmount!}
+        value={line.quantity! * line.price!}
         onChange={(totalAmount) => actions.patch(line.productId!, { totalAmount })} />
     </div>
   )
@@ -101,6 +102,12 @@ function Total({
   quantity: number;
 }) {
   const editing = useBoolean();
+  const [draft, setDraft] = useState(value);
+
+  useEffect(() => {
+    setDraft(value);
+  }, [value]);
+
   return (
     <Row className="items-center justify-between">
       <span className="text-xs text-muted-foreground">
@@ -110,13 +117,23 @@ function Total({
       {editing.value ? (
         <InputEditable
           type="number"
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          onConfirm={editing.off}
+          value={draft}
+          onChange={(e) => setDraft(Number(e.target.value))}
+          onConfirm={() => {
+            onChange(draft);
+            editing.off();
+          }}
           onCancel={editing.off}
         />
       ) : (
-        <Price value={formatNumber(value)} />
+        <Row>
+          <Price value={formatNumber(value)} />
+          <Button
+            onClick={editing.toggle}
+            size="icon" className="h-7 w-7">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </Row>
       )}
     </Row>
   )
@@ -134,7 +151,7 @@ function Pricing({
     <Col className="gap-1 px-2">
       <Row className="items-center justify-between">
         <Label className="text-xs uppercase text-muted-foreground">
-          Unit
+          Price
         </Label>
         <Button
           onClick={editing.toggle}

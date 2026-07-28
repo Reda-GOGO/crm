@@ -7,8 +7,6 @@ import { Package, PackageMinus, Search } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useBoolean } from "@/hooks/useBoolean";
 import { Browser } from "./Browser";
-import { useList } from "@/hooks/useList";
-import type { Product } from "@/types";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import Col from "@/components/shared/Col";
 import type { useSaleFormReturnType } from "@/hooks/forms/useSaleForm";
@@ -18,11 +16,6 @@ import { Line } from "./Line";
 
 export function Items({ form }: { form: useSaleFormReturnType }) {
   const open = useBoolean();
-  const list = useList<Product>({
-    resource: "products",
-    mode: "infinite",
-    limit: 10,
-  });
 
   return (
     <Card className="overflow-hidden">
@@ -49,7 +42,7 @@ export function Items({ form }: { form: useSaleFormReturnType }) {
             ></Input>
           </div>
           <Row>
-            <Browser open={open} list={list} form={form} />
+            <Browser open={open} form={form} />
             <LoadPrevious />
           </Row>
         </Row>
@@ -88,8 +81,8 @@ function SaleItems({
 }: {
   form: useSaleFormReturnType;
 }) {
-  const lines = form.actuallines.items;
-  const actions = form.actuallines.actions;
+  const lines = form.lines.items;
+  const actions = form.lines.actions;
 
   return (
     <div className="w-full">
