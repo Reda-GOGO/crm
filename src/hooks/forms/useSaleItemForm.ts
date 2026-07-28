@@ -71,6 +71,7 @@ function createItem(product: Product): SaleItemPartial {
     quantity: 1,
     price: product.price!,
     profit: product.price! - product.cost!,
+    totalProfit: product.price! - product.cost!,
     Unit: base!,
     UnitId: base!.id!,
     totalAmount: product.price! * 1,

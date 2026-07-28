@@ -12,7 +12,6 @@ import { useBoolean } from "@/hooks/useBoolean";
 import { cn, formatNumber } from "@/lib/utils";
 import type { Product } from "@/types";
 import { Check, CheckCircle2, Hash, Minus, Pencil, Plus, Trash, X } from "lucide-react";
-import { useEffect, useState } from "react";
 
 type LineProps = {
   line?: SaleItemPartial;
@@ -74,14 +73,33 @@ function Details({
   actions: useSaleLineType['actions'];
   product: Product,
 }) {
+
   return (
     <div className="flex w-full flex-col gap-1">
       <div className="grid w-full grid-cols-7 divide-x max-sm:grid-cols-1 max-sm:divide-x-0">
         <Unit line={line} actions={actions} product={product} />
         <Pricing value={line.price!}
-          onChange={(price) => actions.patch(line.productId!, { price })} />
+          line={line}
+          onChange={
+            (price) => actions.patch(line.productId!, {
+              price,
+              profit: price - line.Unit!.cost,
+              totalProfit: (price * line.quantity!) - (line.Unit!.cost * line.quantity!),
+              totalAmount: price * line.quantity!,
+              totalAmountOverride: undefined
+            })
+          } />
         <Quantity value={line.quantity!}
-          onChange={(quantity) => actions.patch(line.productId!, { quantity })} />
+          onChange={
+            (quantity) => actions.patch(line.productId!, {
+              quantity,
+              profit: line.price! - line.Unit!.cost,
+              totalProfit: (quantity * line.price!) - (line.Unit!.cost * quantity),
+              totalAmount: quantity * line.price!,
+              totalAmountOverride: undefined
+            })
+
+          } />
       </div>
 
       <Separator />
@@ -90,8 +108,16 @@ function Details({
         quantity={line.quantity!}
         unit={line.unit!}
         price={line.price!}
-        value={line.quantity! * line.price!}
-        onChange={(totalAmount) => actions.patch(line.productId!, { totalAmount })} />
+        value={line.totalAmountOverride ?? line.quantity! * line.price!}
+        onChange={
+          (totalAmountOverride) => actions.patch(line.productId!, {
+            profit: line.price! - line.Unit!.cost,
+            totalProfit: totalAmountOverride - (line.Unit!.cost * line.quantity!),
+            totalAmount: totalAmountOverride,
+            totalAmountOverride
+          })
+        }
+      />
     </div>
   )
 }
@@ -110,11 +136,6 @@ function Total({
   quantity: number;
 }) {
   const editing = useBoolean();
-  const [draft, setDraft] = useState(value);
-
-  useEffect(() => {
-    setDraft(value);
-  }, [value]);
 
   return (
     <Row className="items-center justify-between">
@@ -125,10 +146,10 @@ function Total({
       {editing.value ? (
         <InputEditable
           type="number"
-          value={draft}
-          onChange={(e) => setDraft(Number(e.target.value))}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
           onConfirm={() => {
-            onChange(draft);
+            onChange(value);
             editing.off();
           }}
           onCancel={editing.off}
@@ -137,6 +158,7 @@ function Total({
         <Row>
           <Price value={formatNumber(value)} />
           <Button
+            variant="outline"
             onClick={editing.toggle}
             size="icon" className="h-7 w-7">
             <Pencil className="h-4 w-4" />
@@ -149,12 +171,15 @@ function Total({
 
 function Pricing({
   value,
+  line,
   onChange,
 }: {
   value: number;
+  line: SaleItemPartial;
   onChange: (price: number) => void;
 }) {
   const editing = useBoolean();
+  const isChanged = line.Unit!.price !== value;
   return (
     <Col className="gap-1 px-2 col-span-2">
       <Row className="items-center justify-between">
@@ -162,6 +187,7 @@ function Pricing({
           Price
         </Label>
         <Button
+          variant="outline"
           onClick={editing.toggle}
           size="icon" className="h-7 w-7">
           <Pencil className="h-4 w-4" />
@@ -177,7 +203,16 @@ function Pricing({
             onCancel={editing.off}
           />
         ) : (
-          <Price value={formatNumber(value)} />
+          <Col className="gap-0">
+            {
+              isChanged && (
+                <del className="text-[10px]">
+                  <Price className="gap-0.5" value={formatNumber(line.Unit!.price)} />
+                </del>
+              )
+            }
+            <Price value={formatNumber(value)} />
+          </Col>
         )
       }
     </Col>
@@ -204,13 +239,26 @@ function Unit({
   const onChange = (unit: string) => actions.patch(line.productId!, { unit })
   const onSelect = (unitId: string) => {
     const unit = units.find((unit) => String(unit.id) === unitId)
+
+
+    const profit = unit!.price - unit!.cost;
+    const totalProfit = (unit!.price * line.quantity!) - (unit!.cost * line.quantity!);
+
+
+
     actions.patch(line.productId!, {
       unit: unit!.name,
       Unit: unit,
       UnitId: unit!.id,
-      price: unit!.price
+      price: unit!.price,
+      profit,
+      totalProfit,
+      totalAmount: unit!.price * line.quantity!,
+      totalAmountOverride: undefined
     })
   }
+
+
 
   return (
     <Col className="gap-0 px-2 col-span-3">
@@ -219,6 +267,7 @@ function Unit({
           Unit
         </Label>
         <Button
+          variant="outline"
           onClick={editing.toggle}
           size="icon" className="h-7 w-7">
           <Pencil className="h-4 w-4" />
@@ -286,6 +335,7 @@ function Quantity({
       </Label>
       <Row className="gap-1">
         <Button
+          variant="outline"
           onClick={() => onChange(value - 1)}
           size="icon" className="h-7 w-7">
           <Minus className="h-4 w-4" />
@@ -300,6 +350,7 @@ function Quantity({
         />
 
         <Button
+          variant="outline"
           onClick={() => onChange(value + 1)}
           size="icon" className="h-7 w-7">
           <Plus className="h-4 w-4" />
@@ -388,6 +439,10 @@ function InputEditable({
         type={type}
         value={value}
         onChange={onChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") onConfirm();
+          if (e.key === "Escape") onCancel();
+        }}
         placeholder="0.00"
         onWheel={(e) => e.currentTarget.blur()}
         className="h-7 text-center text-[13px]"

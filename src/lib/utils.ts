@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { toCardinal } from "n2words/fr-FR";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -38,3 +39,17 @@ export const genRanHex = (size: number) =>
 export function tempId() {
   return -Math.floor(Date.now() + Math.random() * 1000);
 }
+
+
+export const stringfyPrice = (amount: number) => {
+  const [dirhams, centimes] = amount.toFixed(2).split(".");
+
+  const dirhamsWords = toCardinal(Number(dirhams));
+  const centimesWords =
+    Number(centimes) > 0
+      ? ` et ${toCardinal(Number(centimes))} centimes`
+      : "";
+
+  return `${dirhamsWords} dirhams${centimesWords}`;
+};
+
