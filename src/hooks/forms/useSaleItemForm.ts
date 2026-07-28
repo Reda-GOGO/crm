@@ -1,7 +1,9 @@
 import type { Product, SaleItemFull } from "@/types"
 import { useState } from "react"
 
-export type SaleItemPartial = Partial<SaleItemFull>;
+export type SaleItemPartial = Partial<SaleItemFull> & {
+  totalAmountOverride?: number;
+}
 export type useSaleLineType = ReturnType<typeof useSaleLineForm>;
 
 export function useSaleLineForm() {
@@ -59,15 +61,20 @@ export function useSaleLineForm() {
 
 
 function createItem(product: Product): SaleItemPartial {
+  const base = product.units?.find((unit) => unit.isBase)
+
   return {
     productId: product.id,
     product,
     name: product.name,
     unit: product.unit,
     quantity: 1,
-    price: product.price,
-    profit: product.price - product.cost,
-    totalAmount: product.price * 1,
+    price: product.price!,
+    profit: product.price! - product.cost!,
+    Unit: base!,
+    UnitId: base!.id!,
+    totalAmount: product.price! * 1,
+    totalAmountOverride: undefined,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

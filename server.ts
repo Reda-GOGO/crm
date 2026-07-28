@@ -9,6 +9,7 @@ import product from "./routers/products";
 import collection from "./routers/collections";
 import sale from "./routers/sales";
 import purchase from "./routers/purchases";
+import customer from "./routers/customers";
 
 
 
@@ -39,6 +40,7 @@ app.use("/products", product);
 app.use("/collections", collection);
 app.use("/sales", sale);
 app.use("/purchases", purchase);
+app.use("/customers", customer);
 
 
 const port = 1337;

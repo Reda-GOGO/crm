@@ -5,6 +5,7 @@ import Row from "@/components/shared/Row";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import type { useSaleLineType, SaleItemPartial } from "@/hooks/forms/useSaleItemForm";
 import { useBoolean } from "@/hooks/useBoolean";
@@ -43,7 +44,7 @@ export function Line({ line, product, actions }: LineProps) {
             show={!isAdded}
           />
 
-          {isAdded && <Details line={line} actions={actions} />}
+          {isAdded && <Details line={line} actions={actions} product={product} />}
         </Col>
       </Row>
 
@@ -64,12 +65,19 @@ export function Line({ line, product, actions }: LineProps) {
 }
 
 
-function Details({ line, actions }: { line: SaleItemPartial, actions: useSaleLineType['actions'] }) {
+function Details({
+  line,
+  actions,
+  product,
+}: {
+  line: SaleItemPartial;
+  actions: useSaleLineType['actions'];
+  product: Product,
+}) {
   return (
     <div className="flex w-full flex-col gap-1">
-      <div className="grid w-full grid-cols-3 divide-x max-sm:grid-cols-1 max-sm:divide-x-0">
-        <Unit value={line.unit!}
-          onChange={(unit) => actions.patch(line.productId!, { unit })} />
+      <div className="grid w-full grid-cols-7 divide-x max-sm:grid-cols-1 max-sm:divide-x-0">
+        <Unit line={line} actions={actions} product={product} />
         <Pricing value={line.price!}
           onChange={(price) => actions.patch(line.productId!, { price })} />
         <Quantity value={line.quantity!}
@@ -148,7 +156,7 @@ function Pricing({
 }) {
   const editing = useBoolean();
   return (
-    <Col className="gap-1 px-2">
+    <Col className="gap-1 px-2 col-span-2">
       <Row className="items-center justify-between">
         <Label className="text-xs uppercase text-muted-foreground">
           Price
@@ -178,15 +186,34 @@ function Pricing({
 }
 
 function Unit({
-  value,
-  onChange,
+  line,
+  actions,
+  product
 }: {
-  value: string;
-  onChange: (unit: string) => void;
+  line: SaleItemPartial;
+  actions: useSaleLineType['actions'];
+  product: Product;
 }) {
   const editing = useBoolean();
+
+  const units = product.units!;
+  const base = product.units!.find((unit) => unit.isBase);
+  const defaultValue = line.Unit ?? base;
+  const isRenamed = defaultValue!.name !== line.unit
+
+  const onChange = (unit: string) => actions.patch(line.productId!, { unit })
+  const onSelect = (unitId: string) => {
+    const unit = units.find((unit) => String(unit.id) === unitId)
+    actions.patch(line.productId!, {
+      unit: unit!.name,
+      Unit: unit,
+      UnitId: unit!.id,
+      price: unit!.price
+    })
+  }
+
   return (
-    <Col className="gap-1 px-2">
+    <Col className="gap-0 px-2 col-span-3">
       <Row className="items-center justify-between">
         <Label className="text-xs uppercase text-muted-foreground">
           Unit
@@ -199,17 +226,46 @@ function Unit({
       </Row>
       {
         editing.value ? (
-          <InputEditable
-            type="text"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            onConfirm={editing.off}
-            onCancel={editing.off}
-          />
+          <Row className="items-center">
+            <Select
+              onValueChange={onSelect}
+              defaultValue={String(defaultValue!.id)}>
+              <SelectTrigger>
+                <SelectValue placeholder="select product unit" />
+              </SelectTrigger>
+
+              <SelectContent>
+                {
+                  units.map((unit) =>
+                  (
+                    <SelectItem key={unit.id} value={String(unit.id)}> {unit.name}</SelectItem>
+                  )
+                  )
+                }
+              </SelectContent>
+            </Select>
+            <InputEditable
+              type="text"
+              value={line.unit!}
+              onChange={(e) => onChange(e.target.value)}
+              onConfirm={editing.off}
+              onCancel={editing.off}
+            />
+          </Row>
         ) : (
-          <span className="text-sm text-foreground">
-            {value}
-          </span>
+
+          <Row className="items-center gap-2">
+            {
+              isRenamed && (
+                <del className="text-xs">
+                  {line!.Unit!.name}
+                </del>
+              )
+            }
+            <span className="text-sm text-foreground">
+              {line.unit}
+            </span>
+          </Row>
         )
       }
     </Col>
@@ -224,12 +280,13 @@ function Quantity({
   onChange: (quantity: number) => void;
 }) {
   return (
-    <Col className="gap-1 px-2">
+    <Col className="gap-1 px-2 col-span-2">
       <Label className="text-xs uppercase text-muted-foreground">
         Quantity
       </Label>
       <Row className="gap-1">
         <Button
+          onClick={() => onChange(value - 1)}
           size="icon" className="h-7 w-7">
           <Minus className="h-4 w-4" />
         </Button>
@@ -242,7 +299,9 @@ function Quantity({
           className="h-7 text-center text-[13px]"
         />
 
-        <Button size="icon" className="h-7 w-7">
+        <Button
+          onClick={() => onChange(value + 1)}
+          size="icon" className="h-7 w-7">
           <Plus className="h-4 w-4" />
         </Button>
       </Row>

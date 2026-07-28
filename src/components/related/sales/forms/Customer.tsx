@@ -36,7 +36,7 @@ function Content() {
         <TabsTrigger value="search"><SearchIcon /> Find Customer</TabsTrigger>
       </TabsList>
       <TabsContent value="create"><Create /></TabsContent>
-      <TabsContent value="search"><Search /></TabsContent>
+      <TabsContent value="search"><Find /></TabsContent>
     </Tabs>
   )
 }
@@ -120,7 +120,7 @@ function Create() {
 }
 
 
-function Search() {
+function Find() {
   return (
     <div>
       search customer go here

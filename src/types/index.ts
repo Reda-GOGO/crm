@@ -1,4 +1,5 @@
-import { Prisma, type Product as ProductDB } from "../../generated/prisma/client"
+import { Prisma } from "../../generated/prisma/client"
+import { type Product as ProductDB } from "../../generated/prisma/client"
 import { type Unit as UnitDB } from "../../generated/prisma/client"
 import { type Collection as CollectionDB } from "../../generated/prisma/client"
 import { type Sale as SaleDB } from "../../generated/prisma/client"
@@ -13,7 +14,9 @@ export interface Identifiable {
 
 export type Sale = SaleDB
 export type SaleItem = SaleItemDB
-export type Product = ProductDB
+export type Product = ProductDB & {
+  units?: Unit[]
+}
 export type Unit = UnitDB
 export type Collection = CollectionDB
 export type Purchase = PurchaseDB
@@ -27,6 +30,7 @@ export type SaleFull = Prisma.SaleGetPayload<{
 }>
 export type SaleItemFull = Prisma.SaleItemGetPayload<{
   include: {
-    product: true
+    product: true,
+    Unit: true
   }
 }>

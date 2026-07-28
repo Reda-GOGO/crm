@@ -36,6 +36,9 @@ export function Browser({
         </Button>
       </DialogTrigger>
       <DialogContent
+        onInteractOutside={(event) => {
+          event.preventDefault();
+        }}
         className="flex flex-col w-full sm:max-w-4xl h-[90vh] p-0 gap-0 overflow-hidden"
       >
         <DialogHeader className="px-6 pt-6 pb-4 shrink-0">

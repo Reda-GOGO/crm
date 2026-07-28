@@ -67,11 +67,11 @@ router.get("/", async (req, res, next) => {
 
     let products: Product[];
     if (query.search) {
-      const matches = await database.product.findMany({ where, orderBy });
+      const matches = await database.product.findMany({ where, orderBy, include: { units: true } });
       matches.sort((a, b) => rank(a.name, query.search!) - rank(b.name, query.search!));
       products = matches.slice(skip, skip + take);
     } else {
-      products = await database.product.findMany({ where, orderBy, take, skip });
+      products = await database.product.findMany({ where, orderBy, take, skip, include: { units: true } });
     }
 
     res.json({
