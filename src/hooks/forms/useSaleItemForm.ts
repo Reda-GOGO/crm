@@ -47,8 +47,13 @@ export function useSaleLineForm() {
   const has = (productId: number) => items.has(productId);
   const clear = () => setItems(new Map());
 
+  const totalAmount = Array.from(items.values()).reduce((acc, item) => acc + item.totalAmount!, 0);
+  const totalProfit = Array.from(items.values()).reduce((acc, item) => acc + item.totalProfit!, 0);
+
   return {
     items: Array.from(items.values()),
+    totalAmount,
+    totalProfit,
     actions: {
       has,
       get,

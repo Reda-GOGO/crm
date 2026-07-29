@@ -18,8 +18,9 @@ export default function Create() {
 function Content({ form }: { form: useSaleFormReturnType }) {
   return (
     <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-12 lg:col-span-8">
+      <div className="col-span-12 lg:col-span-8 flex flex-col gap-2">
         <Forms.Items form={form} />
+        <Forms.Payment form={form} />
       </div>
       <div className="col-span-12 flex flex-col gap-6 lg:col-span-4">
         <Forms.Customer />
