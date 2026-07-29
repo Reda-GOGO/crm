@@ -12,6 +12,7 @@ export function Payment({ form }: { form: useSaleFormReturnType }) {
   const totalTax = totalAmount * 0.2;
   const totalWithTax = totalAmount + totalTax;
   const totalProfit = form.lines.totalProfit;
+  const items = form.lines.items
 
   return (
     <Card>
@@ -20,7 +21,7 @@ export function Payment({ form }: { form: useSaleFormReturnType }) {
       </CardHeader>
       <CardContent className="flex gap-2 flex-col">
         <div className="flex justify-between text-sm text-muted-foreground">
-          <span>Subtotal (3 items)</span>
+          <span>Subtotal ({items.length} items)</span>
           <Price value={formatNumber(totalAmount)} />
         </div>
 
