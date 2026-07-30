@@ -24,6 +24,7 @@ function Content({ form }: { form: useSaleFormReturnType }) {
       </div>
       <div className="col-span-12 flex flex-col gap-6 lg:col-span-4">
         <Forms.Customer />
+        <Forms.OrderDocument />
       </div>
     </div>
   )
